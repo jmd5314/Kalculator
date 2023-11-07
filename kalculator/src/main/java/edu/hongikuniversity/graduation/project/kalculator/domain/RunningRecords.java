@@ -1,9 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -14,5 +11,8 @@ public class RunningRecords {
     private Double runningTime;
     private Double distance;
     private Double caloriesBurned;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private Users users;
 
 }

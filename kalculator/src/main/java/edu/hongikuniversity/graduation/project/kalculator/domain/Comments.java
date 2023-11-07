@@ -1,9 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -15,5 +12,10 @@ public class Comments {
     private Long commentId;
     private String content;
     private LocalDate creationDate;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private Users users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="postId")
+    private Posts posts;
 }

@@ -23,5 +23,8 @@ public class Profiles {
     private PurposeOfUse purposeOfUse;
     @Enumerated(EnumType.STRING)
     private DietMode dietMode;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private Users users;
 
 }

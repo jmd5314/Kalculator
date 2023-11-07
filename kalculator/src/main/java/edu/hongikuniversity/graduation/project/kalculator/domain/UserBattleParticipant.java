@@ -5,13 +5,13 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Hearts {
+public class UserBattleParticipant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long heartId;
+    private Long userBattleParticipantId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Users users;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
-    private Posts posts;
+    @JoinColumn(name = "participantId")
+    private BattleParticipants battleParticipants;
 }
