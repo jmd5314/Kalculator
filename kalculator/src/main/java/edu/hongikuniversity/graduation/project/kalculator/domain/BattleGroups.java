@@ -18,7 +18,7 @@ public class BattleGroups {
     private LocalDate battleEnd;
     private int numberOfParticipants;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "groupLeaderId")
     private Users users;
     @OneToMany(mappedBy = "battleGroups")
     private List<BattleParticipants> battleParticipants = new ArrayList<>();

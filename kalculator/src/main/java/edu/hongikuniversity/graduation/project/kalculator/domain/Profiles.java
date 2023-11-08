@@ -67,11 +67,9 @@ public class Profiles {
             rmr = bmr*1.9;
         return rmr;
     }
-    private double calculateRecommendedCalories(double rmr,PurposeOfUse purposeOfUse){
-        if(purposeOfUse == PurposeOfUse.DIET)
-            return rmr-500;
-        else
-            return rmr+500;
+    private double calculateRecommendedCalories(double rmr, PurposeOfUse purposeOfUse) {
+        double calorieOffset = (purposeOfUse == PurposeOfUse.DIET) ? -500 : 500;
+        return rmr + calorieOffset;
     }
 
     private double calculateRecommendedCarbohydrates(DietMode dietMode) {
