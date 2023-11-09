@@ -1,12 +1,13 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
 import jakarta.persistence.*;
-
+import lombok.Builder;
+import lombok.Getter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
+@Getter
 public class Users {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -30,5 +31,11 @@ public class Users {
     private String password;
     private String nickname;
     private LocalDate dateOfBirth;
-
+    @Builder
+    public Users(String username,String password,String nickname,LocalDate dateOfBirth){
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.dateOfBirth = dateOfBirth;
+    }
 }

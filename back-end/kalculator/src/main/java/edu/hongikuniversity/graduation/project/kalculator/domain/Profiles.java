@@ -1,13 +1,13 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Profiles {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
@@ -30,23 +30,6 @@ public class Profiles {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Users users;
-    public Profiles(double targetWeight,int age,Gender gender,double height,
-                    double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse
-                    ,DietMode dietMode
-    ){
-        this.targetWeight = targetWeight;
-        this.age = age;
-        this.gender = gender;
-        this.height = height;
-        this.weight = weight;
-        this.activityLevel = activityLevel;
-        this.purposeOfUse = purposeOfUse;
-        this.dietMode = dietMode;
-        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(weight,height,age,gender),activityLevel),purposeOfUse);
-        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
-        this.recommendedProteins = calculateRecommendedProteins(dietMode);
-        this.recommendedFats = calculateRecommendedFats(dietMode);
-    }
     private double calculateBMR(double weight,double height,int age,Gender gender) {
         double bmr = 0.0;
         if(gender==Gender.MALE){
@@ -98,4 +81,41 @@ public class Profiles {
         else
             return (recommendedCalories*0.7)/9;
     }
+    @Builder
+    public Profiles (double targetWeight,int age,Gender gender,double height,
+                     double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,
+                     DietMode dietMode,Users users
+    ){
+        this.targetWeight = targetWeight;
+        this.age = age;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.activityLevel = activityLevel;
+        this.purposeOfUse = purposeOfUse;
+        this.dietMode = dietMode;
+        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(weight,height,age,gender),activityLevel),purposeOfUse);
+        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
+        this.recommendedProteins = calculateRecommendedProteins(dietMode);
+        this.recommendedFats = calculateRecommendedFats(dietMode);
+        this.users = users;
+    }
+    //==프로필 수정 메서드==//
+    public void updateProfiles(double targetWeight,int age,Gender gender,double height,
+                               double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse
+    ,DietMode dietMode){
+        this.targetWeight = targetWeight;
+        this.age = age;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.activityLevel = activityLevel;
+        this.purposeOfUse = purposeOfUse;
+        this.dietMode =dietMode;
+        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(weight,height,age,gender),activityLevel),purposeOfUse);
+        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
+        this.recommendedProteins = calculateRecommendedProteins(dietMode);
+        this.recommendedFats = calculateRecommendedFats(dietMode);
+    }
+
 }
