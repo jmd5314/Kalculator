@@ -1,15 +1,13 @@
 package edu.hongikuniversity.graduation.project.kalculator.dto;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProfilesSaveRequestDto {
-    private Long profileId;
+public class ProfilesUpdateRequestDto {
     private double targetWeight;
     private double recommendedCalories;
     private double recommendedCarbohydrates;
@@ -24,28 +22,16 @@ public class ProfilesSaveRequestDto {
     private DietMode dietMode;
     private Users users;
     @Builder
-    public ProfilesSaveRequestDto(Long profileId,double targetWeight,int age,Gender gender,double height,double weight
-    ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,DietMode dietMode,Users users){
+    public ProfilesUpdateRequestDto(double targetWeight,int age,Gender gender,double height,double weight
+            ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse, DietMode dietMode,Users users){
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;
         this.height = height;
         this.weight = weight;
         this.activityLevel = activityLevel;
+        this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
         this.users = users;
-    }
-    public Profiles toEntity(){
-        return Profiles.builder()
-                .targetWeight(targetWeight)
-                .age(age)
-                .gender(gender)
-                .height(height)
-                .weight(weight)
-                .activityLevel(activityLevel)
-                .purposeOfUse(purposeOfUse)
-                .dietMode(dietMode)
-                .users(users)
-                .build();
     }
 }
