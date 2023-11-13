@@ -20,7 +20,7 @@ public class ProfilesController {
     public Long update(@PathVariable Long id, @RequestBody ProfilesUpdateRequestDto requestDto){
         return profilesService.update(id, requestDto);
     }
-    @GetMapping("/profiles/update/{id}")
+    @GetMapping("/profiles/{id}")
     public ProfilesResponseDto findById(@PathVariable Long id){
         return profilesService.findById(id);
     }
