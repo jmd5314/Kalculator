@@ -2,13 +2,13 @@ package edu.hongikuniversity.graduation.project.kalculator.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Profiles;
 import edu.hongikuniversity.graduation.project.kalculator.domain.ProfilesRepository;
+import edu.hongikuniversity.graduation.project.kalculator.dto.ProfilesResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.dto.ProfilesSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.dto.ProfilesUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,4 +29,10 @@ public class ProfilesService {
         ,requestDto.getWeight(),requestDto.getActivityLevel(),requestDto.getPurposeOfUse(),requestDto.getDietMode());
         return id;
     }
+    public ProfilesResponseDto findById(Long id){
+        Profiles entity = profilesRepository.findById(id).orElseThrow(()->new IllegalArgumentException("프로필 확인 오류"+
+                "id = "+id));
+        return new ProfilesResponseDto(entity);
+    }
+
 }
