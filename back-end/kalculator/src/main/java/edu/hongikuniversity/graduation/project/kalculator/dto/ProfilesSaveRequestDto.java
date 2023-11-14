@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfilesSaveRequestDto {
     private Long profileId;
+    private String nickname;
     private double targetWeight;
     private double recommendedCalories;
     private double recommendedCarbohydrates;
@@ -24,8 +25,10 @@ public class ProfilesSaveRequestDto {
     private DietMode dietMode;
     private Users users;
     @Builder
-    public ProfilesSaveRequestDto(Long profileId,double targetWeight,int age,Gender gender,double height,double weight
+    public ProfilesSaveRequestDto(Long profileId,String nickname,double targetWeight,int age,Gender gender,double height,double weight
     ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,DietMode dietMode,Users users){
+        this.profileId = profileId;
+        this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;
@@ -37,6 +40,7 @@ public class ProfilesSaveRequestDto {
     }
     public Profiles toEntity(){
         return Profiles.builder()
+                .nickname(nickname)
                 .targetWeight(targetWeight)
                 .age(age)
                 .gender(gender)
@@ -48,4 +52,5 @@ public class ProfilesSaveRequestDto {
                 .users(users)
                 .build();
     }
+
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Profiles {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
+    private String nickname;
     private double targetWeight;
     private double recommendedCalories;
     private double recommendedCarbohydrates;
@@ -82,10 +83,11 @@ public class Profiles {
             return (recommendedCalories*0.7)/9;
     }
     @Builder
-    public Profiles (double targetWeight,int age,Gender gender,double height,
+    public Profiles (String nickname,double targetWeight,int age,Gender gender,double height,
                      double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,
                      DietMode dietMode,Users users
     ){
+        this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;

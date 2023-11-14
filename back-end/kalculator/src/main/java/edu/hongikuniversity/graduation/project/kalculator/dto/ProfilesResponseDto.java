@@ -4,6 +4,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.*;
 
 public class ProfilesResponseDto {
     private Long profileId;
+    private String nickname;
     private double targetWeight;
     private double recommendedCalories;
     private double recommendedCarbohydrates;
@@ -19,6 +20,7 @@ public class ProfilesResponseDto {
     private Users users;
     public ProfilesResponseDto(Profiles entity){
         this.profileId = entity.getProfileId();
+        this.nickname = entity.getNickname();
         this.targetWeight = entity.getTargetWeight();
         this.age = entity.getAge();
         this.gender = entity.getGender();

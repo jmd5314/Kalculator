@@ -29,13 +29,11 @@ public class Users {
     private List<UserBattleParticipant>userBattleParticipants = new ArrayList<>();
     private String username;
     private String password;
-    private String nickname;
     private LocalDate dateOfBirth;
     @Builder
-    public Users(String username,String password,String nickname,LocalDate dateOfBirth){
+    public Users(String username,String password,LocalDate dateOfBirth){
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
         this.dateOfBirth = dateOfBirth;
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProfilesUpdateRequestDto {
+    private String nickname;
     private double targetWeight;
     private double recommendedCalories;
     private double recommendedCarbohydrates;
@@ -22,8 +23,9 @@ public class ProfilesUpdateRequestDto {
     private DietMode dietMode;
     private Users users;
     @Builder
-    public ProfilesUpdateRequestDto(double targetWeight,int age,Gender gender,double height,double weight
+    public ProfilesUpdateRequestDto(String nickname,double targetWeight,int age,Gender gender,double height,double weight
             ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse, DietMode dietMode,Users users){
+        this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;
