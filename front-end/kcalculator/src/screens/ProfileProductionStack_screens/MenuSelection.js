@@ -41,17 +41,14 @@ const MenuSelection = ({ navigation }) => {
       <TouchableOpacity style={[styles.card, {backgroundColor: 'gray'}]}
        onPress={() => navigation.navigate('TargetCalorie')}>
        <Text style={{ color: 'white', marginBottom: 20 }}>일반 식단</Text>
-//
       </TouchableOpacity>
       <TouchableOpacity style={[styles.card, {backgroundColor: '#333'}]}
       onPress={() => handleCardPress('운동 식단')}>
        <Text style={{ color: 'white', marginBottom: 20 }}>운동 식단</Text>
-//
       </TouchableOpacity>
       <TouchableOpacity style={[styles.card, {backgroundColor: 'purple'}]}
       onPress={() => handleCardPress('비건 식단')}>
         <Text style={{ color: 'white', marginBottom:20 }}>비건 식단</Text>
-//
       </TouchableOpacity>
     </Container>
   );

@@ -107,7 +107,7 @@ const ProfileProduction = ({ navigation }) => {
       <View style={{ alignSelf: 'flex-end', marginRight: 80 }}>
         <Button
           title="next"
-          onPress={() => navigation.navigate('MenuSelection')}
+          onPress={() => navigation.navigate("MenuSelection")}
         />
       </View>
     </Container>
