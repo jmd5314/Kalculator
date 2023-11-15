@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import axios from 'axios'
+//import axios from 'axios'
 
 const Profile = ({ navigation }) => {
     const [profiles, setProfiles] = useState('');
 
-    useEffect(() => {
+/*    useEffect(() => {
         axios.get()
             .then(response => setUsers())
             .catch(error => console.error(error));
     },[]);
-
+*/
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
                 <Text style={{fontSize: 20, marginHorizontal: 20}}>닉네임 : </Text>
-                {users.map(user => (<Text key={user.id}>{user.username}</Text>))}
+
             </View>
             <View style={styles.profile}>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileProduction")}>
                     <Text style={{fontSize: 20}}>나의목표</Text>
+                </TouchableOpacity>
             </View>
             <View style={{height: 10}}/>
             <View style={styles.area}>

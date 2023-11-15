@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import styled from 'styled-components/native';
-import profile from '../Images/profile.jpg';
+//import profile from '../Images/profile.jpg';
 
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
@@ -21,7 +21,7 @@ const ProfileProduction = ({ navigation }) => {
   return (
     <Container>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 10, marginTop: 100 }}>
-        <Image source={profile} style={{ width: 100, height: 100, borderRadius: 50 }} />
+
         <Text style={{ fontSize: 24 }}>프로필 작성</Text>
 
       </View>

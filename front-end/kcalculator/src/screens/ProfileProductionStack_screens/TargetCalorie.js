@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { View, Text, Button, TextInput, TouchableOpacity, Image } from 'react-native';
-import profile3 from '../Images/calculator.png';
+//import profile3 from '../Images/calculator.png';
 
 const Container = styled.View`
   flex: 1;
@@ -22,7 +22,7 @@ function Calculate() {
     <Container>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 10, marginTop:30 }}>
         <Text style={{fontSize: 20}}>목표 칼로리를 계산해 드렸어요.</Text>
-        <Image source={profile3} style={{ width: 80, height: 80, borderRadius: 50 }} />
+
       </View>
 
       <Text>일일 권장 섭취량은 {daily} kcal에요.</Text>
