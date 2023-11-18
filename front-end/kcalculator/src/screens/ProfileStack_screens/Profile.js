@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 //import axios from 'axios'
+import { UserContext } from '../../contexts';
 
 const Profile = ({ navigation }) => {
     const [profiles, setProfiles] = useState('');
+    const { dispatch } = useContext(UserContext);
 
 /*    useEffect(() => {
         axios.get()
@@ -12,6 +14,17 @@ const Profile = ({ navigation }) => {
             .catch(error => console.error(error));
     },[]);
 */
+
+    const _hadnleLogoutButtonPress = async () => {
+        try {
+            await logout();
+        } catch (e) {
+            console.log('[Profile] logout: ', e.message);
+        } finally {
+            dispatch({});
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
@@ -47,7 +60,7 @@ const Profile = ({ navigation }) => {
             <View style={styles.btnArea}>
                 <Button title="회원탈퇴" onPress={() => navigation.navigate('UserDelete')} />
                 <View style={{width: 120}}/>
-                <Button title="로그아웃"/>
+                <Button title="로그아웃" onPress={_hadnleLogoutButtonPress} />
             </View>
         </SafeAreaView>
     );
