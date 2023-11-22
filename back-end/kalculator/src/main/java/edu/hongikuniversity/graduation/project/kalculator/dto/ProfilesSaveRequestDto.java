@@ -9,13 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProfilesSaveRequestDto {
-    private Long profileId;
     private String nickname;
     private double targetWeight;
-    private double recommendedCalories;
-    private double recommendedCarbohydrates;
-    private double recommendedProteins;
-    private double recommendedFats;
     private int age;
     private Gender gender;
     private double height;
@@ -23,11 +18,9 @@ public class ProfilesSaveRequestDto {
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;
-    private Users users;
     @Builder
-    public ProfilesSaveRequestDto(Long profileId,String nickname,double targetWeight,int age,Gender gender,double height,double weight
-    ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,DietMode dietMode,Users users){
-        this.profileId = profileId;
+    public ProfilesSaveRequestDto(String nickname,double targetWeight,int age,Gender gender,double height,double weight
+    ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,DietMode dietMode){
         this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
@@ -35,8 +28,8 @@ public class ProfilesSaveRequestDto {
         this.height = height;
         this.weight = weight;
         this.activityLevel = activityLevel;
+        this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
-        this.users = users;
     }
     public Profiles toEntity(){
         return Profiles.builder()
@@ -49,8 +42,17 @@ public class ProfilesSaveRequestDto {
                 .activityLevel(activityLevel)
                 .purposeOfUse(purposeOfUse)
                 .dietMode(dietMode)
-                .users(users)
                 .build();
     }
+    public Gender getGenderEnum() {
+        return Gender.valueOf(this.gender);
+    }
 
+    public ActivityLevel getActivityLevelEnum() {
+        return ActivityLevel.valueOf(this.activityLevel);
+    }
+
+    public PurposeOfUse getPurposeOfUseEnum() {
+        return PurposeOfUse.valueOf(this.purpose);
+    }
 }
