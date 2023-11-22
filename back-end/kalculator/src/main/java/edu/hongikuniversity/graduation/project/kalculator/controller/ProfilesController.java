@@ -2,10 +2,9 @@ package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.dto.ProfilesSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/profiles")
 public class ProfilesController {

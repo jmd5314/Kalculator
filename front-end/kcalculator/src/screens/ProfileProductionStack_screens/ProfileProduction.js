@@ -61,31 +61,33 @@ const ProfileProduction = ({ navigation }) => {
         }
     };
     const sendProfileToServer = () => {
-        // 사용자 입력을 기반으로 프로필 객체를 만듭니다
         const profileData = {
             nickname,
             age,
-            gender: mapGender(selectedGender), // mapGender 함수를 사용하여 Enum 값으로 매핑
+            gender: mapGender(selectedGender),
             weight,
             height,
             activityLevel: mapActivityLevel(activityLevel),
-            purpose: mapPurposeOfUse(purpose),
+            purposeOfUse: mapPurposeOfUse(purpose),
         };
 
         // 서버에 네트워크 요청을 보냅니다
-        fetch('https:/192.168.0.2.8080/api/profiles/save', {
+        fetch('http://192.168.0.2:8080/api/profiles/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // 필요한 경우 인증 헤더와 같은 추가 헤더를 추가하세요
             },
-            body: JSON.stringify({ profileData }), // 프로필 객체를 JSON 문자열로 변환하여 전송
+            body: JSON.stringify(profileData),
         })
-            .then(response => response.json())
+            .then(response => {
+                console.log('서버 응답:', response); // 응답을 로그로 출력
+                if (!response.ok) {
+                    throw new Error('네트워크 응답이 정상이 아닙니다');
+                }
+                return response.json();
+            })
             .then(data => {
-                // 서버로부터의 응답을 필요에 따라 처리합니다
                 console.log('프로필이 성공적으로 전송되었습니다:', data);
-                // 여기에서 다음 화면으로 이동하거나 다른 작업을 수행할 수 있습니다
                 navigation.navigate("MenuSelection");
             })
             .catch(error => {
