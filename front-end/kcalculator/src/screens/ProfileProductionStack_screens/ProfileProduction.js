@@ -13,6 +13,7 @@ const ProfileProduction = ({ navigation }) => {
     const [nickname, setNickname] = useState('');
     const [age, setAge] = useState('');
     const [weight, setWeight] = useState('');
+    const [targetWeight, setTargetWeight] = useState('');
     const [height, setHeight] = useState('');
     const [activityLevel, setActivityLevel] = useState('');
     const [purpose, setPurpose] = useState('');
@@ -66,6 +67,7 @@ const ProfileProduction = ({ navigation }) => {
             age,
             gender: mapGender(selectedGender),
             weight,
+            targetWeight,
             height,
             activityLevel: mapActivityLevel(activityLevel),
             purposeOfUse: mapPurposeOfUse(purpose),
@@ -108,7 +110,7 @@ const ProfileProduction = ({ navigation }) => {
         <Text style={{ fontSize: 30, marginRight: 10 }}>닉네임</Text>
         <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
-          placeholder="닉네임 (8자 미만)"
+          placeholder="닉네임"
           onChangeText={(text) => setNickname(text)}
         />
       </View>
@@ -168,6 +170,15 @@ const ProfileProduction = ({ navigation }) => {
                 onChangeText={(text) => setWeight(text)}
               />
       </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
+            <Text style={{ fontSize: 30, marginRight: 10 }}>목표 체중</Text>
+            <TextInput
+                style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+                placeholder="목표 체중(kg)"
+                onChangeText={(text) => setTargetWeight(text)}
+            />
+        </View>
 
         <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 10 }}>
             <Text style={{ fontSize: 30, marginRight: 10 }}>활동량</Text>
