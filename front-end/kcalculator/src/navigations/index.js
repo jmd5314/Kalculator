@@ -6,7 +6,7 @@ import AuthStack from './AuthStack';
 //import MainStack from './MainStack';
 
 const Navigation = () => {
-    const { inProgress } = useContext(ProgressContext);
+    
 
     return (
         <NavigationContainer>
