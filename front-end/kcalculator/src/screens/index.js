@@ -10,8 +10,8 @@ import ProfileProduction from './ProfileProductionStack_screens/ProfileProductio
 import TargetCalorie from './ProfileProductionStack_screens/TargetCalorie';
 
 import Login from './AuthStack_screens/Login';
-//import Signup from './AuthStack_screens/Signup';
+import Signup from './AuthStack_screens/Signup';
 
 
 export {Profile, ProfileEdit, PostList, GroupList, UserDelete, 
-    MenuSelection, ProfileProduction, TargetCalorie, Login};
+    MenuSelection, ProfileProduction, TargetCalorie, Login, Signup};

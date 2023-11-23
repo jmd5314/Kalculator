@@ -6,7 +6,7 @@ import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Alert } from 'react-native';
 
 
-function Signup({ navigation }) {
+const Signup = ({ navigation }) => {
   const [user, setUser] = useState({
     id: "",
     password: "",
