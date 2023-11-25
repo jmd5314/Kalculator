@@ -8,6 +8,8 @@ import UserDelete from './ProfileStack_screens/UserDelete';
 import MenuSelection from './ProfileProductionStack_screens/MenuSelection';
 import ProfileProduction from './ProfileProductionStack_screens/ProfileProduction';
 import TargetCalorie from './ProfileProductionStack_screens/TargetCalorie';
+import ProfileRevise from './ProfileProductionStack_screens/ProfileRevise';
+
 
 import Login from './AuthStack_screens/Login';
 import Signup from './AuthStack_screens/Signup';

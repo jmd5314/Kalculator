@@ -15,7 +15,7 @@ const Profile = ({ navigation }) => {
     },[]);
 */
 
-    const _hadnleLogoutButtonPress = async () => {
+    const _handleLogoutButtonPress = async () => {
         try {
             await logout();
         } catch (e) {
@@ -60,8 +60,12 @@ const Profile = ({ navigation }) => {
             <View style={styles.btnArea}>
                 <Button title="회원탈퇴" onPress={() => navigation.navigate('UserDelete')} />
                 <View style={{width: 120}}/>
-                <Button title="로그아웃" onPress={_hadnleLogoutButtonPress} />
+                <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
+                 <View style={{width: 120}}/>
+               <Button title="프로필 수정" onPress={() => navigation.navigate('ProfileRevise')} />
             </View>
+
+
         </SafeAreaView>
     );
 };
