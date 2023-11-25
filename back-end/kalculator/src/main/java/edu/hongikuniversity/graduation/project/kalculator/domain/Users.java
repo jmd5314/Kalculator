@@ -1,16 +1,17 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
-
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDate;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Getter
+@NoArgsConstructor
 public class Users {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
     @OneToOne(mappedBy = "users",fetch = FetchType.LAZY)
     private Profiles profiles;
     @OneToMany(mappedBy = "users")
@@ -27,13 +28,16 @@ public class Users {
     private List<BattleGroups> battleGroups = new ArrayList<>();
     @OneToMany(mappedBy = "users")
     private List<UserBattleParticipant>userBattleParticipants = new ArrayList<>();
-    private String username;
+    private String userId;
+    private String name;
     private String password;
-    private LocalDate dateOfBirth;
+    private String email;
+
     @Builder
-    public Users(String username,String password,LocalDate dateOfBirth){
-        this.username = username;
+    public Users(String userId,String name,String password,String email){
+        this.userId = userId;
+        this.name = name;
         this.password = password;
-        this.dateOfBirth = dateOfBirth;
+        this.email  = email;
     }
 }

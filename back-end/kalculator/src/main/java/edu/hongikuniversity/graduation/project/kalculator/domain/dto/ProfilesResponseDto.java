@@ -1,4 +1,4 @@
-package edu.hongikuniversity.graduation.project.kalculator.dto;
+package edu.hongikuniversity.graduation.project.kalculator.domain.dto;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
 
