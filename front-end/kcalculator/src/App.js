@@ -9,9 +9,17 @@ import { ProgressProvider, UserProvider } from './contexts';
 
 const App = () => {
     return (
+/*        <NavigationContainer>
+            <StackNavigation />
+        </NavigationContainer>
+*/
         <ThemeProvider theme={theme}>
-            <StatusBar barStyle="dark-content" />
-            <Navigation />
+            <UserProvider>
+                <ProgressProvider>
+                    <StatusBar barStyle="dark-content" />
+                    <Navigation />
+                </ProgressProvider>
+            </UserProvider>
         </ThemeProvider>
     );
 };

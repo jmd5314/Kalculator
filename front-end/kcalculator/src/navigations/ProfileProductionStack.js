@@ -30,8 +30,6 @@ const ProfileProductionStack = () => {
       component={MenuSelection}
       />
 
-      <Stack.Screen name="ProfileRevise" component={ProfileRevise} />
-
       <Stack.Screen name="TargetCalorie" component={TargetCalorie} />
     </Stack.Navigator>
   );

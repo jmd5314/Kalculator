@@ -38,7 +38,7 @@ function Calculate() {
         <View style={{ alignSelf: 'flex-end', marginRight: 80,marginTop: 50 }}>
               <Button
                 title="프로필 생성 완료"
-              />
+                onPress={() => navigation.navigate('Profile')} />
             </View>
 
 

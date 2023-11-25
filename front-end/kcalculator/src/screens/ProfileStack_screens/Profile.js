@@ -1,19 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//import axios from 'axios'
 import { UserContext } from '../../contexts';
 
 const Profile = ({ navigation }) => {
     const [profiles, setProfiles] = useState('');
     const { dispatch } = useContext(UserContext);
-
-/*    useEffect(() => {
-        axios.get()
-            .then(response => setUsers())
-            .catch(error => console.error(error));
-    },[]);
-*/
 
     const _handleLogoutButtonPress = async () => {
         try {
@@ -32,7 +24,7 @@ const Profile = ({ navigation }) => {
 
             </View>
             <View style={styles.profile}>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileProduction")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")}>
                     <Text style={{fontSize: 20}}>나의목표</Text>
                 </TouchableOpacity>
             </View>
@@ -61,8 +53,6 @@ const Profile = ({ navigation }) => {
                 <Button title="회원탈퇴" onPress={() => navigation.navigate('UserDelete')} />
                 <View style={{width: 120}}/>
                 <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
-                 <View style={{width: 120}}/>
-               <Button title="프로필 수정" onPress={() => navigation.navigate('ProfileRevise')} />
             </View>
 
 

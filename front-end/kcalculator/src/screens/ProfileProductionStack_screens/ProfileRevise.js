@@ -100,7 +100,7 @@ const ProfileRevise = ({ navigation }) => {
 
   return (
     <Container>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 10, marginTop: 100 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
 
         <Text style={{ fontSize: 24 }}>프로필 수정</Text>
 

@@ -2,8 +2,8 @@ import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Input, Button } from '../../components';
 import { Text } from 'react-native';
-//import { Alert } from 'react-native'; //로그인 버튼 클릭 시 알림 창이 뜨게 하는 Alert
-//import { ProgressContext, UserContext } from '../../contexts';
+import { Alert } from 'react-native'; //로그인 버튼 클릭 시 알림 창이 뜨게 하는 Alert
+import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
@@ -18,13 +18,25 @@ const Container = styled.View`
 
 
 const Login = ({ navigation }) => {
-    
+    const { spinner } = useContext(ProgressContext);
+    const { dispatch } = useContext(UserContext);
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const passwordRef = useRef();   //이메일 컴포넌트에서 비밀번호 컴포넌트로 포커스 이동
 
     //로그인 기능 
-    const _handleLoginButtonPress = async () => {};
+    const _handleLoginButtonPress = async () => {
+        try {
+            spinner.start();
+            const user = await login({ id, password });
+            dispatch(user); //로그인 성공 시 user의 상태가 인증된 사용자 정보로 변경되도록 함
+            Alert.alert('Login Success', user.id);
+        } catch(e) {
+            Alert.alert('Login Error', e.message);
+        } finally {
+            spinner.stop();
+        }
+    };
 
     return (
         <KeyboardAwareScrollView 

@@ -16,4 +16,4 @@ import Signup from './AuthStack_screens/Signup';
 
 
 export {Profile, ProfileEdit, PostList, GroupList, UserDelete, 
-    MenuSelection, ProfileProduction, TargetCalorie, Login, Signup};
+    MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, Login, Signup};
