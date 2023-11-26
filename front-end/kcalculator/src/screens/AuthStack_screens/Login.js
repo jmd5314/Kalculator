@@ -1,53 +1,72 @@
 import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Input, Button } from '../../components';
-import { Text } from 'react-native';
-import { Alert } from 'react-native'; //로그인 버튼 클릭 시 알림 창이 뜨게 하는 Alert
+import { Text, Alert } from 'react-native';
 import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const Container = styled.View`
-    flex: 1;
-    justify-content: center;
-    background-color: ${({ theme }) => theme.background};
-    align-items: center;
-    padding: 0px 20px;
+  flex: 1;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.background};
+  align-items: center;
+  padding: 0px 20px;
 `;
-
 
 const Login = ({ navigation }) => {
     const { spinner } = useContext(ProgressContext);
     const { dispatch } = useContext(UserContext);
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-    const passwordRef = useRef();   //이메일 컴포넌트에서 비밀번호 컴포넌트로 포커스 이동
+    const passwordRef = useRef();
 
-    //로그인 기능 
     const _handleLoginButtonPress = async () => {
         try {
             spinner.start();
-            const user = await login({ id, password });
-            dispatch(user); //로그인 성공 시 user의 상태가 인증된 사용자 정보로 변경되도록 함
-            Alert.alert('Login Success', user.id);
-        } catch(e) {
-            Alert.alert('Login Error', e.message);
+
+            const response = await axios.post('http://192.168.176.52:8080/api/users/login', {
+                userId: id,
+                password: password,
+            });
+
+            if (response.status === 200) {
+                const { token, id: userId } = response.data;
+                if(token){
+                // 토큰 저장
+                await AsyncStorage.setItem('token', token);
+
+                // 사용자 정보를 상태에 저장
+                dispatch({ type: 'SET_USER', payload: { id: userId, token } });
+                navigation.navigate('ProfileProduction');}
+                else{
+                    // 토큰이 유효하지 않은 경우에 대한 처리
+                    Alert.alert('로그인 오류', '유효하지 않은 토큰입니다.');
+                }
+            } else {
+                const errorData = response.data;
+                console.error(errorData);
+                Alert.alert('로그인 오류', errorData.message || '문제가 발생했습니다.');
+            }
+        } catch (e) {
+            console.error(e);
+            Alert.alert('로그인 오류', e.message);
         } finally {
             spinner.stop();
         }
     };
 
     return (
-        <KeyboardAwareScrollView 
-            contentContainerStyle={{flex: 1}}
+        <KeyboardAwareScrollView
+            contentContainerStyle={{ flex: 1 }}
             extraScrollHeight={20}>
             <Container>
                 <Text style={{ fontSize: 30 }}>Login</Text>
                 <Input
                     label="Id"
                     value={id}
-                    onChangeText={text => setId(text)}
+                    onChangeText={(text) => setId(text)}
                     onSubmitEditing={() => passwordRef.current.focus()}
                     placeholder="Id"
                     returnKeyType="next"
@@ -56,17 +75,17 @@ const Login = ({ navigation }) => {
                     ref={passwordRef}
                     label="Password"
                     value={password}
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     onSubmitEditing={_handleLoginButtonPress}
                     placeholder="Password"
                     returnKeyType="done"
-                    isPassword  //비밀번호 입력시 입력되는 값이 보이지 않도록 설정
+                    isPassword
                 />
-                <Button title="Login" onPress={ _handleLoginButtonPress } />
-                <Button title="Signup" onPress={() => navigation.navigate("Signup")} isFilled={false} />
+                <Button title="Login" onPress={_handleLoginButtonPress} />
+                <Button title="Signup" onPress={() => navigation.navigate('Signup')} isFilled={false} />
             </Container>
         </KeyboardAwareScrollView>
-    )
+    );
 };
 
 export default Login;
