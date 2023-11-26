@@ -4,7 +4,6 @@ import { Input, Button } from '../../components';
 import { Text, Alert } from 'react-native';
 import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const Container = styled.View`
@@ -32,18 +31,10 @@ const Login = ({ navigation }) => {
             });
 
             if (response.status === 200) {
-                const { token, id: userId } = response.data;
-                if(token){
-                // 토큰 저장
-                await AsyncStorage.setItem('token', token);
-
+                const { id: userId } = response.data;
                 // 사용자 정보를 상태에 저장
-                dispatch({ type: 'SET_USER', payload: { id: userId, token } });
-                navigation.navigate('ProfileProduction');}
-                else{
-                    // 토큰이 유효하지 않은 경우에 대한 처리
-                    Alert.alert('로그인 오류', '유효하지 않은 토큰입니다.');
-                }
+                dispatch({ type: 'SET_USER', payload: { id: userId } });
+                navigation.navigate('ProfileProduction');
             } else {
                 const errorData = response.data;
                 console.error(errorData);
