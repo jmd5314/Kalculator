@@ -4,6 +4,7 @@ import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Alert } from 'react-native';
+import axios from 'axios';
 
 
 const Signup = ({ navigation }) => {
@@ -15,59 +16,43 @@ const Signup = ({ navigation }) => {
     email: "",
   });
 
-  const handleChangeId = (value) => {
-    setUser((prevUser) => ({ ...prevUser, id: value }));
-  };
-
-  const handleChangeName = (value) => {
-    setUser((prevUser) => ({ ...prevUser, name: value }));
-  };
-
-  const handleChangeEmail = (value) => {
-    setUser((prevUser) => ({ ...prevUser, email: value }));
-  };
-
-  const handleChangePassword = (value) => {
-    setUser((prevUser) => ({ ...prevUser, password: value }));
-  };
-
-  const handleChangeConfirmPassword = (value) => {
-    setUser((prevUser) => ({ ...prevUser, confirmPassword: value }));
-  };
-//
-//  const handleSubmit = () => {
-//    console.log("Form submitted:", user);
-//    navigation.navigate('Home');
-//    // 여기에서 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
-//    // 회원가입이 완료된 후, 다음 화면으로 이동하는 코드를 추가하세navigation.navigate('Home')}>
-//  };
-const handleSubmit = () => {
-  // 여기에서 회원가입 처리 로직을 수행
-
-  // 가상의 회원가입 처리가 성공했다고 가정
-  const registrationSuccessful = true;
-
-  if (registrationSuccessful) {
-    // 회원가입이 완료되었음을 알리는 Alert 창 표시
-    Alert.alert(
-      '회원가입 완료',
-      '회원가입이 성공적으로 완료되었습니다.',
-      [
-        {
-          text: '확인',
-          onPress: () => {
-            // 회원가입이 완료된 후, 다음 화면으로 이동하는 코드
-            navigation.navigate('Login');
-          },
-        },
-      ]
-    );
-  } else {
-    // 회원가입 실패 시에 대한 처리
-    // 회원가입 실패에 대한 조건을 작성하면 된다.
-    Alert.alert('회원가입 실패', '회원가입에 실패했습니다. 다시 시도해주세요.');
-  }
-};
+    const handleChangeId = (value) => setUser((prevUser) => ({ ...prevUser, id: value }));
+    const handleChangeName = (value) => setUser((prevUser) => ({ ...prevUser, name: value }));
+    const handleChangeEmail = (value) => setUser((prevUser) => ({ ...prevUser, email: value }));
+    const handleChangePassword = (value) => setUser((prevUser) => ({ ...prevUser, password: value }));
+    const handleChangeConfirmPassword = (value) =>
+        setUser((prevUser) => ({ ...prevUser, confirmPassword: value }));
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post('http://192.168.176.52:8080/api/users/join', {
+                userId: user.id,
+                password: user.password,
+                name: user.name,
+                email: user.email,
+            });
+            // 백엔드가 성공 메시지를 반환하면
+            if (response.data === '회원가입이 성공 했습니다.') {
+                Alert.alert(
+                    '회원가입 완료',
+                    '회원가입이 성공적으로 완료되었습니다.',
+                    [
+                        {
+                            text: '확인',
+                            onPress: () => {
+                                navigation.navigate('Login');
+                            },
+                        },
+                    ]
+                );
+            } else {
+                // 다른 응답 시나리오에 대한 처리
+                Alert.alert('회원가입 실패', '회원가입에 실패했습니다. 다시 시도해주세요.');
+            }
+        } catch (error) {
+            console.error('회원가입 중 오류 발생:', error.message);
+            Alert.alert('오류', '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    };
 
   return (
   <View>
