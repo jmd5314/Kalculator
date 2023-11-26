@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UsersService usersService;
+    @Value("${jwt.token.secret}")
+    private String secretKey;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -26,14 +29,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/api/users/join", "/api/users/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/posts/*").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/hello/api-auth-test").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/*").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
                         session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(new JwtFilter(usersService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .getOrBuild();
     }
 }

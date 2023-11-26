@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UsersJoinRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UsersLoginRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,12 @@ public class UsersController {
     private final UsersService usersService;
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody UsersJoinRequestDto requestDto){
-        usersService.join(requestDto.getId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
+        usersService.join(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
         return ResponseEntity.ok().body("회원가입이 성공 했습니다.");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UsersLoginRequestDto   requestDto){
+        String token = usersService.login(requestDto.getUserId(), requestDto.getPassword());
+        return ResponseEntity.ok().body(token);
     }
 }
