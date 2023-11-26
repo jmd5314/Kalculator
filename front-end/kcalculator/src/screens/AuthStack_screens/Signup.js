@@ -23,6 +23,10 @@ const Signup = ({ navigation }) => {
     const handleChangeConfirmPassword = (value) =>
         setUser((prevUser) => ({ ...prevUser, confirmPassword: value }));
     const handleSubmit = async () => {
+        if (user.password !== user.confirmPassword) {
+            Alert.alert('오류', '비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+            return;
+        }
         try {
             const response = await axios.post('http://192.168.176.52:8080/api/users/join', {
                 userId: user.id,
@@ -83,7 +87,7 @@ const Signup = ({ navigation }) => {
      </View>
 
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-           <Text style={{ fontSize: 20, marginRight: 10 }}>키사진</Text>
+           <Text style={{ fontSize: 20, marginRight: 10 }}>비밀번호 확인</Text>
            <TextInput
             style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
             placeholder="비밀번호재입력"
