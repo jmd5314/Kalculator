@@ -72,7 +72,7 @@ const Login = ({ navigation }) => {
                     returnKeyType="done"
                     isPassword
                 />
-                <Button title="Login" onPress={_handleLoginButtonPress} />
+                <Button title="Login" onPress={() => navigation.navigate('ProfileProduction')} />
                 <Button title="Signup" onPress={() => navigation.navigate('Signup')} isFilled={false} />
             </Container>
         </KeyboardAwareScrollView>
