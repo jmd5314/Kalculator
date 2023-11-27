@@ -29,8 +29,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/api/users/join", "/api/users/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/*").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                                .requestMatchers("/api/profiles/save").permitAll()
+                                //.requestMatchers(HttpMethod.POST,"/api/profiles/**").hasRole("USER")
+                               // .requestMatchers(HttpMethod.PUT,"/api/profiles/**").hasRole("USER")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

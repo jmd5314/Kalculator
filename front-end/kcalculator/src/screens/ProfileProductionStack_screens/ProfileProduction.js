@@ -90,7 +90,8 @@ const ProfileProduction = ({ navigation }) => {
             })
             .then(data => {
                 console.log('프로필이 성공적으로 전송되었습니다:', data);
-                navigation.navigate("MenuSelection");
+                const profileId = data;
+                navigation.navigate("MenuSelection",{profileId});
             })
             .catch(error => {
                 console.error('프로필 전송 중 오류 발생:', error);

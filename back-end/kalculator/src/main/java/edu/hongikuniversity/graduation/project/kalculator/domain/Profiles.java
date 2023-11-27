@@ -61,8 +61,9 @@ public class Profiles {
             return (recommendedCalories*0.5)/4;
         else if(dietMode == DietMode.FITNESS)
             return (recommendedCalories*0.4)/4;
-        else
+        else if(dietMode == DietMode.KETOGENIC)
             return (recommendedCalories*0.08)/4;
+        return 0.0;
     }
 
     private double calculateRecommendedProteins(DietMode dietMode) {
@@ -70,8 +71,9 @@ public class Profiles {
             return (recommendedCalories*0.3)/4;
         else if(dietMode == DietMode.FITNESS)
             return (recommendedCalories*0.4)/4;
-        else
+        else if(dietMode == DietMode.KETOGENIC)
             return (recommendedCalories*0.22)/4;
+        return 0.0;
     }
 
     private double calculateRecommendedFats(DietMode dietMode) {
@@ -79,8 +81,9 @@ public class Profiles {
             return (recommendedCalories*0.2)/9;
         else if(dietMode == DietMode.FITNESS)
             return (recommendedCalories*0.2)/9;
-        else
+        else if (dietMode == DietMode.KETOGENIC)
             return (recommendedCalories*0.7)/9;
+        return 0.0;
     }
     @Builder
     public Profiles (String nickname,double targetWeight,int age,Gender gender,double height,
