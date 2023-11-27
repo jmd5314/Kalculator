@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.engine.transaction.jta.platform.internal.AtomikosJtaPlatform;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,17 @@ public class ProfilesController {
         profilesService.save(profiles);
         return profiles.getProfileId();
     }
-    @GetMapping("/targetCalrories")
-    public Long calculateCalrories(){
-        
-    }
+    @GetMapping("/getRecommendedCalories/{profileId}")
+    public ResponseEntity<Double> getRecommendedCalories(@PathVariable Long profileId) {
+        try {
+            Profiles profiles = profilesService.findById(profileId);
+
+            double recommendedCalories = profiles.getRecommendedCalories();
+
+            return ResponseEntity.ok(recommendedCalories);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+}
 }
 

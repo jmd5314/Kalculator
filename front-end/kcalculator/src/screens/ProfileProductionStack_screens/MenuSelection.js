@@ -49,7 +49,7 @@ const MenuSelection = ({ navigation, route }) => {
             })
             .then(data => {
                 console.log('프로필이 성공적으로 업데이트되었습니다:', data);
-                navigation.navigate('TargetCalorie', { mode: dietMode });
+                navigation.navigate('TargetCalorie', { profileId: data.profileId });
             })
             .catch(error => {
                 console.error('프로필 업데이트 중 오류 발생:', error);
