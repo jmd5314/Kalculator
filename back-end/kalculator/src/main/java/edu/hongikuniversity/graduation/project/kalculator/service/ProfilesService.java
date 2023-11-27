@@ -24,6 +24,7 @@ public class ProfilesService {
     public Long save(ProfilesSaveRequestDto requestDto){
         return profilesRepository.save(requestDto.toEntity()).getProfileId();
     }
+    @Transactional
     public Long save(Profiles profiles){
         return profilesRepository.save(profiles).getProfileId();
     }

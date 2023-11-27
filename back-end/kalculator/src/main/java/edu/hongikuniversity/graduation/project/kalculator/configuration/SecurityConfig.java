@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/api/users/join", "/api/users/login").permitAll()
-                                .requestMatchers("/api/profiles/save").permitAll()
+                                .requestMatchers("/api/profiles/**").permitAll()
                                 //.requestMatchers(HttpMethod.POST,"/api/profiles/**").hasRole("USER")
                                // .requestMatchers(HttpMethod.PUT,"/api/profiles/**").hasRole("USER")
                                 .anyRequest().authenticated()
