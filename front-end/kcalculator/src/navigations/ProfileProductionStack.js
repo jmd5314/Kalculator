@@ -4,7 +4,8 @@
  //navigator컴포넌트 안에 screen 컴포넌트를 자식 컴포넌트로 작성한다.
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import {MenuSelection, ProfileProduction, TargetCalorie} from '../screens';
+import {MenuSelection, ProfileProduction, TargetCalorie, 
+  Profile, GroupList, PostList, UserDelete} from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,10 @@ const ProfileProductionStack = () => {
       />
 
       <Stack.Screen name="TargetCalorie" component={TargetCalorie} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="PostList" component={PostList} />
+      <Stack.Screen name="GroupList" component={GroupList} />
+      <Stack.Screen name="UserDelete" component={UserDelete} />
     </Stack.Navigator>
   );
 };
