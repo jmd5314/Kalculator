@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
         try {
             spinner.start();
 
-            const response = await axios.post('http://192.168.176.52:8080/api/users/login', {
+            const response = await axios.post('http://192.168.176.180:8080/api/users/login', {
                 userId: id,
                 password: password,
             });
@@ -72,7 +72,7 @@ const Login = ({ navigation }) => {
                     returnKeyType="done"
                     isPassword
                 />
-                <Button title="Login" onPress={() => navigation.navigate('ProfileProduction')} />
+                <Button title="Login" onPress={_handleLoginButtonPress}/>
                 <Button title="Signup" onPress={() => navigation.navigate('Signup')} isFilled={false} />
             </Container>
         </KeyboardAwareScrollView>

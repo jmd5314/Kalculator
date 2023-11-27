@@ -74,7 +74,7 @@ const ProfileProduction = ({ navigation }) => {
         };
 
         // 서버에 네트워크 요청을 보냅니다
-        fetch('http://192.168.0.2:8080/api/profiles/save', {
+        fetch('http://192.168.176.180:8080/api/profiles/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ const MenuSelection = ({ navigation, route }) => {
         };
 
         // 서버에 프로필 데이터 전송
-        fetch('http://192.168.0.2:8080/api/profiles/saveDietMode', {
+        fetch('http://192.168.176.180:8080/api/profiles/saveDietMode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

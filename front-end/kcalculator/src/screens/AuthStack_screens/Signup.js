@@ -28,7 +28,7 @@ const Signup = ({ navigation }) => {
             return;
         }
         try {
-            const response = await axios.post('http://192.168.176.52:8080/api/users/join', {
+            const response = await axios.post('http://192.168.176.180:8080/api/users/join', {
                 userId: user.id,
                 password: user.password,
                 name: user.name,
