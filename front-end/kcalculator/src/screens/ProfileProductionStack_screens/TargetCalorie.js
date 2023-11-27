@@ -14,7 +14,7 @@ const Container = styled.View`
 `;
 
 
-function Calculate() {
+function Calculate({navigation}) {
   const [daily, setDaily] = useState(0);
   const [goal, setGoal] = useState(0);
 
