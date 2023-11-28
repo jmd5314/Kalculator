@@ -6,7 +6,6 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import {MenuSelection, ProfileProduction, TargetCalorie, 
   Profile, GroupList, PostList, UserDelete} from '../screens';
-
 const Stack = createStackNavigator();
 
 const ProfileProductionStack = () => {
