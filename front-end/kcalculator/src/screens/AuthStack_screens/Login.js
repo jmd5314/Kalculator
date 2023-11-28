@@ -5,6 +5,8 @@ import { Text, Alert } from 'react-native';
 import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
+import config from "../config";
+const backendUrl  = config.backendUrl;
 
 const Container = styled.View`
   flex: 1;
@@ -24,8 +26,7 @@ const Login = ({ navigation }) => {
     const _handleLoginButtonPress = async () => {
         try {
             spinner.start();
-
-            const response = await axios.post('http://192.168.176.180:8080/api/users/login', {
+            const response = await axios.post(`${backendUrl}/api/users/login`, {
                 userId: id,
                 password: password,
             });

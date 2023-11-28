@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { View, Text, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 //import profile3 from '../Images/calculator.png';
-
+import config from "../config";
+const backendUrl = config.backendUrl;
 const Container = styled.View`
   flex: 1;
   justify-content: flex-start;

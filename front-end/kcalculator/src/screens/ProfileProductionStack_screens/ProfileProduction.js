@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
+import config from "../config";
 
+const backendUrl = config.backendUrl;
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
   align-items: flex-start;
@@ -74,7 +76,7 @@ const ProfileProduction = ({ navigation }) => {
         };
 
         // 서버에 네트워크 요청을 보냅니다
-        fetch('http://192.168.176.180:8080/api/profiles/save', {
+        fetch(`${backendUrl}/api/profiles/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +97,6 @@ const ProfileProduction = ({ navigation }) => {
             })
             .catch(error => {
                 console.error('프로필 전송 중 오류 발생:', error);
-                // 오류를 처리하세요. 예를 들어 사용자에게 오류 메시지를 표시할 수 있습니다
             });
     };
 

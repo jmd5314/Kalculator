@@ -5,7 +5,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Alert } from 'react-native';
 import axios from 'axios';
-
+import config from "../config";
+const backendUrl = config.backendUrl;
 
 const Signup = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -28,7 +29,7 @@ const Signup = ({ navigation }) => {
             return;
         }
         try {
-            const response = await axios.post('http://192.168.176.180:8080/api/users/join', {
+            const response = await axios.post(`${backendUrl}/api/users/join`, {
                 userId: user.id,
                 password: user.password,
                 name: user.name,

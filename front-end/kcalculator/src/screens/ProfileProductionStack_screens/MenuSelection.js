@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
-
+import config from "../config";
+const backendUrl = config.backendUrl;
 const Container = styled.View`
   align-items: center;
   justify-content: center;
@@ -34,7 +35,7 @@ const MenuSelection = ({ navigation, route }) => {
         };
 
         // 서버에 프로필 데이터 전송
-        fetch('http://192.168.176.180:8080/api/profiles/saveDietMode', {
+        fetch(`${backendUrl}/api/profiles/saveDietMode`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

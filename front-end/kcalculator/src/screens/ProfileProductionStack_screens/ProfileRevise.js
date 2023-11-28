@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-
+import config from "../config";
+const backendUrl = config.backendUrl;
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
   align-items: flex-start;
@@ -74,7 +75,7 @@ const ProfileRevise = ({ navigation }) => {
         };
 
         // 서버에 네트워크 요청을 보냅니다
-        fetch('http://192.168.0.2:8080/api/profiles/save', {
+        fetch(`${backendUrl}/api/profiles/save`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
