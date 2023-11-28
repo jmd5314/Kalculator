@@ -19,7 +19,7 @@ public class ProfilesController {
     private final ProfilesService profilesService;
     @PostMapping("/save")
     public Long save(@RequestBody ProfilesSaveRequestDto requestDto){
-        return profilesService.save(requestDto);
+        return profilesService.save(requestDto.toEntity());
     }
     @PostMapping("/saveDietMode")
     public Long saveDietMode(@RequestBody DietModeRequestDto requestDto) {

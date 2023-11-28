@@ -19,11 +19,7 @@ import java.util.Optional;
 public class ProfilesService {
     private final ProfilesRepository profilesRepository;
 
-    // 프로필 생성
-    @Transactional
-    public Long save(ProfilesSaveRequestDto requestDto){
-        return profilesRepository.save(requestDto.toEntity()).getProfileId();
-    }
+ //프로필 생성
     @Transactional
     public Long save(Profiles profiles){
         return profilesRepository.save(profiles).getProfileId();
