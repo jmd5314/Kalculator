@@ -1,11 +1,26 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../../contexts';
+import axios from 'axios';
 
 const Profile = ({ navigation }) => {
-    const [profiles, setProfiles] = useState('');
+    const [ nickname, setNickname ] = useState('');
     const { dispatch } = useContext(UserContext);
+
+    useEffect(() => {
+        const fetchNicknameFromBackend = async () => {
+          try {
+            const response = await axios.get();
+            
+            setNickname(response.data.nickname);
+          } catch (error) {
+            console.error('Error fetching nickname:', error);
+          }
+        };
+    
+        fetchNicknameFromBackend();
+    }, []);
 
     const _handleLogoutButtonPress = async () => {
         try {
@@ -20,7 +35,7 @@ const Profile = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
-                <Text style={{fontSize: 20, marginHorizontal: 20}}>닉네임 : </Text>
+                <Text style={{fontSize: 20}}>닉네임 :{nickname}</Text>
 
             </View>
             <View style={styles.profile}>

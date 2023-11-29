@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeStack from './HoemStack';
+import HomeStack from './HomeStack';
 import MenuStack from './MenuStack';
 import PostStack from './PostStack';
 import RunningStack from './RunningStack';
@@ -20,11 +20,11 @@ const MainTab = () => {
             screenOptions={({ route }) => ({
                 tabBarIcon: props => {
                     let name = ''
-                    if(route.name === 'Home') name="main";
-                    else if (route.name === 'MenuStack') name="menu";
-                    else if (route.name === 'PostStack') name="post";
-                    else if (route.name === 'RunningStack') name="running";
-                    else name = 'battle';
+                    if(route.name === 'HomeStack') name="home";
+                    else if (route.name === 'MenuStack') name="menu-book";
+                    else if (route.name === 'PostStack') name="article";
+                    else if (route.name === 'RunningStack') name="directions-run";
+                    else name = 'groups';
                     return TabIcon({...props, name });
                 },
                 headerShown: false
@@ -35,20 +35,20 @@ const MainTab = () => {
                 options={{ tabBarLabel: 'Home' }}/>
             <Tab.Screen 
                 name="MenuStack" 
-                component={SearchStack} 
+                component={MenuStack} 
                 options={{ tabBarLabel: 'Menu' }}/>
             <Tab.Screen 
                 name="PostStack" 
-                component={FriendStack} 
+                component={PostStack} 
                 options={{ tabBarLabel: 'Post' }}/>
             <Tab.Screen 
                 name="RunningStack" 
-                component={MypageStack} 
-                options={{ tabBarLabel: 'running' }}/>
+                component={RunningStack} 
+                options={{ tabBarLabel: 'Running' }}/>
             <Tab.Screen 
                 name="BattleStack" 
-                component={MypageStack} 
-                options={{ tabBarLabel: 'battle' }}/>
+                component={BattleStack} 
+                options={{ tabBarLabel: 'Battle' }}/>
         </Tab.Navigator>
     );
 };
