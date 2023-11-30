@@ -10,8 +10,9 @@ import {
     PostList,
     GroupList,
     UserDelete,
-    ProfileRevise
+    ProfileRevise, Home
 } from '../screens';
+import MainTab from "./MainTab";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,8 @@ const AuthStack = () => {
             <Stack.Screen name="GroupList" component={GroupList} />
             <Stack.Screen name="UserDelete" component={UserDelete} />
             <Stack.Screen name="ProfileRevise" component={ProfileRevise} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
 };

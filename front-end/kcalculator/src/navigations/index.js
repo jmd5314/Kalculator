@@ -5,6 +5,7 @@ import { Spinner } from '../components';
 import { ProgressContext, UserContext } from '../contexts';
 import MainStack from './MainStack';
 import { ProfileProductionStack } from './ProfileProductionStack';
+import AuthStack from "./AuthStack";
 
 const Navigation = () => {
     const { inProgress } = useContext(ProgressContext);
@@ -17,7 +18,7 @@ const Navigation = () => {
         </NavigationContainer>
 */
         <NavigationContainer>
-            <MainStack />
+            <AuthStack/>
             {inProgress && <Spinner />}
         </NavigationContainer>
      
