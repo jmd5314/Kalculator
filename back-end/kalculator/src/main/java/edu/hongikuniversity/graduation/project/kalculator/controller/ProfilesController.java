@@ -3,6 +3,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.DietMode;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Profiles;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.DietModeRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 
@@ -21,6 +22,8 @@ import java.util.Locale;
 public class ProfilesController {
     private final ProfilesService profilesService;
     private final UsersService usersService;
+
+    //프로필 생성
     @PostMapping("/save")
     public Long save(@RequestBody ProfilesSaveRequestDto requestDto, Authentication authentication){
         String userId = authentication.getName();
@@ -29,6 +32,7 @@ public class ProfilesController {
         profiles.setUsers(users);
         return profilesService.save(profiles);
     }
+    //다이어트 모드 선택
     @PostMapping("/save/{profileId}/selectMode")
     public Long saveDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
         DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
@@ -38,11 +42,26 @@ public class ProfilesController {
         profilesService.save(profiles);
         return profiles.getProfileId();
     }
+    //권장 칼로리
     @GetMapping("/save/{profileId}/targetCalories")
     public Double getRecommendedCalories(@PathVariable Long profileId) {
         Profiles profiles = profilesService.findById(profileId);
         Double recommendedCalories =  profiles.getRecommendedCalories();
         return recommendedCalories;
+    }
+    //프로필 확인
+    @GetMapping("/confirm/{profileId}")
+    public ProfilesResponseDto confirmProfiles(@PathVariable Long profileId) {
+        Profiles profiles = profilesService.findById(profileId);
+        ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
+        return responseDto;
+    }
+    //홈
+    @GetMapping("/home/{profileId}")
+    public ProfilesResponseDto Home(@PathVariable Long profileId) {
+        Profiles profiles = profilesService.findById(profileId);
+        ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
+        return responseDto;
     }
 }
 
