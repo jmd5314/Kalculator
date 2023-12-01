@@ -40,4 +40,8 @@ public class Users {
         this.password = password;
         this.email  = email;
     }
+
+    public void setProfiles(Profiles profiles) {
+        this.profiles = profiles;
+    }
 }

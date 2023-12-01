@@ -88,7 +88,7 @@ public class Profiles {
     @Builder
     public Profiles (String nickname,double targetWeight,int age,Gender gender,double height,
                      double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,
-                     DietMode dietMode,Users users
+                     DietMode dietMode
     ){
         this.nickname = nickname;
         this.targetWeight = targetWeight;
@@ -103,7 +103,6 @@ public class Profiles {
         this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
         this.recommendedProteins = calculateRecommendedProteins(dietMode);
         this.recommendedFats = calculateRecommendedFats(dietMode);
-        this.users = users;
     }
     //==프로필 수정 메서드==//
     public void updateProfiles(double targetWeight,int age,Gender gender,double height,
@@ -122,5 +121,9 @@ public class Profiles {
         this.recommendedProteins = calculateRecommendedProteins(dietMode);
         this.recommendedFats = calculateRecommendedFats(dietMode);
     }
-
+    //==연관 관계 편의 메서드==//
+    public void setUsers(Users users) {
+        this.users = users;
+        users.setProfiles(this);
+    }
 }

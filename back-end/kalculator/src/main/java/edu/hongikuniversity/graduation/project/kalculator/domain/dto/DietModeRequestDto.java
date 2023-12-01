@@ -4,6 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class DietModeRequestDto {
-   private Long profileId;
    private String dietMode;
 }

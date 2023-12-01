@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class ProfilesSaveRequestDto {
     private String nickname;
@@ -43,7 +42,6 @@ public class ProfilesSaveRequestDto {
                 .weight(weight)
                 .activityLevel(ActivityLevel.valueOf(activityLevel.toUpperCase()))
                 .purposeOfUse(PurposeOfUse.valueOf(purposeOfUse.toUpperCase()))
-                .users(users)
                 .build();
     }
 }

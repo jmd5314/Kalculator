@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const backendUrl = config.backendUrl;
 const Container = styled.View`
   align-items: center;
@@ -28,17 +29,19 @@ const styles = StyleSheet.create({
 const MenuSelection = ({ navigation, route }) => {
     const { profileId } = route.params;
 
-    const handleCardPress = (dietMode) => {
+    const handleCardPress = async (dietMode) => {
         const profileData = {
-            profileId: profileId,
             dietMode: dietMode,
         };
+        const token = await AsyncStorage.getItem('token');
 
         // 서버에 프로필 데이터 전송
-        fetch(`${backendUrl}/api/profiles/saveDietMode`, {
+        fetch(`${backendUrl}/api/profiles/save/${profileId}/selectMode`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+
             },
             body: JSON.stringify(profileData),
         })

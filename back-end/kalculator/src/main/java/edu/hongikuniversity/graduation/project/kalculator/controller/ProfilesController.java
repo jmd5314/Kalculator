@@ -25,19 +25,20 @@ public class ProfilesController {
     public Long save(@RequestBody ProfilesSaveRequestDto requestDto, Authentication authentication){
         String userId = authentication.getName();
         Users users = usersService.findByUserId(userId);
-        requestDto.setUsers(users);
-        return profilesService.save(requestDto.toEntity());
+        Profiles profiles = requestDto.toEntity();
+        profiles.setUsers(users);
+        return profilesService.save(profiles);
     }
-    @PostMapping("/saveDietMode")
-    public Long saveDietMode(@RequestBody DietModeRequestDto requestDto) {
+    @PostMapping("/save/{profileId}/selectMode")
+    public Long saveDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
         DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
-        Profiles profiles = profilesService.findById(requestDto.getProfileId());
+        Profiles profiles = profilesService.findById(profileId);
         profiles.updateProfiles(profiles.getTargetWeight(),profiles.getAge(),profiles.getGender(),profiles.getHeight()
         ,profiles.getWeight(),profiles.getActivityLevel(),profiles.getPurposeOfUse(),dietMode);
         profilesService.save(profiles);
         return profiles.getProfileId();
     }
-    @GetMapping("/getRecommendedCalories/{profileId}")
+    @GetMapping("/save/{profileId}/targetCalories")
     public ResponseEntity<Double> getRecommendedCalories(@PathVariable Long profileId) {
         try {
             Profiles profiles = profilesService.findById(profileId);
