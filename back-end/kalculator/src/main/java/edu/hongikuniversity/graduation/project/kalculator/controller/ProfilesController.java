@@ -1,13 +1,16 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.DietMode;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Profiles;
+import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.DietModeRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 
+import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
@@ -17,8 +20,12 @@ import java.util.Locale;
 @RequestMapping("/api/profiles")
 public class ProfilesController {
     private final ProfilesService profilesService;
+    private final UsersService usersService;
     @PostMapping("/save")
-    public Long save(@RequestBody ProfilesSaveRequestDto requestDto){
+    public Long save(@RequestBody ProfilesSaveRequestDto requestDto, Authentication authentication){
+        String userId = authentication.getName();
+        Users users = usersService.findByUserId(userId);
+        requestDto.setUsers(users);
         return profilesService.save(requestDto.toEntity());
     }
     @PostMapping("/saveDietMode")

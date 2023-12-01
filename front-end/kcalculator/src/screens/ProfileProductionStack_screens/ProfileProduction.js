@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 const Container = styled.SafeAreaView`
@@ -10,7 +11,7 @@ const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-const ProfileProduction = ({ navigation }) => {
+const ProfileProduction =({ navigation }) => {
     const [selectedGender, setSelectedGender] = useState('');
     const [nickname, setNickname] = useState('');
     const [age, setAge] = useState('');
@@ -63,7 +64,12 @@ const ProfileProduction = ({ navigation }) => {
                 return '';
         }
     };
-    const sendProfileToServer = () => {
+    const sendProfileToServer = async () => {
+        const token = await AsyncStorage.getItem('token');
+        if (!token) {
+            console.error('Token not found');
+            return;
+        }
         const profileData = {
             nickname,
             age,
@@ -80,6 +86,7 @@ const ProfileProduction = ({ navigation }) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(profileData),
         })

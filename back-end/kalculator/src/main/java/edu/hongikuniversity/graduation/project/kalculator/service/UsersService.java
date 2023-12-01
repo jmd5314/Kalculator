@@ -52,4 +52,8 @@ public class UsersService {
         //Exception 없으면 token 발행
         return JwtTokenUtil.createToken(userId,secretKey,expireTimeMs);
     }
+    public Users findByUserId(String userId){
+        return usersRepository.findByUserId(userId).
+                orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,userId+"이 없습니다."));
+    }
 }

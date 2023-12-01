@@ -6,6 +6,7 @@ import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const backendUrl  = config.backendUrl;
 
 const Container = styled.View`
@@ -30,13 +31,16 @@ const Login = ({ navigation }) => {
                 userId: id,
                 password: password,
             });
+            console.log('Server Response:', response.data); // 응답 데이터를 콘솔에 출력
 
             if (response.status === 200) {
-                const { id: userId } = response.data;
-                // 사용자 정보를 상태에 저장
-                dispatch({ type: 'SET_USER', payload: { id: userId } });
-                navigation.navigate('ProfileProduction');
-            } else {
+                const token  = response.data;
+                console.log('Token after destructuring:', token);
+                await AsyncStorage.setItem('token', token);
+                dispatch({ type: 'SET_TOKEN', payload: { token } });
+                    navigation.navigate('ProfileProduction');
+                }
+            else {
                 const errorData = response.data;
                 console.error(errorData);
                 Alert.alert('로그인 오류', errorData.message || '문제가 발생했습니다.');

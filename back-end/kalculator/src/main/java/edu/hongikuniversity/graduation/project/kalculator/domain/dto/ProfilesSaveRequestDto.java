@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class ProfilesSaveRequestDto {
     private String nickname;
@@ -17,9 +19,10 @@ public class ProfilesSaveRequestDto {
     private double weight;
     private String activityLevel;
     private String purposeOfUse;
+    private Users users;
     @Builder
     public ProfilesSaveRequestDto(String nickname,double targetWeight,int age,String gender,double height,double weight
-    ,String activityLevel,String purposeOfUse){
+    ,String activityLevel,String purposeOfUse,Users users){
         this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
@@ -28,6 +31,7 @@ public class ProfilesSaveRequestDto {
         this.weight = weight;
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
+        this.users = users;
     }
     public Profiles toEntity(){
         return Profiles.builder()
@@ -39,6 +43,7 @@ public class ProfilesSaveRequestDto {
                 .weight(weight)
                 .activityLevel(ActivityLevel.valueOf(activityLevel.toUpperCase()))
                 .purposeOfUse(PurposeOfUse.valueOf(purposeOfUse.toUpperCase()))
+                .users(users)
                 .build();
     }
 }

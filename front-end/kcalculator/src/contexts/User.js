@@ -1,14 +1,14 @@
 import React, { useState, createContext } from 'react';
 
 const UserContext = createContext({
-    user: { id: null, uid: null},
+    user: { token:null},
     dispatch: () => {},
 });
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({});
-    const dispatch = ({ id, uid }) => {
-        setUser({ id, uid });
+    const dispatch = ({ token }) => {
+        setUser({ token });
     };
     const value = { user, dispatch };
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
