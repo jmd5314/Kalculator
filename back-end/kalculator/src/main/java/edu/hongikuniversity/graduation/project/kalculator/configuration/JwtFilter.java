@@ -1,5 +1,4 @@
 package edu.hongikuniversity.graduation.project.kalculator.configuration;
-
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import edu.hongikuniversity.graduation.project.kalculator.utils.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
@@ -15,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import java.io.IOException;
 import java.util.List;
 @RequiredArgsConstructor
@@ -24,6 +24,13 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 요청 URI 추출
+        String requestUri = request.getRequestURI();
+        if (isAuthorizationExcluded(request,requestUri)) {
+            // 이러한 요청에 대한 로깅을 건너뛰기
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("authorization: {}",authorization);
         if(authorization==null||!authorization.startsWith("Bearer ")){
@@ -51,4 +58,10 @@ public class JwtFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request,response);
     }
+    private boolean isAuthorizationExcluded(HttpServletRequest request,String requestUri) {
+        return requestUri.contains("/join") ||
+                requestUri.contains("/login") ||
+                "GET".equalsIgnoreCase(request.getMethod());
+    }
+
 }

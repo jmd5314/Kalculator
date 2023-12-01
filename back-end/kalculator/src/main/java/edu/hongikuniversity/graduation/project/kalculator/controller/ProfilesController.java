@@ -51,6 +51,7 @@ public class ProfilesController {
     }
     //프로필 확인
     @GetMapping("/confirm/{profileId}")
+    @ResponseBody
     public ProfilesResponseDto confirmProfiles(@PathVariable Long profileId) {
         Profiles profiles = profilesService.findById(profileId);
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
@@ -58,6 +59,7 @@ public class ProfilesController {
     }
     //홈
     @GetMapping("/home/{profileId}")
+    @ResponseBody
     public ProfilesResponseDto Home(@PathVariable Long profileId) {
         Profiles profiles = profilesService.findById(profileId);
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);

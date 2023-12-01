@@ -1,7 +1,9 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.dto;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
+import lombok.Getter;
 
+@Getter
 public class ProfilesResponseDto {
     private Long profileId;
     private String nickname;
@@ -17,7 +19,6 @@ public class ProfilesResponseDto {
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;
-    private Users users;
     public ProfilesResponseDto(Profiles entity){
         this.profileId = entity.getProfileId();
         this.nickname = entity.getNickname();
@@ -33,6 +34,5 @@ public class ProfilesResponseDto {
         this.recommendedCarbohydrates = entity.getRecommendedCarbohydrates();
         this.recommendedProteins = entity.getRecommendedProteins();
         this.recommendedFats = entity.getRecommendedFats();
-        this.users = entity.getUsers();
     }
 }
