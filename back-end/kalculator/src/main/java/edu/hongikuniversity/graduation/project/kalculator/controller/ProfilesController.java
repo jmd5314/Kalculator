@@ -39,16 +39,10 @@ public class ProfilesController {
         return profiles.getProfileId();
     }
     @GetMapping("/save/{profileId}/targetCalories")
-    public ResponseEntity<Double> getRecommendedCalories(@PathVariable Long profileId) {
-        try {
-            Profiles profiles = profilesService.findById(profileId);
-
-            double recommendedCalories = profiles.getRecommendedCalories();
-
-            return ResponseEntity.ok(recommendedCalories);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-}
+    public Double getRecommendedCalories(@PathVariable Long profileId) {
+        Profiles profiles = profilesService.findById(profileId);
+        Double recommendedCalories =  profiles.getRecommendedCalories();
+        return recommendedCalories;
+    }
 }
 
