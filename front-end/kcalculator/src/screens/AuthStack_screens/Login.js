@@ -34,11 +34,15 @@ const Login = ({ navigation }) => {
             console.log('Server Response:', response.data); // 응답 데이터를 콘솔에 출력
 
             if (response.status === 200) {
-                const token  = response.data;
+                const { token, profileCreated } = response.data;
                 console.log('Token after destructuring:', token);
                 await AsyncStorage.setItem('token', token);
                 dispatch({ type: 'SET_TOKEN', payload: { token } });
+                if (profileCreated) {
+                    navigation.navigate('MainTab');
+                } else {
                     navigation.navigate('ProfileProduction');
+                }
                 }
             else {
                 const errorData = response.data;

@@ -1,5 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.LoginResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UsersJoinRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UsersLoginRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
@@ -21,8 +22,14 @@ public class UsersController {
         return ResponseEntity.ok().body("회원가입이 성공 했습니다.");
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UsersLoginRequestDto   requestDto){
+    public ResponseEntity<LoginResponseDto> login(@RequestBody UsersLoginRequestDto  requestDto){
         String token = usersService.login(requestDto.getUserId(), requestDto.getPassword());
-        return ResponseEntity.ok().body(token);
+        boolean profileCreated;
+        if(usersService.findByUserId(requestDto.getUserId()).getProfiles()!=null)
+            profileCreated = true;
+        else
+            profileCreated = false;
+        LoginResponseDto responseDto = new LoginResponseDto(token, profileCreated);
+        return ResponseEntity.ok().body(responseDto);
     }
 }
