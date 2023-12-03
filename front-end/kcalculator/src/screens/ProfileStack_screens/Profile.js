@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const Profile = ({ navigation }) => {
     const [ nickname, setNickname ] = useState('');
+    const [ presentweight, setPresentweight ] = useState('');
     const { dispatch } = useContext(UserContext);
 
     useEffect(() => {
@@ -22,6 +23,20 @@ const Profile = ({ navigation }) => {
         fetchNicknameFromBackend();
     }, []);
 
+    useEffect(() => {
+        const fetchPresentweightFromBackend = async () => {
+          try {
+            const response = await axios.get();
+            
+            setPresentweight(response.data.weight);
+          } catch (error) {
+            console.error('Error fetching weight:', error);
+          }
+        };
+    
+        fetchPresentweightFromBackend();
+    }, []);
+
     const _handleLogoutButtonPress = async () => {
         try {
             await logout();
@@ -35,42 +50,29 @@ const Profile = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
-                <Text style={{fontSize: 20}}>닉네임 :{nickname}</Text>
+                <Text style={{fontSize: 20}}>닉네임 : {nickname}</Text>
 
             </View>
             <View style={styles.profile}>
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")}>
-                    <Text style={{fontSize: 20}}>나의목표</Text>
+                    <Text style={{fontSize: 20}}>프로필 수정</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{height: 10}}/>
-            <View style={styles.area}>
-                <TouchableOpacity onPress={() => navigation.navigate("PostList")}>
-                    <Text style={{fontSize:20}}>내가 작성한 게시물</Text>
-                </TouchableOpacity>
-                <View style={styles.postArea}>
-                    <View style={styles.image}></View>
-                    <View style={styles.image}></View>
-                    <View style={styles.image}></View>
-                </View>
+            <View style={styles.profile}>
+                <Text style={{fontSize: 20}}>현재 체중 : {presentweight}</Text>
+                <View style={{width: 70}} />
+                <Text style={{fontSize: 20}}>목표 체중까지 : </Text>
             </View>
-            <View style={styles.area}>
-                <TouchableOpacity onPress={() => navigation.navigate("GroupList")}>
-                    <Text style={{fontSize:20}}>내가 가입한 그룹 리스트</Text>
-                </TouchableOpacity>
-                <View style={styles.postArea}>
-                    <View style={styles.image}></View>
-                    <View style={styles.image}></View>
-                    <View style={styles.image}></View>
-                </View>
-            </View>
+            <View style={{height: 20}} />
             <View style={styles.btnArea}>
-                <Button title="회원탈퇴" onPress={() => navigation.navigate('UserDelete')} />
-                <View style={{width: 120}}/>
-                <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("UserDelete")}>
+                    <Text style={{fontSize: 20}}>회원탈퇴</Text>
+                </TouchableOpacity>
+                <View style={{width: 100}}/>
+                <TouchableOpacity style={styles.btn} onPress={_handleLogoutButtonPress}>
+                    <Text style={{fontSize: 20}}>로그아웃</Text>
+                </TouchableOpacity>
             </View>
-
-
         </SafeAreaView>
     );
 };
@@ -91,12 +93,6 @@ const styles = StyleSheet.create({
         width: '95%',
         margin: 5,
     },
-    postArea: {
-        height: 130,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-    },
     image: {
             height: 85,
             width: 85,
@@ -112,7 +108,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#0066cc',
         height: 50,
-        width: 110,
+        width: 100,
         borderWidth: 4,
         borderRadius: 5,
         justifyContent: 'center',
