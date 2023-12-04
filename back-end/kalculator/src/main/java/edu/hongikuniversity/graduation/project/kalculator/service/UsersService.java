@@ -20,7 +20,7 @@ public class UsersService {
     @Value("${jwt.token.secret}")
     private String secretKey;
     private Long expireTimeMs = 1000*60*60l;
-    public String join (String userId,String password,String name,String email){
+    public void join (String userId,String password,String name,String email){
         //name 중복 check
         usersRepository.findByUserId(userId)
                 .ifPresent(users -> {
@@ -38,7 +38,6 @@ public class UsersService {
                 .name(name)
                 .email(email).build();
         usersRepository.save(user);
-        return "SUCCESS";
     }
 
     public String login(String userId,String password) {
@@ -47,7 +46,7 @@ public class UsersService {
                 .orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,userId+"이 없습니다"));
         //password 틀림
         if(!encoder.matches(password,users.getPassword())){
-            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드가 잘못 입력했습니다.");
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드가 잘못 입력됐습니다.");
         }
         //Exception 없으면 token 발행
         return JwtTokenUtil.createToken(userId,secretKey,expireTimeMs);
@@ -55,5 +54,15 @@ public class UsersService {
     public Users findByUserId(String userId){
         return usersRepository.findByUserId(userId).
                 orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,userId+"이 없습니다."));
+    }
+    public void delete(String userId,String password){
+        //userId 확인
+        Users users = usersRepository.findByUserId(userId)
+                .orElseThrow(()-> new AppException(ErrorCode.USERID_NOT_FOUND,userId+"이 없습니다"));
+        //password 확인
+        if(!encoder.matches(password,users.getPassword())){
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드가 잘못입력됐습니다.");
+        }
+        usersRepository.delete(users);
     }
 }
