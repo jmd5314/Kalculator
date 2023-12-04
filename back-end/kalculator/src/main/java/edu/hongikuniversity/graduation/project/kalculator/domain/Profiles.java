@@ -126,4 +126,8 @@ public class Profiles {
         this.users = users;
         users.setProfiles(this);
     }
+    // 체중 업데이트
+    public  void updateWeight(double weight){
+        this.weight = weight;
+    }
 }

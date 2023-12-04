@@ -8,6 +8,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSav
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,12 @@ public class ProfilesController {
         Profiles profiles = profilesService.findById(profileId);
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
         return responseDto;
+    }
+    @PutMapping("/home/{profileId}/updateWeight")
+    public Long updateWeight(@PathVariable Long profileId, @RequestBody double weight){
+        Profiles profiles = profilesService.findById(profileId);
+        profiles.updateWeight(weight);
+        return profiles.getProfileId();
     }
 }
 
