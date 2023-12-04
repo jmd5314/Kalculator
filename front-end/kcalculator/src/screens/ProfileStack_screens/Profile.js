@@ -3,7 +3,9 @@ import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../../contexts';
 import axios from 'axios';
+import config from "../config";
 
+const backendUrl = config.backendUrl;
 const Profile = ({ navigation }) => {
     const [ nickname, setNickname ] = useState('');
     const [ presentweight, setPresentweight ] = useState('');
@@ -12,7 +14,7 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         const fetchNicknameFromBackend = async () => {
           try {
-            const response = await axios.get();
+            const response = await axios.get(`${backendUrl}/api/profiles/confirm/{profileId}`);
             
             setNickname(response.data.nickname);
           } catch (error) {

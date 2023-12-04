@@ -4,7 +4,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { BarChart } from 'react-native-chart-kit';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
+import config from "../config";
 
+const backendUrl = config.backendUrl;
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June'],
   datasets: [
@@ -16,66 +18,45 @@ const data = {
 
 const Home = ({ navigation }) => {
 //  const [ presentweight, setPresentweight ] = useState('');
-  const [ calorie, setCalorie ] = useState('');
-  const [ carb, setCarb ] = useState('');
-  const [ protein, setProtein ] = useState('');
-  const [ fat, setFat ] = useState('');
+  const [ recommendedCalories, setRecommendedCalories ] = useState('');
+  const [ recommendedCarbohydrates, setRecommendedCarbohydrates ] = useState('');
+  const [ recommendedProteins, setRecommendedProteins ] = useState('');
+  const [ recommendedFats, setRecommendedFats ] = useState('');
 
   useEffect(() => {
-    const fetchCalorieFromBackend = async () => {
+    const fetchRecommendedFromBackend = async () => {
       try {
-        const response = await axios.get();
-        
-        setCalorie(response.data.calorie);
+        const caloriesResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
+        setRecommendedCalories(caloriesResponse.data.recommendedCalories);
       } catch (error) {
-        console.error('Error fetching calorie:', error);
+        console.error('Error fetching recommendedCalories:', error);
+      }
+  
+      try {
+        const carbohydratesResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
+        setRecommendedCarbohydrates(carbohydratesResponse.data.recommendedCarbohydrates);
+      } catch (error) {
+        console.error('Error fetching recommendedCarbohydrates:', error);
+      }
+  
+      try {
+        const proteinsResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
+        setRecommendedProteins(proteinsResponse.data.recommendedProteins);
+      } catch (error) {
+        console.error('Error fetching recommendedProteins:', error);
+      }
+  
+      try {
+        const fatsResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
+        setRecommendedFats(fatsResponse.data.recommendedFats);
+      } catch (error) {
+        console.error('Error fetching recommendedFats:', error);
       }
     };
-
-    fetchCalorieFromBackend();
-}, []);
-
-useEffect(() => {
-  const fetchCarbFromBackend = async () => {
-    try {
-      const response = await axios.get();
-      
-      setCarb(response.data.carb);
-    } catch (error) {
-      console.error('Error fetching carb:', error);
-    }
-  };
-
-  fetchCarbFromBackend();
-}, []);
-
-useEffect(() => {
-  const fetchProteinFromBackend = async () => {
-    try {
-      const response = await axios.get();
-      
-      setProtein(response.data.protein);
-    } catch (error) {
-      console.error('Error fetching protein:', error);
-    }
-  };
-
-  fetchProteinFromBackend();
-}, []);
-
-useEffect(() => {
-  const fetchFatFromBackend = async () => {
-    try {
-      const response = await axios.get();
-      
-      setFat(response.data.fat);
-    } catch (error) {
-      console.error('Error fetching fat:', error);
-    }
-  };
-
-  fetchFatFromBackend();
-}, []);
+  
+    fetchRecommendedFromBackend();
+  }, []);
+  
 
   return (
     <SafeAreaView>
@@ -85,13 +66,13 @@ useEffect(() => {
             </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, marginRight: 20 }}>일일 섭취 칼로리 {calorie}kcal</Text>
+            <Text style={{ fontSize: 20, marginRight: 20 }}>일일 섭취 칼로리 {recommendedCalories}kcal</Text>
             <Text style={{ fontSize: 20}}>남은 칼로리 kcal</Text>
         </View>
         <View>
-            <Text style={{ fontSize: 20, marginBottom: 10}}>탄수화물 g/ {carb}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10}}>단백질 g/ {protein}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10}}>지방 g/ {fat}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10}}>탄수화물 g/ {recommendedCarbohydrates}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10}}>단백질 g/ {recommendedProteins}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10}}>지방 g/ {recommendedFats}g</Text>
         </View>
         <View style={styles.container}>
             <Text>Bar Chart Example</Text>
