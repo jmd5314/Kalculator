@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/api/users/join", "/api/users/login").permitAll()
-                                .requestMatchers(HttpMethod.GET).permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/profiles/save/{profileId}/targetCalories").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

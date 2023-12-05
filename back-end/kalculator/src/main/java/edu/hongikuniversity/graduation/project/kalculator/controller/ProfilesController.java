@@ -8,7 +8,6 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSav
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,21 +45,24 @@ public class ProfilesController {
         return recommendedCalories;
     }
     //프로필 확인
-    @GetMapping("/confirm/{profileId}")
+    @GetMapping("/confirm")
     @ResponseBody
-    public ProfilesResponseDto confirmProfiles(@PathVariable Long profileId) {
+    public ProfilesResponseDto confirmProfiles(Authentication authentication) {
         Profiles profiles = profilesService.findById(profileId);
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
         return responseDto;
     }
     //홈
-    @GetMapping("/home/{profileId}")
+    @GetMapping("/home")
     @ResponseBody
-    public ProfilesResponseDto Home(@PathVariable Long profileId) {
-        Profiles profiles = profilesService.findById(profileId);
+    public ProfilesResponseDto Home(Authentication authentication) {
+        String userId = authentication.getName();
+        Users users = usersService.findByUserId(userId);
+        Profiles profiles = users.getProfiles();
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
         return responseDto;
     }
+    //체중 업데이트
     @PutMapping("/home/{profileId}/updateWeight")
     public Long updateWeight(@PathVariable Long profileId, @RequestBody double weight){
         Profiles profiles = profilesService.findById(profileId);

@@ -49,7 +49,7 @@ function Calculate({ navigation, route }) {
             <Text>적게 먹으면 감량 효과를 기대할 수 있어요.</Text>
 
             <View style={{ alignSelf: 'flex-end', marginRight: 80, marginTop: 50 }}>
-                <Button title="프로필 생성 완료" onPress={() => navigation.navigate('MainTab')} />
+                <Button title="프로필 생성 완료" onPress={() => navigation.navigate('MainTab',{profileId})} />
             </View>
         </Container>
     );

@@ -60,8 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
     private boolean isAuthorizationExcluded(HttpServletRequest request,String requestUri) {
         return requestUri.contains("/join") ||
-                requestUri.contains("/login") ||
-                "GET".equalsIgnoreCase(request.getMethod());
+                requestUri.contains("/login") ;
     }
 
 }

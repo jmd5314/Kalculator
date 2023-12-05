@@ -5,6 +5,7 @@ import { BarChart } from 'react-native-chart-kit';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
 import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 const data = {
@@ -22,38 +23,23 @@ const Home = ({ navigation }) => {
   const [ recommendedCarbohydrates, setRecommendedCarbohydrates ] = useState('');
   const [ recommendedProteins, setRecommendedProteins ] = useState('');
   const [ recommendedFats, setRecommendedFats ] = useState('');
-
   useEffect(() => {
     const fetchRecommendedFromBackend = async () => {
+        const token = await AsyncStorage.getItem('token');
       try {
-        const caloriesResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
-        setRecommendedCalories(caloriesResponse.data.recommendedCalories);
+        const response = await axios.get(`${backendUrl}/api/profiles/home`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        setRecommendedCalories(response.data.recommendedCalories);
+        setRecommendedCarbohydrates(response.data.recommendedCarbohydrates);
+        setRecommendedProteins(response.data.recommendedProteins);
+        setRecommendedFats(response.data.recommendedFats);
       } catch (error) {
         console.error('Error fetching recommendedCalories:', error);
       }
-  
-      try {
-        const carbohydratesResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
-        setRecommendedCarbohydrates(carbohydratesResponse.data.recommendedCarbohydrates);
-      } catch (error) {
-        console.error('Error fetching recommendedCarbohydrates:', error);
-      }
-  
-      try {
-        const proteinsResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
-        setRecommendedProteins(proteinsResponse.data.recommendedProteins);
-      } catch (error) {
-        console.error('Error fetching recommendedProteins:', error);
-      }
-  
-      try {
-        const fatsResponse = await axios.get(`${backendUrl}/api/profiles/home/{profileId}`);
-        setRecommendedFats(fatsResponse.data.recommendedFats);
-      } catch (error) {
-        console.error('Error fetching recommendedFats:', error);
-      }
     };
-  
     fetchRecommendedFromBackend();
   }, []);
   
