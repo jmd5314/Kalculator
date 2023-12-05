@@ -65,9 +65,11 @@ public class ProfilesController {
         return responseDto;
     }
     //체중 업데이트
-    @PutMapping("/home/{profileId}/updateWeight")
-    public Long updateWeight(@PathVariable Long profileId, @RequestBody double weight){
-        Profiles profiles = profilesService.findById(profileId);
+    @PutMapping("/home/updateWeight")
+    public Long updateWeight(Authentication authentication, @RequestBody double weight){
+        String userId = authentication.getName();
+        Users users = usersService.findByUserId(userId);
+        Profiles profiles = users.getProfiles();
         profiles.updateWeight(weight);
         return profiles.getProfileId();
     }
