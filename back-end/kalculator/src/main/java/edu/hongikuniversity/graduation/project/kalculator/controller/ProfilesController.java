@@ -48,7 +48,9 @@ public class ProfilesController {
     @GetMapping("/confirm")
     @ResponseBody
     public ProfilesResponseDto confirmProfiles(Authentication authentication) {
-        Profiles profiles = profilesService.findById(profileId);
+        String userId = authentication.getName();
+        Users users = usersService.findByUserId(userId);
+        Profiles profiles = users.getProfiles();
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
         return responseDto;
     }
