@@ -3,12 +3,13 @@ import { Image, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const backendUrl = config.backendUrl;
-const Container = styled.View`
 import profile1 from '../Images/ee5_generated.jpg';
 import profile2 from '../Images/running.jpg';
 import profile3 from '../Images/normalfood.png';
 
+const backendUrl = config.backendUrl;
+
+const Container = styled.View`
 
 
   align-items: center;
