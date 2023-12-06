@@ -2,11 +2,35 @@ import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components/native';
 import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import { Alert } from 'react-native';
 import axios from 'axios';
 import config from "../config";
 const backendUrl = config.backendUrl;
+
+const WhiteButton = styled(TouchableOpacity)`
+    background-color: #FFD699;
+    height: 110px;
+    border-radius: 10px;
+     align-items: center; /* 수직 정렬 */
+      justify-content: center; /* 수평 정렬 */
+  `;
+
+const ButtonText = styled.Text`
+    font-size: 30px;
+    color: #7ED321;
+  `;
+
+
+const Container = styled.SafeAreaView`
+  background-color: #7ED321;
+  padding: 40px;
+  flex: 1;
+`;
+
+
+
+
 
 const Signup = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -60,26 +84,30 @@ const Signup = ({ navigation }) => {
     };
 
   return (
-  <View>
-     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 10, marginTop: 100 }}>
-       <Text style={{ fontSize: 40, fontWeight: 'bold' }}>회원가입</Text>
+  <Container>
+
+
+     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 30, marginTop: 50 }}>
+       <Text style={{ fontSize: 30, fontWeight: 'bold' }}>회원가입</Text>
      </View>
 
 
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-       <Text style={{ fontSize: 20, marginRight: 10 }}>아이디</Text>
+              <Text style={{ fontSize: 25, marginRight: 30 }}>아이디</Text>
        <TextInput
-        style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+        style={{ flex:1, height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10 }}
         placeholder="아이디"
         value={user.id}
         onChangeText={handleChangeId}
         />
+
     </View>
 
+
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-           <Text style={{ fontSize: 20, marginRight: 10 }}>비밀번호</Text>
+           <Text style={{ fontSize: 25, marginRight: 10 }}>비밀번호</Text>
            <TextInput
-            style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+            style={{ flex:1, height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10 }}
             placeholder="비밀번호"
             secureTextEntry
             value={user.Password}
@@ -88,9 +116,9 @@ const Signup = ({ navigation }) => {
      </View>
 
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-           <Text style={{ fontSize: 20, marginRight: 10 }}>비밀번호 확인</Text>
+           <Text style={{ fontSize: 25, marginRight: 30 }}>키사진</Text>
            <TextInput
-            style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+            style={{ flex:1, height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10 }}
             placeholder="비밀번호재입력"
             secureTextEntry
             value={user.confirmPassword}
@@ -99,33 +127,34 @@ const Signup = ({ navigation }) => {
      </View>
 
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-           <Text style={{ fontSize: 20, marginRight: 10 }}>이름</Text>
+           <Text style={{ fontSize: 25, marginRight: 50 }}>이름</Text>
            <TextInput
-            style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+            style={{ flex:1, height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10 }}
             placeholder="이름"
             value={user.name}
             onChangeText={handleChangeName}
             />
      </View>
     <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
-            <Text style={{ fontSize: 20, marginRight: 10 }}>이메일</Text>
+            <Text style={{ fontSize: 25, marginRight: 30 }}>이메일</Text>
             <TextInput
-             style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+             style={{ flex:1, height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10 }}
              placeholder="이메일"
              value={user.email}
              onChangeText={handleChangeEmail}
              />
       </View>
 
-      <View style={{ alignSelf: 'flex-end', marginRight: 80 }}>
-        <Button
-          title="회원가입"
-          onPress={handleSubmit}
-        />
-      </View>
 
-    </View>
+       <View style={{ marginTop: 20}}>
+              <WhiteButton
+              onPress={handleSubmit}>
+                <ButtonText>회원가입</ButtonText>
+              </WhiteButton>
+            </View>
 
+
+  </Container>
   );
 }
 

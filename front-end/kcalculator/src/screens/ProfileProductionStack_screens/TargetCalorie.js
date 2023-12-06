@@ -1,16 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import config from '../config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import profile from "../Images/calculator.png"
 
 const backendUrl = config.backendUrl;
 
-const Container = styled.View`
+const WhiteButton = styled(TouchableOpacity)`
+    background-color: #FFD699;
+    height: 110px;
+    border-radius: 10px;
+     align-items: center; /* 수직 정렬 */
+      justify-content: center; /* 수평 정렬 */
+  `;
+
+const ButtonText = styled.Text`
+    font-size: 30px;
+    color: #7ED321;
+  `;
+
+const YellowButton = styled(TouchableOpacity)`
+    background-color: #FFFF00;
+    height: 100px;
+    border-radius: 10px;
+     align-items: center; /* 수직 정렬 */
+  `;
+
+
+const Container = styled.SafeAreaView`
+  background-color: #7ED321;
+  padding: 40px;
   flex: 1;
-  justify-content: flex-start;
-  align-items: flex-start;
+
 `;
+
 
 function Calculate({ navigation, route }) {
     const [daily, setDaily] = useState(0);
@@ -38,18 +62,33 @@ function Calculate({ navigation, route }) {
 
     return (
         <Container>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginLeft: 10, marginTop: 30 }}>
-                <Text style={{ fontSize: 20 }}>목표 칼로리를 계산해 드렸어요.</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginTop: 0 }}>
+     <Image source={calculator} style={{ marginRight: 20, width: 80, height: 80, borderRadius: 50 }} />
+
+        <Text style={{fontSize: 30, marginBottom:10}}>권장 칼로리 계산</Text>
             </View>
 
-            <Text>일일 권장 섭취량은 {daily} kcal에요.</Text>
+      <Text style={{fontSize: 20, marginBottom:10}}>일일 권장 섭취량은</Text>
+      <Text style={{fontSize: 40, marginBottom:10, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
+      <Text style={{fontSize: 20, marginBottom:10}}>다이어트를 위한 목표량을 직접 입력할 수 있어요.</Text>
 
-            <Text style={{ marginTop: 40 }}>꿀팁!</Text>
-            <Text>일반적으로 권장 섭취량보다 하루 500kcal 정도</Text>
-            <Text>적게 먹으면 감량 효과를 기대할 수 있어요.</Text>
+            <View style={{marginTop: 30}}>
+             <YellowButton>
 
-            <View style={{ alignSelf: 'flex-end', marginRight: 80, marginTop: 50 }}>
-                <Button title="프로필 생성 완료" onPress={() => navigation.navigate('MainTab',{profileId})} />
+            <Text style={{marginBottom:10, marginTop:10}}>꿀팁!</Text>
+            <Text style={{marginBottom:10}}>일반적으로 권장 섭취량보다 하루 500kcal 정도</Text>
+            <Text>적게 먹으면 감량 효과를 기대할 수 있어요!</Text>
+
+             </YellowButton>
+
+            </View>
+
+
+        <View style={{ marginTop: 50 }}>
+              <WhiteButton
+         onPress={() => navigation.navigate('MainTab',{profileId})}>
+                <ButtonText>프로필생성완료</ButtonText>
+              </WhiteButton>
             </View>
         </Container>
     );

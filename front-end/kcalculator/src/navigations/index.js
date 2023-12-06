@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Spinner } from '../components';
 import { ProgressContext, UserContext } from '../contexts';
 import MainStack from './MainStack';
-import { ProfileProductionStack } from './ProfileProductionStack';
+import  ProfileProductionStack from './ProfileProductionStack';
 import AuthStack from "./AuthStack";
 
 const Navigation = () => {

@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Image, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const backendUrl = config.backendUrl;
 const Container = styled.View`
+import profile1 from '../Images/ee5_generated.jpg';
+import profile2 from '../Images/running.jpg';
+import profile3 from '../Images/normalfood.png';
+
+
+
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -69,18 +75,22 @@ const MenuSelection = ({ navigation, route }) => {
                 onPress={() => handleCardPress('GENERAL')}
             >
                 <Text style={{ color: 'white', marginBottom: 20 }}>일반 식단</Text>
+             <Image source={profile3} style={{ width: 80, height: 80, borderRadius: 50 }} />
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.card, { backgroundColor: '#333' }]}
                 onPress={() => handleCardPress('FITNESS')}
             >
                 <Text style={{ color: 'white', marginBottom: 20 }}>운동 식단</Text>
+        <Image source={profile2} style={{ width: 80, height: 80, borderRadius: 50 }} />
+
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.card, { backgroundColor: 'purple' }]}
                 onPress={() => handleCardPress('KETOGENIC')}
             >
                 <Text style={{ color: 'white', marginBottom: 20 }}>키토 식단</Text>
+           <Image source={profile1} style={{ width: 75, height: 75, borderRadius: 50 }} />
             </TouchableOpacity>
         </Container>
     );
