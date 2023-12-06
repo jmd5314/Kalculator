@@ -10,7 +10,7 @@ import {
     PostList,
     GroupList,
     UserDelete,
-    ProfileRevise, Home
+    ProfileRevise, Home, Menu
 } from '../screens';
 import MainTab from "./MainTab";
 
@@ -32,7 +32,6 @@ const AuthStack = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
             <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }}/>
-            <Stack.Screen name="MenuSearch" component={MenuSearch} options={{ headerShown: false }}/>
 
         </Stack.Navigator>
     );

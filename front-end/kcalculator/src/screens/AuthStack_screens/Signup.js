@@ -23,7 +23,7 @@ const ButtonText = styled.Text`
 
 
 const Container = styled.SafeAreaView`
-  background-color: #7ED321;
+  background-color: #ffffff;
   padding: 40px;
   flex: 1;
 `;
