@@ -23,6 +23,8 @@ import Post from './PostStack_screens/Post';
 
 import Running from './RunningStack_screens/Running';
 
+import MenuSearch from './MenuStack_screens/MenuSearch';
+
 
 
 export {Profile, PostList, GroupList, UserDelete, 

@@ -43,15 +43,18 @@ const Menu = ({ navigation }) => {
       </View>
 
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 30, marginTop: 10 }}>
-     <GrayButton style={{ marginRight: 20 }}>
-      <IconWrapper>
+   <GrayButton
+     style={{ marginRight: 20 }}
+     onPress={() => navigation.navigate('MenuSearch')}>
+     <IconWrapper>
+       <Icon name="plus-circle" size={30} color="black" />
+     </IconWrapper>
+   </GrayButton>
+     <GrayButton
+      onPress={() => navigation.navigate('MenuSearch')}>
+                 <IconWrapper>
                  <Icon name="plus-circle" size={30} color="black" />
-               </IconWrapper>
-     </GrayButton>
-     <GrayButton>
-          <IconWrapper>
-                      <Icon name="plus-circle" size={30} color="black" />
-                    </IconWrapper>
+                 </IconWrapper>
      </GrayButton>
      </View>
 
@@ -62,13 +65,15 @@ const Menu = ({ navigation }) => {
            </View>
 
            <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 30, marginTop: 10 }}>
-          <GrayButton style={{ marginRight: 20 }}>
-               <IconWrapper>
-                           <Icon name="plus-circle" size={30} color="black" />
-                         </IconWrapper>
-          </GrayButton>
-
-          <GrayButton>
+           <GrayButton
+             style={{ marginRight: 20 }}
+             onPress={() => navigation.navigate('MenuSearch')}>
+             <IconWrapper>
+               <Icon name="plus-circle" size={30} color="black" />
+             </IconWrapper>
+           </GrayButton>
+          <GrayButton
+            onPress={() => navigation.navigate('MenuSearch')}>
                <IconWrapper>
                            <Icon name="plus-circle" size={30} color="black" />
                          </IconWrapper>
