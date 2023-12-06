@@ -31,6 +31,8 @@ const AuthStack = () => {
             <Stack.Screen name="ProfileRevise" component={ProfileRevise} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
+            <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }}/>
+
         </Stack.Navigator>
     );
 };
