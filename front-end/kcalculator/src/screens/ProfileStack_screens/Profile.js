@@ -1,42 +1,63 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import { UserContext } from '../../contexts';
+import { Button } from '../../components';
 import axios from 'axios';
 import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 const Profile = ({ navigation }) => {
     const [ nickname, setNickname ] = useState('');
-    const [ presentweight, setPresentweight ] = useState('');
+    const [ weight, setWeight ] = useState('');
+    const [ age, setAge ] = useState('');
+    const [ height, setHeight ] = useState('');
+    const [ activityLevel, setActivityLevel ] = useState('');
+    const [ purpose, setPurpose ] = useState('');
+    const [ selectedGender, setSelectedGender ] = useState('');
     const { dispatch } = useContext(UserContext);
 
     useEffect(() => {
-        const fetchNicknameFromBackend = async () => {
+        const fetchProfileFromBackend = async () => {
+            const token = await AsyncStorage.getItem('token');
           try {
-            const response = await axios.get(`${backendUrl}/api/profiles/confirm/{profileId}`);
+            const response = await axios.get(`${backendUrl}/api/profiles/confirm`,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             
             setNickname(response.data.nickname);
+            setAge(response.data.age);
+            setHeight(response.data.height);
+            setSelectedGender(response.data.selectedGender);
+            setActivityLevel(response.data.activityLevel);
+            setPurpose(response.data.purpose);
           } catch (error) {
-            console.error('Error fetching nickname:', error);
+            console.error('Error fetching profile:', error);
           }
         };
     
-        fetchNicknameFromBackend();
+        fetchProfileFromBackend();
     }, []);
 
     useEffect(() => {
-        const fetchPresentweightFromBackend = async () => {
+        const fetchWeightFromBackend = async () => {
+            const token = await AsyncStorage.getItem('token');
           try {
-            const response = await axios.get();
+            const response = await axios.get(`${backendUrl}/api/profiles/home/updateWeight`,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             
-            setPresentweight(response.data.weight);
+            setWeight(response.data.weight);
           } catch (error) {
             console.error('Error fetching weight:', error);
           }
         };
     
-        fetchPresentweightFromBackend();
+        fetchWeightFromBackend();
     }, []);
 
     const _handleLogoutButtonPress = async () => {
@@ -52,28 +73,34 @@ const Profile = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
-                <Text style={{fontSize: 20}}>닉네임 : {nickname}</Text>
+                <Text style={{ fontSize: 25, marginLeft: 5 }}>닉네임 : {nickname}</Text>
 
             </View>
             <View style={styles.profile}>
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")}>
-                    <Text style={{fontSize: 20}}>프로필 수정</Text>
+                    <Text style={{ fontSize: 25, marginLeft: 5 }}>프로필 수정</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.profile}>
-                <Text style={{fontSize: 20}}>현재 체중 : {presentweight}</Text>
-                <View style={{width: 70}} />
-                <Text style={{fontSize: 20}}>목표 체중까지 : </Text>
+                <Text style={{fontSize: 25, marginLeft: 5}}>현재 체중 : {weight}</Text>
+                <View style={{width: 60}} />
+                <Text style={{fontSize: 25}}>목표 체중까지 : </Text>
             </View>
             <View style={{height: 20}} />
-            <View style={styles.btnArea}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("UserDelete")}>
-                    <Text style={{fontSize: 20}}>회원탈퇴</Text>
-                </TouchableOpacity>
-                <View style={{width: 100}}/>
-                <TouchableOpacity style={styles.btn} onPress={_handleLogoutButtonPress}>
-                    <Text style={{fontSize: 20}}>로그아웃</Text>
-                </TouchableOpacity>
+            <View>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>나이 : {age}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>키 : {height}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>성별 : {selectedGender}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>활동량 : {activityLevel}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>이용목적 : {purpose}</Text>
+            </View>
+            <View style={{height: 5}} />
+            <View>
+                <Button title="회원탈퇴" 
+                    onPress={() => navigation.navigate("UserDelete")} />
+                <View style={{ width: 150 }} />
+                <Button title="로그아웃" 
+                    onPress={_handleLogoutButtonPress} />
             </View>
         </SafeAreaView>
     );
@@ -86,7 +113,7 @@ const styles = StyleSheet.create({
     },
     profile: {
         width: '100%',
-        height: 100,
+        height: 70,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -95,27 +122,9 @@ const styles = StyleSheet.create({
         width: '95%',
         margin: 5,
     },
-    image: {
-            height: 85,
-            width: 85,
-            backgroundColor: '#808080',
-            borderRadius: 10,
-            margin: 15,
-    },
     btnArea: {
         height: 65,
         flexDirection: 'row',
-    },
-    btn: {
-        backgroundColor: 'white',
-        borderColor: '#0066cc',
-        height: 50,
-        width: 100,
-        borderWidth: 4,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
     },
 });
 

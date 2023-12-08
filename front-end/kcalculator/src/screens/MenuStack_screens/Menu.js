@@ -30,19 +30,19 @@ const GrayButton = styled(TouchableOpacity)`
 const Menu = ({ navigation }) => {
   return (
     <Container>
-      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 30, marginTop: 50 }}>
-        <Text style={{ fontSize: 40, marginRight:220 }}>식단 </Text>
+      <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 30, marginTop: 30 }}>
+        <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
                 <TouchableOpacity>
                   <Icon name="account-circle" size={40} color="black" />
                 </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 30, marginTop: 50 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 20, marginTop: 30 }}>
         <Text style={{ fontSize: 25, marginRight: 130 }}>아침 </Text>
         <Text style={{ fontSize: 25 }}>점심 </Text>
       </View>
 
-      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 30, marginTop: 10 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
    <GrayButton
      style={{ marginRight: 20 }}
      onPress={() => navigation.navigate('MenuSearch')}>
@@ -59,12 +59,12 @@ const Menu = ({ navigation }) => {
      </View>
 
 
-           <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 30, marginTop: 20 }}>
+           <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 20, marginTop: 20 }}>
              <Text style={{ fontSize: 25, marginRight: 130 }}>저녁 </Text>
              <Text style={{ fontSize: 25 }}>간식 </Text>
            </View>
 
-           <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 30, marginTop: 10 }}>
+           <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
            <GrayButton
              style={{ marginRight: 20 }}
              onPress={() => navigation.navigate('MenuSearch')}>

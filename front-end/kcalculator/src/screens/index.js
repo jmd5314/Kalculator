@@ -9,7 +9,6 @@ import MenuSelection from './ProfileProductionStack_screens/MenuSelection';
 import ProfileProduction from './ProfileProductionStack_screens/ProfileProduction';
 import TargetCalorie from './ProfileProductionStack_screens/TargetCalorie';
 
-
 import Login from './AuthStack_screens/Login';
 import Signup from './AuthStack_screens/Signup';
 
@@ -18,6 +17,7 @@ import Battle from './BattleStack_screens/Battle';
 import Home from './HomeStack_screens/Home';
 
 import Menu from './MenuStack_screens/Menu';
+import MenuSearch from './MenuStack_screens/MenuSearch';
 
 import Post from './PostStack_screens/Post';
 
@@ -27,4 +27,4 @@ import Running from './RunningStack_screens/Running';
 
 export {Profile, PostList, GroupList, UserDelete, 
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
-    Login, Signup, Battle, Home, Menu, Post, Running};
+    Login, Signup, Battle, Home, Menu, MenuSearch, Post, Running};
