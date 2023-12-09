@@ -46,11 +46,12 @@ const Profile = ({ navigation }) => {
 
     const _handleLogoutButtonPress = async () => {
         try {
-            await logout();
+            await AsyncStorage.removeItem('token');
         } catch (e) {
-            console.log('[Profile] logout: ', e.message);
+            console.error('토큰 삭제 중 오류 발생:', e);
         } finally {
             dispatch({});
+            navigation.navigate('Login');
         }
     };
 
