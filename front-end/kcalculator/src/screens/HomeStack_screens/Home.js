@@ -70,7 +70,7 @@ const Home = ({ navigation }) => {
             return response.json();
         })
         .then(data => {
-            console.log('몸무게가 성공적으로 전송되었습니다:', data);
+            console.log('몸무게가 성공적으로 전송되었습니다:',data);
         })
         .catch(error => {
             console.error('몸무게 전송 중 오류 발생:', error);

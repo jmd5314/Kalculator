@@ -5,6 +5,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.DietModeRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSaveRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UpdateWeightDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +67,12 @@ public class ProfilesController {
     }
     //체중 업데이트
     @PutMapping("/home/updateWeight")
-    public Long updateWeight(Authentication authentication, @RequestBody double weight){
+    public Long updateWeight(Authentication authentication, @RequestBody UpdateWeightDto updateWeightDto){
         String userId = authentication.getName();
         Users users = usersService.findByUserId(userId);
         Profiles profiles = users.getProfiles();
-        profiles.updateWeight(weight);
+        profiles.updateWeight(updateWeightDto.getWeight());
+        profilesService.save(profiles);
         return profiles.getProfileId();
     }
 }
