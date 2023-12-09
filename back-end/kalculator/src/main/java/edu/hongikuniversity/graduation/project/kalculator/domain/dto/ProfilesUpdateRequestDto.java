@@ -9,15 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfilesUpdateRequestDto {
     private String nickname;
-    private double targetWeight;
-    private double recommendedCalories;
-    private double recommendedCarbohydrates;
-    private double recommendedProteins;
-    private double recommendedFats;
-    private int age;
+    private Double targetWeight;
+    private Integer age;
     private Gender gender;
-    private double height;
-    private double weight;
+    private Double height;
+    private Double weight;
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;

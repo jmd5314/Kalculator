@@ -40,9 +40,9 @@ public class ProfilesController {
     }
     //권장 칼로리
     @GetMapping("/save/{profileId}/targetCalories")
-    public Double getRecommendedCalories(@PathVariable Long profileId) {
+    public Integer getRecommendedCalories(@PathVariable Long profileId) {
         Profiles profiles = profilesService.findById(profileId);
-        Double recommendedCalories =  profiles.getRecommendedCalories();
+        Integer recommendedCalories =  profiles.getRecommendedCalories();
         return recommendedCalories;
     }
     //프로필 확인

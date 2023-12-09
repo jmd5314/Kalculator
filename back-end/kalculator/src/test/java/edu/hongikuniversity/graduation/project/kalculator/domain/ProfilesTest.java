@@ -27,7 +27,6 @@ class ProfilesTest {
                 .activityLevel(activityLevel)
                 .dietMode(dietMode)
                 .purposeOfUse(purposeOfUse)
-                .users(users)
                 .build();
         System.out.println(profiles.getProfileId());
         System.out.println(profiles.getRecommendedCalories());

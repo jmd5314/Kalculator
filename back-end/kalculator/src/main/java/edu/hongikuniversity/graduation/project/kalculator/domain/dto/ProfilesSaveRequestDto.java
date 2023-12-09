@@ -11,16 +11,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfilesSaveRequestDto {
     private String nickname;
-    private double targetWeight;
-    private int age;
+    private Double targetWeight;
+    private Integer age;
     private String gender;
-    private double height;
-    private double weight;
+    private Double height;
+    private Double weight;
     private String activityLevel;
     private String purposeOfUse;
     private Users users;
     @Builder
-    public ProfilesSaveRequestDto(String nickname,double targetWeight,int age,String gender,double height,double weight
+    public ProfilesSaveRequestDto(String nickname,Double targetWeight,Integer age,String gender,Double height,Double weight
     ,String activityLevel,String purposeOfUse,Users users){
         this.nickname = nickname;
         this.targetWeight = targetWeight;

@@ -1,21 +1,22 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.dto;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 
 @Getter
 public class ProfilesResponseDto {
     private Long profileId;
     private String nickname;
-    private double targetWeight;
-    private double recommendedCalories;
-    private double recommendedCarbohydrates;
-    private double recommendedProteins;
-    private double recommendedFats;
-    private int age;
+    private Double targetWeight;
+    private Integer recommendedCalories;
+    private Integer recommendedCarbohydrates;
+    private Integer recommendedProteins;
+    private Integer recommendedFats;
+    private Integer age;
     private Gender gender;
-    private double height;
-    private double weight;
+    private Double height;
+    private Double weight;
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;

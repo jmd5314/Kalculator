@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UpdateWeightDto {
-    private double weight;
+    private Double weight;
 }
