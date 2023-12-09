@@ -10,11 +10,12 @@ const backendUrl = config.backendUrl;
 const Profile = ({ navigation }) => {
     const [ nickname, setNickname ] = useState('');
     const [ weight, setWeight ] = useState('');
+    const [targetWeight, setTargetWeight] = useState('');
     const [ age, setAge ] = useState('');
     const [ height, setHeight ] = useState('');
     const [ activityLevel, setActivityLevel ] = useState('');
-    const [ purpose, setPurpose ] = useState('');
-    const [ selectedGender, setSelectedGender ] = useState('');
+    const [ purposeOfUse, setPurpose ] = useState('');
+    const [ gender, setSelectedGender ] = useState('');
     const { dispatch } = useContext(UserContext);
 
     useEffect(() => {
@@ -26,13 +27,14 @@ const Profile = ({ navigation }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            
+              setTargetWeight(response.data.targetWeight);
+            setWeight((response.data.weight));
             setNickname(response.data.nickname);
             setAge(response.data.age);
             setHeight(response.data.height);
-            setSelectedGender(response.data.selectedGender);
+            setSelectedGender(response.data.gender);
             setActivityLevel(response.data.activityLevel);
-            setPurpose(response.data.purpose);
+            setPurpose(response.data.purposeOfUse);
           } catch (error) {
             console.error('Error fetching profile:', error);
           }
@@ -41,24 +43,6 @@ const Profile = ({ navigation }) => {
         fetchProfileFromBackend();
     }, []);
 
-    useEffect(() => {
-        const fetchWeightFromBackend = async () => {
-            const token = await AsyncStorage.getItem('token');
-          try {
-            const response = await axios.get(`${backendUrl}/api/profiles/home/updateWeight`,{
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            
-            setWeight(response.data.weight);
-          } catch (error) {
-            console.error('Error fetching weight:', error);
-          }
-        };
-    
-        fetchWeightFromBackend();
-    }, []);
 
     const _handleLogoutButtonPress = async () => {
         try {
@@ -84,15 +68,15 @@ const Profile = ({ navigation }) => {
             <View style={styles.profile}>
                 <Text style={{fontSize: 25, marginLeft: 5}}>현재 체중 : {weight}</Text>
                 <View style={{width: 60}} />
-                <Text style={{fontSize: 25}}>목표 체중까지 : </Text>
+                <Text style={{fontSize: 25}}>목표 체중까지 : {weight-targetWeight} </Text>
             </View>
             <View style={{height: 20}} />
             <View>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>나이 : {age}</Text>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>키 : {height}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>성별 : {selectedGender}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>성별 : {gender}</Text>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>활동량 : {activityLevel}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>이용목적 : {purpose}</Text>
+                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>이용목적 : {purposeOfUse}</Text>
             </View>
             <View style={{height: 5}} />
             <View>

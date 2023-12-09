@@ -16,8 +16,8 @@ const ButtonText = styled.Text`
 
 const IconWrapper = styled.View`
   align-items: flex-end;
-  marginRight: 5;
-  marginTop:5;
+  marginRight: 5px;
+  marginTop:5px;
 `;
 
 const GrayButton = styled(TouchableOpacity)`
