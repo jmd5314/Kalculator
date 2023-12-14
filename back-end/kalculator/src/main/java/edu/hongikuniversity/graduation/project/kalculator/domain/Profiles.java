@@ -38,7 +38,7 @@ public class Profiles {
             bmr = (9.99*weight)+(6.25*height) - (4.95*age)+5;
         }
         else{
-            bmr = (9.99*weight)+(6.25*height) - (4.95*age)+161;
+            bmr = (9.99*weight)+(6.25*height) - (4.95*age)-161;
         }
         return bmr;
     }
@@ -54,7 +54,7 @@ public class Profiles {
     }
     private Integer calculateRecommendedCalories(Double rmr, PurposeOfUse purposeOfUse) {
         Integer calorieOffset = (purposeOfUse == PurposeOfUse.DIET) ? -500 : 500;
-        return  rmr.intValue() + calorieOffset;
+        return  (int) (Math.floor(rmr / 100) * 100) + calorieOffset;
     }
 
     private Integer calculateRecommendedCarbohydrates(DietMode dietMode) {
