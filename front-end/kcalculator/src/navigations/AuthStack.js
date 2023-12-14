@@ -24,7 +24,7 @@ const AuthStack = () => {
             <Stack.Screen name="ProfileProduction" component={ProfileProduction} options={{headerShown:false}} />
             <Stack.Screen name="MenuSelection" component={MenuSelection} options={{headerShown:false}} />
             <Stack.Screen name="TargetCalorie" component={TargetCalorie} options={{headerShown:false}} />
-            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} />
             <Stack.Screen name="PostList" component={PostList} />
             <Stack.Screen name="GroupList" component={GroupList} />
             <Stack.Screen name="UserDelete" component={UserDelete} />

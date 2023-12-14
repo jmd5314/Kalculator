@@ -31,7 +31,7 @@ const ProfileText = styled.Text`
 `;
 
 const Label = styled.Text`
-  margin-top: 35px;
+  margin-top: 60px;
   margin-left: 10px;
   font-size: 20px;
   margin-right: 10px;
@@ -52,7 +52,8 @@ const EditProfileButtonText = styled.Text`
   color: green;
 `;
 const BtnContainer = styled.View`
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 `;
 
 const Profile = ({ navigation }) => {

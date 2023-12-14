@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const MenuSearch = () => {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const handleSearch = async () => {
         try {
@@ -18,8 +19,12 @@ const MenuSearch = () => {
 
             // Extract relevant information for each item in the resultData array
             const formattedResults = resultData.map(item => ({
-                id:item.FOOD_CD,
-                title: item.DESC_KOR
+                id: item.FOOD_CD,
+                title: item.DESC_KOR,
+                calories: item.NUTR_CONT1,
+                carbs: item.NUTR_CONT2,
+                protein: item.NUTR_CONT3,
+                fat: item.NUTR_CONT4,
             }));
 
             // Update the searchResults state with the formatted results
@@ -29,12 +34,17 @@ const MenuSearch = () => {
         }
     };
 
+    const handleItemSelected = (item) => {
+        // Set the selected item and show details
+        setSelectedItem(item);
+    };
+
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 10, marginLeft: 1 }}>
+            <View style={{ marginBottom: 20, marginLeft: 20,marginTop:20 }}>
                 <Text style={{ fontSize: 30 }}>음식 검색</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 10,marginLeft:20 }}>
                 <TextInput
                     style={styles.input}
                     placeholder="검색어를 입력하세요"
@@ -50,11 +60,26 @@ const MenuSearch = () => {
                 data={searchResults}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={styles.resultItem}>
-                        <Text>{item.title}</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => handleItemSelected(item)}>
+                        <View style={[styles.resultItem, {marginLeft:20}]}>
+                            <Text>{item.title}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
             />
+
+            {/* Display item details */}
+            {selectedItem && (
+                <View style={styles.itemDetailsContainer}>
+                    <Text>칼로리: {selectedItem.calories} kcal</Text>
+                    <Text>탄수화물: {selectedItem.carbs} g</Text>
+                    <Text>지방: {selectedItem.fat} g</Text>
+                    <Text>프로틴: {selectedItem.protein} g</Text>
+                    <TouchableOpacity onPress={() => setSelectedItem(null)}>
+                        <Text style={{ marginTop: 10 }}>닫기</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 };
@@ -73,9 +98,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     resultItem: {
-        padding: 16,
+        paddingTop: 15,    // 위 여백
+        paddingRight: 15,  // 오른쪽 여백
+        paddingBottom: 15, // 아래 여백
+        paddingLeft: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        marginRight:40,
+    },
+    itemDetailsContainer: {
+        padding: 16,
+        backgroundColor: '#fff',
+        marginTop: 20,
+        borderWidth: 1,
+        borderColor: '#ccc',
     },
 });
 

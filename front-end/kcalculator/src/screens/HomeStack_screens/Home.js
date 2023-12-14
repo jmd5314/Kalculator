@@ -97,7 +97,7 @@ const Home = ({ navigation }) => {
             <Text style={{marginTop:20}}>칼로리 섭취량</Text>
             <BarChart
               data={data}
-              width={350}
+              width={360}
               height={250}
               chartConfig={{
                 backgroundColor: '#39D02C',

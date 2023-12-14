@@ -8,7 +8,7 @@ const MenuStack = () => {
     return(
         <Stack.Navigator  screenOptions={{  headerTitleAlign: 'center' }}>
             <Stack.Screen name="Menu" component={Menu} options={{headerShown:false}}/>
-            <Stack.Screen name="MenuSearch" component={MenuSearch} />
+            <Stack.Screen name="MenuSearch" component={MenuSearch} options={{headerShown:false}} />
         </Stack.Navigator>
     );
 };
