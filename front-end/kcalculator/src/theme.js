@@ -5,6 +5,7 @@ const colors = {
     grey_1: '#858585',
     red: '#e34907',
     blue: '#3679fe',
+    green: '#39D02C'
 };
 
 export const theme = {
@@ -20,9 +21,9 @@ export const theme = {
     spinnerBackground: colors.black,
     spinnerIndicator: colors.white,
     
-    buttonBackground: colors.blue,
+    buttonBackground: colors.green,
     buttonTitle: colors.white,
-    buttonUnfilledTitle:colors.blue,
+    buttonUnfilledTitle:colors.green,
 
     buttonLogout: colors.red
 };

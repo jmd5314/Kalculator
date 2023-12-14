@@ -23,7 +23,7 @@ const ButtonText = styled.Text`
 
 const YellowButton = styled(TouchableOpacity)`
     background-color: #FFFF00;
-    height: 100px;
+    height: 150px;
     border-radius: 10px;
      align-items: center; /* 수직 정렬 */
   `;
@@ -71,14 +71,14 @@ function Calculate({ navigation, route }) {
 
       <Text style={{fontSize: 20, marginBottom:10}}>일일 권장 섭취량은</Text>
       <Text style={{fontSize: 40, marginBottom:10, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
-      <Text style={{fontSize: 20, marginBottom:10}}>다이어트를 위한 목표량을 직접 입력할 수 있어요.</Text>
 
             <View style={{marginTop: 30}}>
              <YellowButton>
 
             <Text style={{marginBottom:10, marginTop:10}}>꿀팁!</Text>
-            <Text style={{marginBottom:10}}>일반적으로 권장 섭취량보다 하루 500kcal 정도</Text>
-            <Text>적게 먹으면 감량 효과를 기대할 수 있어요!</Text>
+                 <Text style={{marginBottom:10}}>일반적으로 권장 섭취량보다 </Text>
+                <Text style={{marginBottom:10}}>하루 500kcal 정도 적게 먹으면</Text>
+            <Text>감량 효과를 기대할 수 있어요!</Text>
 
              </YellowButton>
 

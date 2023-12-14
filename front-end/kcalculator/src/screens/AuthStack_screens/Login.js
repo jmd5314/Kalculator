@@ -1,12 +1,13 @@
 import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Input, Button } from '../../components';
-import { Text, Alert } from 'react-native';
+import { Text, Alert,Image } from 'react-native';
 import { ProgressContext, UserContext } from '../../contexts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import logo from "../Images/logo.jpg";
 const backendUrl  = config.backendUrl;
 
 const Container = styled.View`
@@ -62,27 +63,31 @@ const Login = ({ navigation }) => {
             contentContainerStyle={{ flex: 1 }}
             extraScrollHeight={20}>
             <Container>
-                <Text style={{ fontSize: 30 }}>Login</Text>
+                <Image
+                    source={logo}
+                    style={{ width: 300, height: 100, marginBottom: 20 }}
+                    resizeMode="contain"
+                />
                 <Input
-                    label="Id"
+                    label="아이디"
                     value={id}
                     onChangeText={(text) => setId(text)}
                     onSubmitEditing={() => passwordRef.current.focus()}
-                    placeholder="Id"
+                    placeholder="id"
                     returnKeyType="next"
                 />
                 <Input
                     ref={passwordRef}
-                    label="Password"
+                    label="비밀번호"
                     value={password}
                     onChangeText={(text) => setPassword(text)}
                     onSubmitEditing={_handleLoginButtonPress}
-                    placeholder="Password"
+                    placeholder="password"
                     returnKeyType="done"
                     isPassword
                 />
-                <Button title="Login" onPress={_handleLoginButtonPress}/>
-                <Button title="Signup" onPress={() => navigation.navigate('Signup')} isFilled={false} />
+                <Button title="로그인" onPress={_handleLoginButtonPress}/>
+                <Button title="회원가입" onPress={() => navigation.navigate('Signup')} isFilled={false} />
             </Container>
         </KeyboardAwareScrollView>
     );

@@ -9,10 +9,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일','일요일'],
   datasets: [
     {
-      data: [20, 45, 28, 80, 99, 43],
+      data: [0,0,0,0,0,0,0],
     },
   ],
 };
@@ -99,7 +99,6 @@ const Home = ({ navigation }) => {
               data={data}
               width={400}
               height={200}
-              yAxisLabel="$"
               chartConfig={{
                 backgroundColor: '#e26a00',
                 backgroundGradientFrom: '#fb8c00',

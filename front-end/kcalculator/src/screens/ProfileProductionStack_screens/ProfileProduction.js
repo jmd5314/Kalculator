@@ -10,8 +10,8 @@ const backendUrl = config.backendUrl;
 
 
 const WhiteButton = styled(TouchableOpacity)`
-    background-color: #FFD699;
-    height: 80px;
+    background-color: #39D02C;
+    height: 60px;
     border-radius: 10px;
      align-items: center; /* 수직 정렬 */
       justify-content: center; /* 수평 정렬 */
@@ -19,7 +19,7 @@ const WhiteButton = styled(TouchableOpacity)`
 
   const ButtonText = styled.Text`
     font-size: 30px;
-    color: #7ED321;
+    color: #ffffff;
   `;
 
 
@@ -111,7 +111,6 @@ const ProfileProduction =({ navigation }) => {
             body: JSON.stringify(profileData),
         })
             .then(response => {
-                console.log('서버 응답:', response); // 응답을 로그로 출력
                 if (!response.ok) {
                     throw new Error('네트워크 응답이 정상이 아닙니다');
                 }
@@ -129,7 +128,7 @@ const ProfileProduction =({ navigation }) => {
 
   return (
     <Container>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 0, marginLeft: 30, marginTop: 0 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:0}}>
           <Image source={profile} style={{ width: 100, height: 100, borderRadius: 50 }} />
         <Text style={{ fontSize: 24 }}>프로필 작성</Text>
 

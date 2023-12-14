@@ -9,6 +9,7 @@ const Container = styled.TouchableOpacity`
         (isFilled ? theme.buttonBackground : TRANSPARENT)};
     align-items: center;
     border-radius: 4px;
+  height: 60px;
     width: 100%;
     padding: 10px;
 `;
@@ -16,7 +17,7 @@ const Container = styled.TouchableOpacity`
 const Title = styled.Text`
     height: 30px;
     line-height: 30px;
-    font-size: 16px;
+    font-size: 18px;
     color: ${({ theme, isFilled }) => 
     (isFilled ? theme.buttonTitle : theme.buttonUnfilledTitle)};
 `;
