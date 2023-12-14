@@ -63,7 +63,6 @@ const Home = ({ navigation }) => {
         body: JSON.stringify(weightData),
     })
         .then(response => {
-            console.log('서버 응답:', response);
             if (!response.ok) {
                 throw new Error('네트워크 응답이 정상이 아닙니다');
             }
@@ -126,7 +125,7 @@ const Home = ({ navigation }) => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 20,marginTop:40}}>
             <Text style={{fontSize: 20}}>현재 체중 : </Text>
             <TextInput
-                  style={{ height: 40, width: 80, borderColor: 'gray', borderWidth: 1, margin: 10 }}
+                  style={{ height: 40, width: 80, borderColor: 'gray', borderWidth: 1, margin: 10,padding:5 }}
                   onChangeText={(text) => setWeight(text)}
                   placeholder="체중 (kg)"
                   keyboardType="numeric"

@@ -2,10 +2,7 @@ package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.DietMode;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Profiles;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.DietModeRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSaveRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.UpdateWeightDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.*;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +30,7 @@ public class ProfilesController {
     public Long saveDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
         DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
         Profiles profiles = profilesService.findById(profileId);
-        profiles.updateProfiles(profiles.getTargetWeight(),profiles.getAge(),profiles.getGender(),profiles.getHeight()
-        ,profiles.getWeight(),profiles.getActivityLevel(),profiles.getPurposeOfUse(),dietMode);
+        profiles.setDietMode(dietMode);
         profilesService.save(profiles);
         return profiles.getProfileId();
     }
@@ -74,6 +70,28 @@ public class ProfilesController {
         profiles.updateWeight(updateWeightDto.getWeight());
         profilesService.save(profiles);
         return profiles.getProfileId();
+    }
+    @PutMapping("/update")
+    public Long updateProfiles(@RequestBody ProfilesUpdateRequestDto requestDto, Authentication authentication){
+        String userId = authentication.getName();
+        Long profileId = usersService.findByUserId(userId).getProfiles().getProfileId();
+        Profiles profiles = profilesService.findById(profileId);
+        profiles.updateProfiles(requestDto.toEntity());
+        return profilesService.save(profiles);
+    }
+    @PutMapping("/update/{profileId}/selectMode")
+    public Long updateDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
+        DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
+        Profiles profiles = profilesService.findById(profileId);
+        profiles.setDietMode(dietMode);
+        profilesService.save(profiles);
+        return profiles.getProfileId();
+    }
+    @GetMapping("/update/{profileId}/targetCalories")
+    public Integer getUpdateRecommendedCalories(@PathVariable Long profileId) {
+        Profiles profiles = profilesService.findById(profileId);
+        Integer recommendedCalories =  profiles.getRecommendedCalories();
+        return recommendedCalories;
     }
 }
 

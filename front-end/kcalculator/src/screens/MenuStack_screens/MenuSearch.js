@@ -41,10 +41,10 @@ const MenuSearch = () => {
 
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 20, marginLeft: 20,marginTop:20 }}>
+            <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20 }}>
                 <Text style={{ fontSize: 30 }}>음식 검색</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginBottom: 10,marginLeft:20 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 10,marginLeft:10 }}>
                 <TextInput
                     style={styles.input}
                     placeholder="검색어를 입력하세요"
@@ -61,7 +61,7 @@ const MenuSearch = () => {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleItemSelected(item)}>
-                        <View style={[styles.resultItem, {marginLeft:20}]}>
+                        <View style={[styles.resultItem, {marginLeft:10}]}>
                             <Text>{item.title}</Text>
                         </View>
                     </TouchableOpacity>
@@ -74,7 +74,7 @@ const MenuSearch = () => {
                     <Text>칼로리: {selectedItem.calories} kcal</Text>
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
-                    <Text>프로틴: {selectedItem.protein} g</Text>
+                    <Text>단백질: {selectedItem.protein} g</Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        marginRight:40,
+        marginRight:50,
     },
     itemDetailsContainer: {
         padding: 16,

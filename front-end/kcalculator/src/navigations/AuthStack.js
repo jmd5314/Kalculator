@@ -13,6 +13,8 @@ import {
     ProfileRevise, Home, Menu, MenuSearch
 } from '../screens';
 import MainTab from "./MainTab";
+import UpdateMenuSelection from "../screens/ProfileStack_screens/UpdateMenuSelection";
+import UpdateTargetCalorie from "../screens/ProfileStack_screens/UpdateTargetCalorie";
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,8 @@ const AuthStack = () => {
             <Stack.Screen name="GroupList" component={GroupList} />
             <Stack.Screen name="UserDelete" component={UserDelete} />
             <Stack.Screen name="ProfileRevise" component={ProfileRevise} options={{headerShown:false}} />
+            <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{headerShown:false}} />
+            <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{headerShown:false}} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
             <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }}/>

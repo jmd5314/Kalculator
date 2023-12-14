@@ -11,16 +11,14 @@ public class ProfilesUpdateRequestDto {
     private String nickname;
     private Double targetWeight;
     private Integer age;
-    private Gender gender;
+    private String gender;
     private Double height;
     private Double weight;
-    private ActivityLevel activityLevel;
-    private PurposeOfUse purposeOfUse;
-    private DietMode dietMode;
-    private Users users;
+    private String activityLevel;
+    private String purposeOfUse;
     @Builder
-    public ProfilesUpdateRequestDto(String nickname,double targetWeight,int age,Gender gender,double height,double weight
-            ,ActivityLevel activityLevel,PurposeOfUse purposeOfUse, DietMode dietMode,Users users){
+    public ProfilesUpdateRequestDto(String nickname,double targetWeight,int age,String gender,double height,double weight
+            ,String activityLevel,String purposeOfUse){
         this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
@@ -29,7 +27,17 @@ public class ProfilesUpdateRequestDto {
         this.weight = weight;
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
-        this.dietMode = dietMode;
-        this.users = users;
+    }
+    public Profiles toEntity(){
+        return Profiles.builder()
+                .nickname(nickname)
+                .targetWeight(targetWeight)
+                .age(age)
+                .gender(Gender.valueOf(gender.toUpperCase()))
+                .height(height)
+                .weight(weight)
+                .activityLevel(ActivityLevel.valueOf(activityLevel.toUpperCase()))
+                .purposeOfUse(PurposeOfUse.valueOf(purposeOfUse.toUpperCase()))
+                .build();
     }
 }

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const MenuSelection = ({ navigation, route }) => {
+const UpdateMenuSelection = ({ navigation, route }) => {
     const { profileId } = route.params;
 
     const handleCardPress = async (dietMode) => {
@@ -43,8 +43,8 @@ const MenuSelection = ({ navigation, route }) => {
         const token = await AsyncStorage.getItem('token');
 
         // 서버에 프로필 데이터 전송
-        fetch(`${backendUrl}/api/profiles/save/${profileId}/selectMode`, {
-            method: 'POST',
+        fetch(`${backendUrl}/api/profiles/update/${profileId}/selectMode`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -60,7 +60,7 @@ const MenuSelection = ({ navigation, route }) => {
             })
             .then(data => {
                 console.log('프로필이 성공적으로 업데이트되었습니다:', data);
-                navigation.navigate('TargetCalorie', {profileId});
+                navigation.navigate('UpdateTargetCalorie', {profileId});
             })
             .catch(error => {
                 console.error('프로필 업데이트 중 오류 발생:', error);
@@ -97,4 +97,4 @@ const MenuSelection = ({ navigation, route }) => {
     );
 };
 
-export default MenuSelection;
+export default UpdateMenuSelection;

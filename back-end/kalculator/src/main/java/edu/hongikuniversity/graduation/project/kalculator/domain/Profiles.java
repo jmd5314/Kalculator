@@ -100,27 +100,16 @@ public class Profiles {
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
-        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(weight,height,age,gender),activityLevel),purposeOfUse);
-        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
-        this.recommendedProteins = calculateRecommendedProteins(dietMode);
-        this.recommendedFats = calculateRecommendedFats(dietMode);
     }
     //==프로필 수정 메서드==//
-    public void updateProfiles(Double targetWeight,Integer age,Gender gender,Double height,
-                               Double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse
-    ,DietMode dietMode){
-        this.targetWeight = targetWeight;
-        this.age = age;
-        this.gender = gender;
-        this.height = height;
-        this.weight = weight;
-        this.activityLevel = activityLevel;
-        this.purposeOfUse = purposeOfUse;
-        this.dietMode =dietMode;
-        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(weight,height,age,gender),activityLevel),purposeOfUse);
-        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
-        this.recommendedProteins = calculateRecommendedProteins(dietMode);
-        this.recommendedFats = calculateRecommendedFats(dietMode);
+    public void updateProfiles(Profiles profiles){
+        this.targetWeight = profiles.getTargetWeight();
+        this.age = profiles.getAge();
+        this.gender = profiles.getGender();
+        this.height = profiles.getHeight();
+        this.weight = profiles.getWeight();
+        this.activityLevel = profiles.getActivityLevel();
+        this.purposeOfUse = profiles.getPurposeOfUse();
     }
     //==연관 관계 편의 메서드==//
     public void setUsers(Users users) {
@@ -130,5 +119,14 @@ public class Profiles {
     // 체중 업데이트
     public  void updateWeight(Double weight){
         this.weight = weight;
+    }
+    // 다이어트 모드 업데이트
+    public void setDietMode(DietMode dietMode) {
+        this.dietMode = dietMode;
+        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(this.weight,this.height,this.age,this.gender),
+                this.activityLevel),this.purposeOfUse);
+        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
+        this.recommendedProteins = calculateRecommendedProteins(dietMode);
+        this.recommendedFats = calculateRecommendedFats(dietMode);
     }
 }

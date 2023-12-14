@@ -28,8 +28,7 @@ public class ProfilesService {
     @Transactional
     public Long update(Long id, ProfilesUpdateRequestDto requestDto){
         Profiles profiles = profilesRepository.findById(id).orElseThrow(()->new IllegalArgumentException("프로필 수정 오류"));
-        profiles.updateProfiles(requestDto.getTargetWeight(),requestDto.getAge(),requestDto.getGender(),requestDto.getHeight()
-        ,requestDto.getWeight(),requestDto.getActivityLevel(),requestDto.getPurposeOfUse(),requestDto.getDietMode());
+        profiles.updateProfiles(requestDto.toEntity());
         return id;
     }
 
