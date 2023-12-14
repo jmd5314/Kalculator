@@ -7,14 +7,24 @@ import profile from "../Images/profile.jpg"
 
 
 const backendUrl = config.backendUrl;
+const InputField = styled.TextInput`
+  flex: 1;
+  height: 30px;
+  border-color: green;
+  border-width: 1px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+`;
 
 
 const WhiteButton = styled(TouchableOpacity)`
     background-color: #39D02C;
-    height: 60px;
+  height: 60px;
+  width: 265px;
     border-radius: 10px;
      align-items: center; /* 수직 정렬 */
       justify-content: center; /* 수평 정렬 */
+  margin-left: 25px;
   `;
 
   const ButtonText = styled.Text`
@@ -128,38 +138,38 @@ const ProfileProduction =({ navigation }) => {
 
   return (
     <Container>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:0}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:20,marginTop:10}}>
           <Image source={profile} style={{ width: 100, height: 100, borderRadius: 50 }} />
         <Text style={{ fontSize: 24 }}>프로필 작성</Text>
 
       </View>
 
 
-      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 10 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', marginLeft: 25 }}>
         <Text style={{ fontSize: 25, marginRight: 10 }}>닉네임</Text>
 
         <TextInput
-          style={{ height: 40,width:'70%', borderColor: 'blue', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
+          style={{ height: 40,width:'70%', borderColor: 'green', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
           placeholder="닉네임"
           onChangeText={(text) => setNickname(text)}
         />
       </View>
 
 
-      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 25 }}>
         <Text style={{ fontSize: 25, marginRight: 30 }}>나이</Text>
            <TextInput
-          style={{ height: 40,width:'70%', borderColor: 'blue', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
+          style={{ height: 40,width:'70%', borderColor: 'green', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
           placeholder="나이"
           onChangeText={(text) => setAge(text)}
         />
       </View>
 
 
-        <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
+        <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 25 }}>
             <Text style={{ fontSize: 25, marginRight: 50 }}>키</Text>
             <TextInput
-          style={{ height: 40,width:'70%', borderColor: 'blue', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
+          style={{ height: 40,width:'70%', borderColor: 'green', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
                 placeholder="키(cm)"
                 keyboardType="numeric" // 키패드를 숫자 전용으로 설정
                 onChangeText={(text) => setHeight(text)}
@@ -167,39 +177,39 @@ const ProfileProduction =({ navigation }) => {
         </View>
 
 
-        <View style={{ flexDirection: 'row', marginBottom: 15, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
-            <Text style={{ fontSize: 25, marginRight: 35 }}>성별</Text>
+        <View style={{ flexDirection: 'row', marginBottom: 15, width: '80%', justifyContent: 'flex-start', marginLeft: 25 }}>
+            <Text style={{ fontSize: 25, marginRight: 30 }}>성별</Text>
             <TouchableOpacity
                 style={{
                     width: 60,
                     marginRight: 50,
-                    backgroundColor: selectedGender === 'male' ? 'black' : 'gray',
+                    backgroundColor: selectedGender === 'male' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
                 onPress={() => handleGenderSelection('male')}
             >
-                <Text style={{ color: selectedGender === 'male' ? 'white' : 'black' }}>남</Text>
+                <Text style={{ color: selectedGender === 'male' ? 'white' : 'black' }}>   남</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{
                     width: 60,
                     marginRight: 20,
-                    backgroundColor: selectedGender === 'female' ? 'black' : 'gray',
+                    backgroundColor: selectedGender === 'female' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
                 onPress={() => handleGenderSelection('female')}
             >
-                <Text style={{ color: selectedGender === 'female' ? 'white' : 'black' }}>여</Text>
+                <Text style={{ color: selectedGender === 'female' ? 'white' : 'black' }}>   여</Text>
             </TouchableOpacity>
         </View>
 
 
-      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 25 }}>
               <Text style={{ fontSize: 25, marginRight: 30 }}>체중</Text>
               <TextInput
-                style={{ height: 40,width:'70%', borderColor: 'blue', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
+                style={{ height: 40,width:'70%', borderColor: 'green', borderWidth: 1, marginBottom: 10, paddingLeft: 10, }}
                 onChangeText={(text) => setWeight(text)}
 
                 placeholder="체중(kg)"
@@ -207,21 +217,21 @@ const ProfileProduction =({ navigation }) => {
       </View>
 
 
-        <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 10 }}>
+        <View style={{ flexDirection: 'row', marginBottom: 10, width: '80%', justifyContent: 'flex-start', marginLeft: 25 }}>
             <Text style={{ fontSize: 25, marginRight: 5 }}>목표 체중</Text>
             <TextInput
-                style={{ height: 40, borderColor: 'blue', borderWidth: 1, marginBottom: 10,  paddingLeft: 10 , width: '60%' }}
+                style={{ height: 40, borderColor: 'green', borderWidth: 1, marginBottom: 10,  paddingLeft: 10 , width: '60%' }}
                 placeholder="목표 체중(kg)"
                 onChangeText={(text) => setTargetWeight(text)}
             />
         </View>
 
-      <View style={{ flexDirection: 'row', marginBottom: 15, marginLeft: 10 }}>
-      <Text style={{ fontSize: 25, marginRight: 30 }}>활동량</Text>
+      <View style={{ flexDirection: 'row', marginBottom: 15, marginLeft: 25 }}>
+      <Text style={{ fontSize: 25, marginRight: 10 }}>활동량</Text>
             <TouchableOpacity
                 style={{
-                    marginRight: 30,
-                    backgroundColor: activityLevel === 'low_activity' ? 'black' : 'gray',
+                    marginRight: 20,
+                    backgroundColor: activityLevel === 'low_activity' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
@@ -231,8 +241,8 @@ const ProfileProduction =({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={{
-                    marginRight: 30,
-                    backgroundColor: activityLevel === 'general_activity' ? 'black' : 'gray',
+                    marginRight: 20,
+                    backgroundColor: activityLevel === 'general_activity' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
@@ -242,7 +252,7 @@ const ProfileProduction =({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={{
-                    backgroundColor: activityLevel === 'high_activity' ? 'black' : 'gray',
+                    backgroundColor: activityLevel === 'high_activity' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
@@ -252,12 +262,12 @@ const ProfileProduction =({ navigation }) => {
             </TouchableOpacity>
         </View>
 
-      <View style={{ flexDirection: 'row', marginBottom: 20, marginLeft: 10 }}>
-            <Text style={{ fontSize: 25, marginRight: 20 }}>이용목적</Text>
+      <View style={{ flexDirection: 'row', marginBottom: 20, marginLeft: 25 }}>
+            <Text style={{ fontSize: 25, marginRight: 10 }}>이용목적</Text>
             <TouchableOpacity
                 style={{
-                    marginRight: 30,
-                    backgroundColor: purpose === 'diet' ? 'black' : 'gray',
+                    marginRight: 10,
+                    backgroundColor: purpose === 'diet' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}
@@ -267,7 +277,7 @@ const ProfileProduction =({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={{
-                    backgroundColor: purpose === 'weight_gain' ? 'black' : 'gray',
+                    backgroundColor: purpose === 'weight_gain' ? 'green' : 'gray',
                     padding: 10,
                     borderRadius: 5,
                 }}

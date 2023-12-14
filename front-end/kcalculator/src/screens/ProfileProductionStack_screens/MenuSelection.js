@@ -70,7 +70,7 @@ const MenuSelection = ({ navigation, route }) => {
 
     return (
         <Container>
-            <Text>어떤 식단 모드로 진행할까요?</Text>
+            <Text style={{fontSize: 25, marginBottom:20}}>어떤 식단 모드로 진행할까요?</Text>
             <TouchableOpacity
                 style={[styles.card, { backgroundColor: 'gray' }]}
                 onPress={() => handleCardPress('GENERAL')}

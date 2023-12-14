@@ -65,7 +65,7 @@ const Login = ({ navigation }) => {
             <Container>
                 <Image
                     source={logo}
-                    style={{ width: 300, height: 100, marginBottom: 20 }}
+                    style={{ width: 300, height: 100, marginBottom: 60 }}
                     resizeMode="contain"
                 />
                 <Input

@@ -9,10 +9,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 const data = {
-  labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일','일요일'],
+  labels: ['3일전', '2일전','어제','오늘'],
   datasets: [
     {
-      data: [0,0,0,0,0,0,0],
+      data: [0,0,0,0],
     },
   ],
 };
@@ -85,24 +85,24 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
         </View>
         <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>일일 섭취 칼로리 {recommendedCalories}kcal</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>남은 칼로리 kcal</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>일일 섭취 칼로리 : {recommendedCalories}kcal</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>남은 칼로리 : {recommendedCalories} kcal</Text>
         </View>
         <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>탄수화물 g/ {recommendedCarbohydrates}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>단백질 g/ {recommendedProteins}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>지방 g/ {recommendedFats}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>탄수화물 0g / {recommendedCarbohydrates}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>단백질 0g / {recommendedProteins}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 5 }}>지방 0g / {recommendedFats}g</Text>
         </View>
         <View style={styles.container}>
-            <Text>Bar Chart Example</Text>
+            <Text>칼로리 섭취량</Text>
             <BarChart
               data={data}
               width={400}
               height={200}
               chartConfig={{
-                backgroundColor: '#e26a00',
-                backgroundGradientFrom: '#fb8c00',
-                backgroundGradientTo: '#ffa726',
+                backgroundColor: '#39D02C',
+                backgroundGradientFrom: '#39D02C',
+                backgroundGradientTo: '#39D02C',
                 decimalPlaces: 2,
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -114,6 +114,7 @@ const Home = ({ navigation }) => {
                   strokeWidth: '2',
                   stroke: '#ffa726',
                 },
+                  yAxisSuffix: 'k',
               }}
               bezier
               style={{
@@ -130,7 +131,16 @@ const Home = ({ navigation }) => {
                   placeholder="체중 (kg)"
                   keyboardType="numeric"
               />
-            <Button title="입력" onPress={sendWeightToServer}/>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: '#39D02C',
+                    padding: 10,
+                    borderRadius: 5,
+                }}
+                onPress={sendWeightToServer}
+            >
+                <Text style={{ color: '#fff', fontSize: 16 }}>입력</Text>
+            </TouchableOpacity>
         </View>
     </SafeAreaView>
   );

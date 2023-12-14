@@ -32,7 +32,7 @@ const MainTab = () => {
             <Tab.Screen 
                 name="HomeStack" 
                 component={HomeStack} 
-                options={{ tabBarLabel: 'Home' }}/>
+                options={{ tabBarLabel: 'Home',headerShown: false}}/>
             <Tab.Screen 
                 name="MenuStack" 
                 component={MenuStack} 

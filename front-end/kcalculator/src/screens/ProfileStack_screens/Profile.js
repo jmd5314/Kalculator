@@ -7,42 +7,42 @@ import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
+
 const Profile = ({ navigation }) => {
-    const [ nickname, setNickname ] = useState('');
-    const [ weight, setWeight ] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [weight, setWeight] = useState('');
     const [targetWeight, setTargetWeight] = useState('');
-    const [ age, setAge ] = useState('');
-    const [ height, setHeight ] = useState('');
-    const [ activityLevel, setActivityLevel ] = useState('');
-    const [ purposeOfUse, setPurpose ] = useState('');
-    const [ gender, setSelectedGender ] = useState('');
+    const [age, setAge] = useState('');
+    const [height, setHeight] = useState('');
+    const [activityLevel, setActivityLevel] = useState('');
+    const [purposeOfUse, setPurpose] = useState('');
+    const [gender, setSelectedGender] = useState('');
     const { dispatch } = useContext(UserContext);
 
     useEffect(() => {
         const fetchProfileFromBackend = async () => {
             const token = await AsyncStorage.getItem('token');
-          try {
-            const response = await axios.get(`${backendUrl}/api/profiles/confirm`,{
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-              setTargetWeight(response.data.targetWeight);
-            setWeight((response.data.weight));
-            setNickname(response.data.nickname);
-            setAge(response.data.age);
-            setHeight(response.data.height);
-            setSelectedGender(response.data.gender);
-            setActivityLevel(response.data.activityLevel);
-            setPurpose(response.data.purposeOfUse);
-          } catch (error) {
-            console.error('Error fetching profile:', error);
-          }
+            try {
+                const response = await axios.get(`${backendUrl}/api/profiles/confirm`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setTargetWeight(response.data.targetWeight);
+                setWeight(response.data.weight);
+                setNickname(response.data.nickname);
+                setAge(response.data.age);
+                setHeight(response.data.height);
+                setSelectedGender(response.data.gender);
+                setActivityLevel(response.data.activityLevel);
+                setPurpose(response.data.purposeOfUse);
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
         };
-    
+
         fetchProfileFromBackend();
     }, []);
-
 
     const _handleLogoutButtonPress = async () => {
         try {
@@ -58,20 +58,22 @@ const Profile = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
-                <Text style={{ fontSize: 25, marginLeft: 5 }}>닉네임 : {nickname}</Text>
-
-            </View>
-            <View style={styles.profile}>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")}>
-                    <Text style={{ fontSize: 25, marginLeft: 5 }}>프로필 수정</Text>
+                <Text style={styles.label}>닉네임:</Text>
+                <Text style={styles.value}>{nickname}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")} style={styles.editProfileButton}>
+                    <Text style={styles.editProfileButtonText}>프로필 수정</Text>
                 </TouchableOpacity>
             </View>
+
             <View style={styles.profile}>
-                <Text style={{fontSize: 25, marginLeft: 5}}>현재 체중 : {weight}</Text>
-                <View style={{width: 60}} />
-                <Text style={{fontSize: 25}}>목표 체중까지 : {weight-targetWeight} </Text>
+                <Text style={styles.label}>현재 체중:</Text>
+                <Text style={styles.value}>{weight}kg</Text>
             </View>
-            <View style={{height: 20}} />
+
+            <View style={styles.profile}>
+                <Text style={styles.label}>목표 체중까지:</Text>
+                <Text style={styles.value}>{weight - targetWeight}kg</Text>
+            </View>
             <View>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>나이 : {age}</Text>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>키 : {height}</Text>
@@ -79,13 +81,11 @@ const Profile = ({ navigation }) => {
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>활동량 : {activityLevel}</Text>
                 <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>이용목적 : {purposeOfUse}</Text>
             </View>
-            <View style={{height: 5}} />
-            <View>
-                <Button title="회원탈퇴" 
-                    onPress={() => navigation.navigate("UserDelete")} />
-                <View style={{ width: 150 }} />
-                <Button title="로그아웃" 
-                    onPress={_handleLogoutButtonPress} />
+            <View style={styles.btnContainer}>
+                <Button title="회원탈퇴" onPress={() => navigation.navigate("UserDelete")} />
+            </View>
+            <View style={styles.btnContainer}>
+                <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
             </View>
         </SafeAreaView>
     );
@@ -97,20 +97,31 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     profile: {
-        width: '100%',
-        height: 70,
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: 20,
+        marginLeft: 5,
     },
-    area: {
-        height: 160,
-        width: '95%',
-        margin: 5,
+    label: {
+        fontSize: 25,
+        marginRight: 10,
     },
-    btnArea: {
-        height: 65,
-        flexDirection: 'row',
+    value: {
+        fontSize: 25,
+    },
+    editProfileButton: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+    },
+    editProfileButtonText: {
+        fontSize: 20,
+        color: 'green',
+    },
+    btnContainer: {
+        marginTop: 20,
     },
 });
+
 
 export default Profile;

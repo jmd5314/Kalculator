@@ -13,7 +13,7 @@ const InputField = styled.TextInput`
   border-color: green;
   border-width: 1px;
   margin-bottom: 10px;
-  border-radius: 5px; /* 이 부분을 수정해서 입력창을 둥글게 만듭니다 */
+  border-radius: 5px;
 `;
 
 const WhiteButton = styled(TouchableOpacity)`
@@ -96,7 +96,7 @@ const Signup = ({ navigation }) => {
   return (
   <Container>
      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 70, marginLeft: 30,marginTop:-10}}>
-       <Text style={{ fontSize: 30, fontWeight: 'bold',color:'#39D02C' }}>회원가입</Text>
+       <Text style={{ fontSize: 30, fontWeight: 'bold' }}>회원가입</Text>
      </View>
 
 

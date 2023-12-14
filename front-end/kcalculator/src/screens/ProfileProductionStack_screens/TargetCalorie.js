@@ -9,16 +9,18 @@ import profile from "../Images/calculator.png"
 const backendUrl = config.backendUrl;
 
 const WhiteButton = styled(TouchableOpacity)`
-    background-color: #FFD699;
-    height: 110px;
-    border-radius: 10px;
-     align-items: center; /* 수직 정렬 */
-      justify-content: center; /* 수평 정렬 */
+  background-color: #39D02C;
+  height: 60px;
+  width: 265px;
+  border-radius: 10px;
+  align-items: center; /* 수직 정렬 */
+  justify-content: center; /* 수평 정렬 */
+  margin-left: 25px;
   `;
 
 const ButtonText = styled.Text`
     font-size: 30px;
-    color: #7ED321;
+    color: #ffffff;
   `;
 
 const YellowButton = styled(TouchableOpacity)`
@@ -64,21 +66,21 @@ function Calculate({ navigation, route }) {
     return (
         <Container>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginTop: 0 }}>
-     <Image source={calculator} style={{ marginRight: 20, width: 80, height: 80, borderRadius: 50 }} />
+     <Image source={calculator} style={{ marginLeft:-20,marginRight: 10, width: 80, height: 80 }} />
 
         <Text style={{fontSize: 30, marginBottom:10}}>권장 칼로리 계산</Text>
             </View>
 
       <Text style={{fontSize: 20, marginBottom:10}}>일일 권장 섭취량은</Text>
-      <Text style={{fontSize: 40, marginBottom:10, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
+      <Text style={{fontSize: 35, marginBottom:10, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
 
             <View style={{marginTop: 30}}>
              <YellowButton>
 
-            <Text style={{marginBottom:10, marginTop:10}}>꿀팁!</Text>
-                 <Text style={{marginBottom:10}}>일반적으로 권장 섭취량보다 </Text>
-                <Text style={{marginBottom:10}}>하루 500kcal 정도 적게 먹으면</Text>
-            <Text>감량 효과를 기대할 수 있어요!</Text>
+            <Text style={{fontSize:17,marginBottom:10, marginTop:10}}>꿀팁!</Text>
+                 <Text style={{fontSize:17,marginBottom:10}}>일반적으로 권장 섭취량보다 </Text>
+                <Text style={{fontSize:17,marginBottom:10}}>하루 500kcal 정도 적게 먹으면</Text>
+            <Text style={{fontSize:17}}>감량 효과를 기대할 수 있어요!</Text>
 
              </YellowButton>
 
