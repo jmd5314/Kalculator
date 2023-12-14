@@ -10,7 +10,7 @@ const backendUrl = config.backendUrl;
 const WhiteButton = styled(TouchableOpacity)`
   background-color: #39D02C;
   height: 60px;
-  width: 265px;
+  width: 260px;
   border-radius: 10px;
   align-items: center; /* 수직 정렬 */
   justify-content: center; /* 수평 정렬 */
@@ -18,16 +18,18 @@ const WhiteButton = styled(TouchableOpacity)`
   `;
 
 const ButtonText = styled.Text`
-    font-size: 30px;
+    font-size: 25px;
     color: #ffffff;
   `;
 
 const YellowButton = styled(TouchableOpacity)`
-    background-color: #FFFF00;
-    height: 150px;
-    border-radius: 10px;
-     align-items: center; /* 수직 정렬 */
-  `;
+  background-color: #f1f104;
+  width: 260px;
+  height: 200px;
+  border-radius: 10px;
+  align-items: center; /* 수직 정렬 */
+  margin-left: 25px;
+`;
 
 
 const Container = styled.SafeAreaView`
@@ -64,19 +66,18 @@ function Calculate({ navigation, route }) {
 
     return (
         <Container>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginTop: 0 }}>
-     <Image source={calculator} style={{ marginLeft:-20,marginRight: 10, width: 80, height: 80 }} />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginTop: 30 }}>
 
-        <Text style={{fontSize: 30, marginBottom:10}}>권장 칼로리 계산</Text>
+        <Text style={{fontSize: 20, marginBottom:10,marginLeft:25}}>권장 칼로리를 계산해드렸어요!</Text>
             </View>
 
-      <Text style={{fontSize: 20, marginBottom:10}}>일일 권장 섭취량은</Text>
-      <Text style={{fontSize: 35, marginBottom:10, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
+      <Text style={{fontSize: 20, marginBottom:10,marginLeft:25}}>일일 권장 섭취량은</Text>
+      <Text style={{fontSize: 20, marginBottom:10,marginLeft:25, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
 
             <View style={{marginTop: 30}}>
              <YellowButton>
 
-            <Text style={{fontSize:17,marginBottom:10, marginTop:10}}>꿀팁!</Text>
+            <Text style={{fontSize:17,marginBottom:10, marginTop:30}}>꿀팁!</Text>
                  <Text style={{fontSize:17,marginBottom:10}}>일반적으로 권장 섭취량보다 </Text>
                 <Text style={{fontSize:17,marginBottom:10}}>하루 500kcal 정도 적게 먹으면</Text>
             <Text style={{fontSize:17}}>감량 효과를 기대할 수 있어요!</Text>
@@ -86,7 +87,7 @@ function Calculate({ navigation, route }) {
             </View>
 
 
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: 160 }}>
               <WhiteButton
          onPress={() => navigation.navigate('MainTab',{profileId})}>
                 <ButtonText>프로필생성완료</ButtonText>

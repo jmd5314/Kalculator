@@ -85,20 +85,20 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
         </View>
         <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 10 }}>일일 섭취 칼로리 : {recommendedCalories}kcal</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 10 }}>남은 칼로리 : {recommendedCalories} kcal</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>일일 권장 칼로리 : {recommendedCalories}kcal</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>남은 칼로리 : {recommendedCalories} kcal</Text>
         </View>
         <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 10 }}>탄수화물 0g / {recommendedCarbohydrates}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 10 }}>단백질 0g / {recommendedProteins}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 10 }}>지방 0g / {recommendedFats}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>탄수화물 0g / {recommendedCarbohydrates}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>단백질 0g / {recommendedProteins}g</Text>
+            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>지방 0g / {recommendedFats}g</Text>
         </View>
         <View style={styles.container}>
-            <Text>칼로리 섭취량</Text>
+            <Text style={{marginTop:20}}>칼로리 섭취량</Text>
             <BarChart
               data={data}
-              width={400}
-              height={200}
+              width={350}
+              height={250}
               chartConfig={{
                 backgroundColor: '#39D02C',
                 backgroundGradientFrom: '#39D02C',
@@ -123,7 +123,7 @@ const Home = ({ navigation }) => {
               }}
             />
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 10}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 20,marginTop:40}}>
             <Text style={{fontSize: 20}}>현재 체중 : </Text>
             <TextInput
                   style={{ height: 40, width: 80, borderColor: 'gray', borderWidth: 1, margin: 10 }}

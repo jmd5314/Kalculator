@@ -36,7 +36,7 @@ const MainTab = () => {
             <Tab.Screen 
                 name="MenuStack" 
                 component={MenuStack} 
-                options={{ tabBarLabel: 'Menu' }}/>
+                options={{ tabBarLabel: 'Menu',headerShown: false }}/>
             <Tab.Screen 
                 name="PostStack" 
                 component={PostStack} 

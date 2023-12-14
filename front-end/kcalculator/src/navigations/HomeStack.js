@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 const HomeStack = () => {
     return(
         <Stack.Navigator  screenOptions={{  headerTitleAlign: 'center' }}>
-             <Stack.Screen name="Home" component={Home} />
+             <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
              <Stack.Screen name="Profile" component={Profile} />
              <Stack.Screen name="ProfileRevise" component={ProfileRevise} />
              <Stack.Screen name="PostList" component={PostList} />

@@ -30,7 +30,7 @@ const GrayButton = styled(TouchableOpacity)`
 const Menu = ({ navigation }) => {
   return (
     <Container>
-      <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 20, marginTop: 30 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
         <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
                 <TouchableOpacity>
                   <Icon name="account-circle" size={40} color="black" />

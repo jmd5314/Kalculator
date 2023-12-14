@@ -28,7 +28,7 @@ const WhiteButton = styled(TouchableOpacity)`
   `;
 
   const ButtonText = styled.Text`
-    font-size: 30px;
+    font-size: 25px;
     color: #ffffff;
   `;
 
