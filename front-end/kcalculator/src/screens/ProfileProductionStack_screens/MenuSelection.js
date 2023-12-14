@@ -72,7 +72,7 @@ const MenuSelection = ({ navigation, route }) => {
         <Container>
             <Text style={{fontSize: 25, marginBottom:20}}>어떤 식단 모드로 진행할까요?</Text>
             <TouchableOpacity
-                style={[styles.card, { backgroundColor: 'gray' }]}
+                style={[styles.card, { backgroundColor: '#b7b3b3' }]}
                 onPress={() => handleCardPress('GENERAL')}
             >
                 <Text style={{ color: 'white', marginBottom: 20 }}>일반 식단</Text>
@@ -87,7 +87,7 @@ const MenuSelection = ({ navigation, route }) => {
 
             </TouchableOpacity>
             <TouchableOpacity
-                style={[styles.card, { backgroundColor: 'purple' }]}
+                style={[styles.card, { backgroundColor: '#39D02C' }]}
                 onPress={() => handleCardPress('KETOGENIC')}
             >
                 <Text style={{ color: 'white', marginBottom: 20 }}>키토 식단</Text>

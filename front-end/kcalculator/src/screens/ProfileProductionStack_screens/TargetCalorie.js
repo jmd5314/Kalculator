@@ -4,7 +4,6 @@ import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import config from '../config';
 import calculator from '../Images/calculator.png';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import profile from "../Images/calculator.png"
 
 const backendUrl = config.backendUrl;
 

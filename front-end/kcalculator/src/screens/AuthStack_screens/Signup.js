@@ -1,7 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components/native';
-import { ProgressContext, UserContext } from '../../contexts';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, Text, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import { Alert } from 'react-native';
 import axios from 'axios';
@@ -14,6 +12,7 @@ const InputField = styled.TextInput`
   border-width: 1px;
   margin-bottom: 10px;
   border-radius: 5px;
+  padding: 10px;
 `;
 
 const WhiteButton = styled(TouchableOpacity)`
@@ -144,7 +143,7 @@ const Signup = ({ navigation }) => {
       </View>
 
 
-       <View style={{ marginTop: 20}}>
+       <View>
               <WhiteButton
               onPress={handleSubmit}>
                 <ButtonText>회원가입</ButtonText>

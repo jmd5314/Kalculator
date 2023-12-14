@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 import { UserContext } from '../../contexts';
 import { Button } from '../../components';
 import axios from 'axios';
@@ -7,6 +8,52 @@ import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: white;
+`;
+
+const ProfileContainer = styled.View`
+  flex: 1;
+  background-color: white;
+  padding: 20px;
+`;
+
+const ProfileItem = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+const ProfileText = styled.Text`
+  font-size: 20px;
+  margin-left: 10px;
+`;
+
+const Label = styled.Text`
+  margin-top: 35px;
+  margin-left: 10px;
+  font-size: 20px;
+  margin-right: 10px;
+`;
+
+const Value = styled.Text`
+  font-size: 20px;
+`;
+
+const EditProfileButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
+const EditProfileButtonText = styled.Text`
+  font-size: 20px;
+  color: green;
+`;
+const BtnContainer = styled.View`
+  margin-bottom: 20px;
+`;
 
 const Profile = ({ navigation }) => {
     const [nickname, setNickname] = useState('');
@@ -56,72 +103,54 @@ const Profile = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.profile}>
-                <Text style={styles.label}>닉네임:</Text>
-                <Text style={styles.value}>{nickname}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileRevise")} style={styles.editProfileButton}>
-                    <Text style={styles.editProfileButtonText}>프로필 수정</Text>
-                </TouchableOpacity>
-            </View>
+        <Container>
+            <ProfileContainer>
+                <ProfileItem>
+                    <Label>닉네임:</Label>
+                    <Label>{nickname}</Label>
+                    <EditProfileButton onPress={() => navigation.navigate("ProfileRevise")}>
+                        <EditProfileButtonText>프로필 수정</EditProfileButtonText>
+                    </EditProfileButton>
+                </ProfileItem>
 
-            <View style={styles.profile}>
-                <Text style={styles.label}>현재 체중:</Text>
-                <Text style={styles.value}>{weight}kg</Text>
-            </View>
+                <ProfileItem>
+                    <ProfileText>현재 체중: {weight}kg</ProfileText>
+                </ProfileItem>
 
-            <View style={styles.profile}>
-                <Text style={styles.label}>목표 체중까지:</Text>
-                <Text style={styles.value}>{weight - targetWeight}kg</Text>
-            </View>
-            <View>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>나이 : {age}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>키 : {height}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>성별 : {gender}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>활동량 : {activityLevel}</Text>
-                <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 5 }}>이용목적 : {purposeOfUse}</Text>
-            </View>
-            <View style={styles.btnContainer}>
-                <Button title="회원탈퇴" onPress={() => navigation.navigate("UserDelete")} />
-            </View>
-            <View style={styles.btnContainer}>
-                <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
-            </View>
-        </SafeAreaView>
+                <ProfileItem>
+                    <ProfileText>목표 체중까지: {weight - targetWeight}kg</ProfileText>
+                </ProfileItem>
+
+                <ProfileItem>
+                    <ProfileText>나이: {age}</ProfileText>
+                </ProfileItem>
+
+                <ProfileItem>
+                    <ProfileText>키: {height}</ProfileText>
+                </ProfileItem>
+
+                <ProfileItem>
+                    <ProfileText>성별: {gender}</ProfileText>
+                </ProfileItem>
+
+                <ProfileItem>
+                    <ProfileText>활동량: {activityLevel}</ProfileText>
+                </ProfileItem>
+
+                <ProfileItem>
+                    <ProfileText>이용목적: {purposeOfUse}</ProfileText>
+                </ProfileItem>
+
+                <BtnContainer>
+                    <Button title="회원탈퇴" onPress={() => navigation.navigate("UserDelete")} />
+                </BtnContainer>
+
+                <BtnContainer>
+                    <Button title="로그아웃" onPress={_handleLogoutButtonPress} />
+                </BtnContainer>
+            </ProfileContainer>
+        </Container>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    profile: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-        marginLeft: 5,
-    },
-    label: {
-        fontSize: 25,
-        marginRight: 10,
-    },
-    value: {
-        fontSize: 25,
-    },
-    editProfileButton: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-    },
-    editProfileButtonText: {
-        fontSize: 20,
-        color: 'green',
-    },
-    btnContainer: {
-        marginTop: 20,
-    },
-});
-
 
 export default Profile;

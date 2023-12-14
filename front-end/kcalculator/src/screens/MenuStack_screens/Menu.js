@@ -21,16 +21,16 @@ const IconWrapper = styled.View`
 `;
 
 const GrayButton = styled(TouchableOpacity)`
-    background-color: #d3d3d3;
-    height: 150px;
-      width: 45%; /* Adjusted width */
-    border-radius: 10px;
- `;
+  background-color: #eeebeb;
+  height: 150px;
+  width: 45%; /* Adjusted width */
+  border-radius: 10px;
+`;
 
 const Menu = ({ navigation }) => {
   return (
     <Container>
-      <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 30, marginTop: 30 }}>
+      <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 20, marginTop: 30 }}>
         <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
                 <TouchableOpacity>
                   <Icon name="account-circle" size={40} color="black" />
