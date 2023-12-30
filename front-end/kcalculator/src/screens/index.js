@@ -3,6 +3,9 @@ import PostList from './ProfileStack_screens/PostList';
 import GroupList from './ProfileStack_screens/GroupList';
 import UserDelete from './ProfileStack_screens/UserDelete';
 import ProfileRevise from './ProfileStack_screens/ProfileRevise';
+import UpdateMenuSelection from "./ProfileStack_screens/UpdateMenuSelection";
+import UpdateTargetCalorie from "./ProfileStack_screens/UpdateTargetCalorie";
+
 
 //navigation주소 적어놈.
 import MenuSelection from './ProfileProductionStack_screens/MenuSelection';
@@ -25,6 +28,6 @@ import Running from './RunningStack_screens/Running';
 
 
 
-export {Profile, PostList, GroupList, UserDelete, 
+export {Profile, PostList, GroupList, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
     Login, Signup, Battle, Home, Menu, MenuSearch, Post, Running};

@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeStack from './HomeStack';
-import MenuStack from './MenuStack';
-import PostStack from './PostStack';
-import RunningStack from './RunningStack';
-import BattleStack from './BattleStack';
+import Home from '../screens/HomeStack_screens/Home';
+import Menu from '../screens/MenuStack_screens/Menu';
+import Post from '../screens/PostStack_screens/Post';
+import Running from '../screens/RunningStack_screens/Running';
+import Battle from '../screens/BattleStack_screens/Battle';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -20,34 +20,34 @@ const MainTab = () => {
             screenOptions={({ route }) => ({
                 tabBarIcon: props => {
                     let name = ''
-                    if(route.name === 'HomeStack') name="home";
-                    else if (route.name === 'MenuStack') name="menu-book";
-                    else if (route.name === 'PostStack') name="article";
-                    else if (route.name === 'RunningStack') name="directions-run";
+                    if(route.name === 'Home') name="home";
+                    else if (route.name === 'Menu') name="menu-book";
+                    else if (route.name === 'Post') name="article";
+                    else if (route.name === 'Running') name="directions-run";
                     else name = 'groups';
                     return TabIcon({...props, name });
                 },
                 headerShown: false
             })}>
             <Tab.Screen 
-                name="HomeStack" 
-                component={HomeStack} 
+                name="Home"
+                component={Home}
                 options={{ tabBarLabel: 'Home',headerShown: false}}/>
             <Tab.Screen 
-                name="MenuStack" 
-                component={MenuStack} 
+                name="Menu"
+                component={Menu}
                 options={{ tabBarLabel: 'Menu',headerShown: false }}/>
             <Tab.Screen 
-                name="PostStack" 
-                component={PostStack} 
+                name="Post"
+                component={Post}
                 options={{ tabBarLabel: 'Post' }}/>
             <Tab.Screen 
-                name="RunningStack" 
-                component={RunningStack} 
+                name="Running"
+                component={Running}
                 options={{ tabBarLabel: 'Running' }}/>
             <Tab.Screen 
-                name="BattleStack" 
-                component={BattleStack} 
+                name="Battle"
+                component={Battle}
                 options={{ tabBarLabel: 'Battle' }}/>
         </Tab.Navigator>
     );
