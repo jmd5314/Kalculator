@@ -17,7 +17,6 @@ const Stack = createStackNavigator();
 const AuthStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Signup" component={Signup} options={{ title:'' }}/>
             <Stack.Screen name="ProfileProduction" component={ProfileProduction} options={{headerShown:false}} />
@@ -29,6 +28,7 @@ const AuthStack = () => {
             <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{headerShown:false}} />
             <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{headerShown:false}} />
             <Stack.Screen name="MenuSearch" component={MenuSearch} />
+            <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
 };

@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 const MainStack = () => {
     const theme = useContext(ThemeContext);
     return (
-        <Stack.Navigator initialRouteName="Main">
+        <Stack.Navigator >
             <Stack.Screen name="Main" component={MainTab} options={{headerShown: false}}/>
             <Stack.Screen name="ProfileProduction" component={ProfileProduction} options={{headerShown:false}} />
             <Stack.Screen name="MenuSelection" component={MenuSelection} options={{headerShown:false}} />
