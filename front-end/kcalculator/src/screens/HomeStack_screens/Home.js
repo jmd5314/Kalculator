@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, Button } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { BarChart } from 'react-native-chart-kit';
+import { ProgressChart } from 'react-native-chart-kit';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
-const data = {
-  labels: ['3일전', '2일전','어제','오늘'],
-  datasets: [
-    {
-      data: [0,0,0,0],
-    },
-  ],
-};
 
 const Home = ({ navigation }) => {
   const [ weight, setWeight ] = useState('');
@@ -24,6 +16,22 @@ const Home = ({ navigation }) => {
   const [ recommendedProteins, setRecommendedProteins ] = useState('');
   const [ recommendedFats, setRecommendedFats ] = useState('');
 
+  const data = {
+    labels: ["탄수화물", "단백질", "지방"],
+    data: [0, 0, 0],
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: '#FFFFFF',
+    backgroundGradientTo: '#FFFFFF',
+    color: (opacity = 1) => `rgba(57,208,44, ${opacity})`,
+    strokeWidth: 2,
+  };
+/*
+  const consumedCarbsPercentage = Math.round((10 / recommendedCarbohydrates) * 100);
+  const consumedProteinPercentage = Math.round((10 / recommendedProteins) * 100);
+  const consumedFatPercentage = Math.round((10 / recommendedFats) * 100);
+*/
   useEffect(() => {
     const fetchRecommendedFromBackend = async () => {
         const token = await AsyncStorage.getItem('token');
@@ -77,7 +85,7 @@ const Home = ({ navigation }) => {
 };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: 'white'}}>
         <View style={{ flexDirection: 'row-reverse', marginTop: 10, marginBottom: 20, marginLeft: 10 }}>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <MaterialIcons name="account-circle" size={50} />
@@ -87,49 +95,43 @@ const Home = ({ navigation }) => {
             <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>일일 권장 칼로리 : {recommendedCalories}kcal</Text>
             <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>남은 칼로리 : {recommendedCalories} kcal</Text>
         </View>
-        <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>탄수화물 0g / {recommendedCarbohydrates}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>단백질 0g / {recommendedProteins}g</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>지방 0g / {recommendedFats}g</Text>
-        </View>
         <View style={styles.container}>
-            <Text style={{marginTop:20}}>칼로리 섭취량</Text>
-            <BarChart
-              data={data}
-              width={360}
-              height={250}
-              chartConfig={{
-                backgroundColor: '#39D02C',
-                backgroundGradientFrom: '#39D02C',
-                backgroundGradientTo: '#39D02C',
-                decimalPlaces: 2,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-                propsForDots: {
-                  r: '6',
-                  strokeWidth: '2',
-                  stroke: '#ffa726',
-                },
-                  yAxisSuffix: 'k',
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-            />
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 20,marginTop:40}}>
-            <Text style={{fontSize: 20}}>현재 체중 : </Text>
-            <TextInput
-                  style={{ height: 40, width: 80, borderColor: 'gray', borderWidth: 1, margin: 10,padding:5 }}
-                  onChangeText={(text) => setWeight(text)}
-                  placeholder="체중 (kg)"
-                  keyboardType="numeric"
+            <View>
+              <ProgressChart
+                data={data}
+                width={400}
+                height={300}
+                chartConfig={chartConfig}
+                hideLegend={false}
               />
+            </View>
+        </View>
+        <View style={{ marginLeft: 20 }}>
+            <View style={styles.infoContainer}>
+                <View style={[styles.icon, { backgroundColor: '#F79800' }]} />
+                <Text style={{ fontSize: 20, marginRight: 90}}>탄수화물</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
+                <Text style={{ fontSize: 20}}>0%</Text>
+            </View>
+            <View style={styles.infoContainer}>
+                <View style={[styles.icon, { backgroundColor: '#34F200' }]} />
+                <Text style={{ fontSize: 20, marginRight: 110}}>단백질</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
+                <Text style={{ fontSize: 20}}>0%</Text>
+            </View>
+            <View style={styles.infoContainer}>
+                <View style={[styles.icon, { backgroundColor: '#0095A3' }]} />
+                <Text style={{ fontSize: 20, marginRight: 130}}>지방</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
+                <Text style={{ fontSize: 20}}>0%</Text>
+            </View>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 12, marginTop:10}}>
+            <TextInput
+                  style={{ height: 40, width: 120, borderColor: 'gray', borderWidth: 1, margin: 10, padding:5 }}
+                  onChangeText={(text) => setWeight(text)}
+                  placeholder="현재 체중 (kg)"
+                  keyboardType="numeric"/>
             <TouchableOpacity
                 style={{
                     backgroundColor: '#39D02C',
@@ -147,8 +149,28 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  labelContainer: {
+    flexDirection: 'column',
+    marginTop: 10,
+  },
+  labelItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  icon: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 5,
   },
 });
 

@@ -18,14 +18,14 @@ const MainStack = () => {
         <Stack.Navigator >
             <Stack.Screen name="Main" component={MainTab} options={{headerShown: false}}/>
             <Stack.Screen name="ProfileProduction" component={ProfileProduction} options={{headerShown:false}} />
-            <Stack.Screen name="MenuSelection" component={MenuSelection} options={{headerShown:false}} />
-            <Stack.Screen name="TargetCalorie" component={TargetCalorie} options={{headerShown:false}} />
-            <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} />
-            <Stack.Screen name="UserDelete" component={UserDelete} />
-            <Stack.Screen name="ProfileRevise" component={ProfileRevise} options={{headerShown:false}} />
-            <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{headerShown:false}} />
-            <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{headerShown:false}} />
-            <Stack.Screen name="MenuSearch" component={MenuSearch} options={{headerShown:false}} />
+            <Stack.Screen name="MenuSelection" component={MenuSelection} options={{ title:'' }} />
+            <Stack.Screen name="TargetCalorie" component={TargetCalorie} options={{ title:'' }} />
+            <Stack.Screen name="Profile" component={Profile} options={{ title:'' }} />
+            <Stack.Screen name="UserDelete" component={UserDelete} options={{ title:'' }}/>
+            <Stack.Screen name="ProfileRevise" component={ProfileRevise} options={{ title:'' }} />
+            <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{ title:'' }} />
+            <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{ title:'' }} />
+            <Stack.Screen name="MenuSearch" component={MenuSearch} options={{ title:'' }} />
         </Stack.Navigator>
     );
 };
