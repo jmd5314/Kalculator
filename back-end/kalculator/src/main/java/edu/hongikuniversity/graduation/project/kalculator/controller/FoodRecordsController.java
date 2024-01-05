@@ -27,6 +27,8 @@ public class FoodRecordsController {
     //음식 추가
     @PostMapping("/save")
     public Long save(@RequestBody List<FoodsSaveRequestDto> requestDtoList, Authentication authentication){
+        String userId = authentication.getName();
+        Users users = usersService.findByUserId(userId);
         List<Foods> foodsList = new ArrayList<>();
         for(FoodsSaveRequestDto requestDto:requestDtoList){
             Foods foods = Foods.builder().foodName(requestDto.getFoodName()).calories(requestDto.getCalories())
@@ -35,10 +37,7 @@ public class FoodRecordsController {
             foodsService.save(foods);
             foodsList.add(foods);
         }
-        FoodRecords foodRecords = foodRecordsService.foodRecord(foodsList);
-        String userId = authentication.getName();
-        Users users = usersService.findByUserId(userId);
-        foodRecords.setUsers(users);
-        return foodRecordsService.save(foodRecords);
+        FoodRecords foodRecords = foodRecordsService.foodRecord(foodsList,users);
+        return foodRecords.getRecordId();
     }
 }

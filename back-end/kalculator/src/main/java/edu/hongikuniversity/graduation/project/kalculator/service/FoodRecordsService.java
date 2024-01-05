@@ -12,11 +12,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FoodRecordsService {
     private final FoodRecordsRepository foodRecordsRepository;
     //음식 기록
     @Transactional
-    public FoodRecords foodRecord( List<Foods> foodsList){
+    public FoodRecords foodRecord(List<Foods> foodsList,Users users){
         //현재 날짜
         LocalDate today = LocalDate.now();
         Optional<FoodRecords> foodRecordsOptional = foodRecordsRepository.findByDate(today);
@@ -29,6 +30,7 @@ public class FoodRecordsService {
         }
         else{ // 존재하지 않는다면
             foodRecords = FoodRecords.builder().date(today).build();
+            foodRecords.setUsers(users);
             for(Foods food:foodsList){
                 foodRecords.addFoods(food);
             }
@@ -36,11 +38,11 @@ public class FoodRecordsService {
         return foodRecordsRepository.save(foodRecords);
     }
     //음식 기록 저장
+    @Transactional
     public Long save(FoodRecords foodRecords){
         return foodRecordsRepository.save(foodRecords).getRecordId();
     }
     // 식사 유형별 칼로리
-    @Transactional
     public Integer MealCalories(MealType mealType){
         LocalDate today = LocalDate.now();
         FoodRecords foodRecords = foodRecordsRepository.findByDate(today)
@@ -55,7 +57,6 @@ public class FoodRecordsService {
         return (int)Math.round(sum);
     }
     // 하루 전체 칼로리
-    @Transactional
     public Integer DailyCalories(){
         LocalDate today = LocalDate.now();
         FoodRecords foodRecords = foodRecordsRepository.findByDate(today)
