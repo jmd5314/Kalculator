@@ -6,7 +6,7 @@ import lombok.Setter;
 
 
 @Entity
-@Getter @Setter
+@Getter
 public class Foods {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long foodId;
@@ -20,4 +20,7 @@ public class Foods {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="recordId")
     private FoodRecords foodRecords;
+    public void setFoodRecords(FoodRecords foodRecords){
+        this.foodRecords = foodRecords;
+    }
 }
