@@ -33,7 +33,7 @@ public class FoodRecordsService {
                 foodRecords.addFoods(food);
             }
         }
-        return foodRecords;
+        return foodRecordsRepository.save(foodRecords);
     }
     //음식 기록 저장
     public Long save(FoodRecords foodRecords){
