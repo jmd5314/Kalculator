@@ -31,10 +31,8 @@ public class FoodRecords {
         this.users = users;
         users.getFoodRecords().add(this);
     }
-    public void addFoods(List<Foods> foodList){
-        for(Foods food:foodList) {
-            foods.add(food);
-            food.setFoodRecords(this);
-        }
+    public void addFoods(Foods food){
+        foods.add(food);
+        food.setFoodRecords(this);
     }
 }
