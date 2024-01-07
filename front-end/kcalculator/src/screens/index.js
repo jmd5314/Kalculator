@@ -1,6 +1,4 @@
 import Profile from './ProfileStack_screens/Profile';
-import PostList from './ProfileStack_screens/PostList';
-import GroupList from './ProfileStack_screens/GroupList';
 import UserDelete from './ProfileStack_screens/UserDelete';
 import ProfileRevise from './ProfileStack_screens/ProfileRevise';
 import UpdateMenuSelection from "./ProfileStack_screens/UpdateMenuSelection";
@@ -21,6 +19,7 @@ import Home from './HomeStack_screens/Home';
 
 import Menu from './MenuStack_screens/Menu';
 import MenuSearch from './MenuStack_screens/MenuSearch';
+import FoodAddList from './MenuStack_screens/FoodAddList';
 
 import Post from './PostStack_screens/Post';
 
@@ -28,6 +27,6 @@ import Running from './RunningStack_screens/Running';
 
 
 
-export {Profile, PostList, GroupList, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
+export {Profile, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
-    Login, Signup, Battle, Home, Menu, MenuSearch, Post, Running};
+    Login, Signup, Battle, Home, Menu, MenuSearch, FoodAddList, Post, Running};

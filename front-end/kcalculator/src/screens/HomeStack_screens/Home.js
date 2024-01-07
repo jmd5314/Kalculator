@@ -91,9 +91,11 @@ const Home = ({ navigation }) => {
                 <MaterialIcons name="account-circle" size={50} />
             </TouchableOpacity>
         </View>
-        <View>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>일일 권장 칼로리 : {recommendedCalories}kcal</Text>
-            <Text style={{ fontSize: 20, marginBottom: 10, marginLeft: 20 }}>남은 칼로리 : {recommendedCalories} kcal</Text>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+              {recommendedCalories}kcal / {recommendedCalories}kcal
+            </Text>
+            
         </View>
         <View style={styles.container}>
             <View>

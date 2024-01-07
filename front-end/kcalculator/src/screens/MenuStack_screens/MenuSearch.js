@@ -4,11 +4,11 @@ import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const MenuSearch = () => {
-    const [searchText, setSearchText] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
-   const [ selectedItemList, setSelectedItemList] = useState([]);
+const MenuSearch = ({ navigation }) => {
+    const [ searchText, setSearchText ] = useState('');
+    const [ searchResults, setSearchResults ] = useState([]);
+    const [ selectedItem, setSelectedItem ] = useState(null);
+    const [ selectedItemList, setSelectedItemList ] = useState([]);
 
 
     const handleSearch = async () => {
@@ -59,16 +59,12 @@ const MenuSearch = () => {
         }
     }
 
-
-
-
     return (
         <View style={styles.container}>
             <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20, flexDirection: 'row' }}>
                 <Text style={{ fontSize: 30, marginRight: 180 }}>음식 검색</Text>
-                   <TouchableOpacity>
-                  <Text>{selectedItemList.length}</Text>
-
+                    <TouchableOpacity onPress={() => navigation.navigate('FoodAddList', { selectedItemList })}>
+                    <Text>{selectedItemList.length}</Text>
                  </TouchableOpacity>
             </View>
 

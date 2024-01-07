@@ -7,7 +7,7 @@ import { ProfileProduction,
              TargetCalorie,
              Profile,
              UserDelete,
-             ProfileRevise, MenuSearch,
+             ProfileRevise, MenuSearch, FoodAddList,
              UpdateMenuSelection, UpdateTargetCalorie } from '../screens';
 
 const Stack = createStackNavigator();
@@ -26,6 +26,7 @@ const MainStack = () => {
             <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{ title:'' }} />
             <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{ title:'' }} />
             <Stack.Screen name="MenuSearch" component={MenuSearch} options={{ title:'' }} />
+            <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
         </Stack.Navigator>
     );
 };

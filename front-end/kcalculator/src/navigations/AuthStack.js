@@ -1,12 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Login, Signup, ProfileProduction, MenuSelection, TargetCalorie,
-Profile,
-             PostList,
-             GroupList,
-             UserDelete,
-             ProfileRevise, MenuSearch,
-             UpdateMenuSelection, UpdateTargetCalorie
+    Profile, UserDelete, ProfileRevise, MenuSearch,
+    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList
 } from '../screens';
 import MainTab from "./MainTab";
 
@@ -28,6 +24,7 @@ const AuthStack = () => {
             <Stack.Screen name="UpdateMenuSelection" component={UpdateMenuSelection} options={{ title:'' }} />
             <Stack.Screen name="UpdateTargetCalorie" component={UpdateTargetCalorie} options={{ title:'' }} />
             <Stack.Screen name="MenuSearch" component={MenuSearch} options={{ title:'' }}/>
+            <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
