@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const MenuSearch = () => {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
+   const [ selectedItemList, setSelectedItemList] = useState([]);
+
 
     const handleSearch = async () => {
         try {
@@ -39,11 +42,36 @@ const MenuSearch = () => {
         setSelectedItem(item);
     };
 
+    const handleInputCertainItemToArray = () => {
+        try {
+            if(selectedItem){
+                setSelectedItemList([...selectedItemList, selectedItem]);
+                console.log('선택한 음식이 추가되었습니다.');
+                console.log(selectedItemList);
+
+                setSelectedItem(null);
+            } else {
+                console.log('선택한 음식이 없습니다.');
+                setSelectedItem(null);
+            }
+        } catch(error) {
+            console.error('에러가 발생하였습니다.', error);
+        }
+    }
+
+
+
+
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20 }}>
-                <Text style={{ fontSize: 30 }}>음식 검색</Text>
+            <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20, flexDirection: 'row' }}>
+                <Text style={{ fontSize: 30, marginRight: 180 }}>음식 검색</Text>
+                   <TouchableOpacity>
+                  <Text>{selectedItemList.length}</Text>
+
+                 </TouchableOpacity>
             </View>
+
             <View style={{ flexDirection: 'row', marginBottom: 10,marginLeft:10 }}>
                 <TextInput
                     style={styles.input}
@@ -75,9 +103,13 @@ const MenuSearch = () => {
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
+                    <Text>1회제공량: </Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
+                      <TouchableOpacity onPress={() => handleInputCertainItemToArray()}>
+                        <Text style={{ marginTop: 10 }}>추가하기</Text>
+                      </TouchableOpacity>
                 </View>
             )}
         </View>
