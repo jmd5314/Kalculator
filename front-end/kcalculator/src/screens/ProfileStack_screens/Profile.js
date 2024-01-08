@@ -1,11 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { UserContext } from '../../contexts';
 import { Button } from '../../components';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Card,Icon } from 'react-native-elements';
+
+
 
 const backendUrl = config.backendUrl;
 

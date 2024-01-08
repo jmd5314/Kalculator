@@ -4,11 +4,17 @@ import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+
+
 const MenuSearch = ({ navigation }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchResults, setSearchResults ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState(null);
     const [ selectedItemList, setSelectedItemList ] = useState([]);
+
+
+
+
 
 
     const handleSearch = async () => {
@@ -59,13 +65,32 @@ const MenuSearch = ({ navigation }) => {
         }
     }
 
+
+
+        const [isButtonPressed, setButtonPressed] = useState(false);
+
+        const handleButtonPress = () => {
+            // 버튼이 눌렸을 때 실행할 로직 추가
+            setButtonPressed(true);
+        };
+
     return (
         <View style={styles.container}>
             <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20, flexDirection: 'row' }}>
                 <Text style={{ fontSize: 30, marginRight: 180 }}>음식 검색</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('FoodAddList', { selectedItemList })}>
-                    <Text>{selectedItemList.length}</Text>
-                 </TouchableOpacity>
+            <TouchableOpacity
+                style={[
+                    styles.buttonContainer,
+                    isButtonPressed ? styles.buttonPressed : null,
+                ]}
+                onPress={() => {
+                    handleButtonPress();
+                    navigation.navigate('FoodAddList', { selectedItemList });
+                }}
+            >
+                <Text style={styles.buttonText}>{`${selectedItemList.length}`}</Text>
+            </TouchableOpacity>
+
             </View>
 
             <View style={{ flexDirection: 'row', marginBottom: 10,marginLeft:10 }}>
@@ -99,13 +124,18 @@ const MenuSearch = ({ navigation }) => {
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
-                    <Text>1회제공량: </Text>
+                    <Text>1회제공량: {selectedItem.SERVING_SIZE} g</Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
-                      <TouchableOpacity onPress={() => handleInputCertainItemToArray()}>
-                        <Text style={{ marginTop: 10 }}>추가하기</Text>
-                      </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            handleButtonPress();
+                            handleInputCertainItemToArray();
+                        }}
+                    >
+                        <Text style={[styles.addButton, isButtonPressed ? styles.buttonPressed : null]}>추가하기</Text>
+                    </TouchableOpacity>
                 </View>
             )}
         </View>
@@ -141,6 +171,24 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
     },
+          buttonContainer: {
+              backgroundColor: '#2ecc71', // 초록색
+              padding: 10,
+              borderRadius: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+          },
+          buttonPressed: {
+              backgroundColor: '#e74c3c', // 빨강색
+          },
+        buttonText: {
+            color: '#ffffff',
+            fontSize: 16,
+            fontWeight: 'bold',
+        },
+
 });
+
+
 
 export default MenuSearch;
