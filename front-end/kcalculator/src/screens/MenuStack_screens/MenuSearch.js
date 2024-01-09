@@ -34,7 +34,7 @@ const MenuSearch = ({ navigation }) => {
                 carbs: item.NUTR_CONT2||0,
                 protein: item.NUTR_CONT3||0,
                 fat: item.NUTR_CONT4||0,
-                quantity: item.SERVING_SIZE,
+                servingSize: item.SERVING_SIZE,
                 unit: item.SERVING_UNIT,
             }));
 
@@ -126,7 +126,7 @@ const MenuSearch = ({ navigation }) => {
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
-                    <Text>1회제공량: {selectedItem.quantity} {selectedItem.unit}</Text>
+                    <Text>1회제공량: {selectedItem.servingSize} {selectedItem.unit}</Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
