@@ -34,6 +34,8 @@ const MenuSearch = ({ navigation }) => {
                 carbs: item.NUTR_CONT2,
                 protein: item.NUTR_CONT3,
                 fat: item.NUTR_CONT4,
+                quantity: item.SERVING_SIZE,
+                unit: item.SERVING_UNIT,
             }));
 
             // Update the searchResults state with the formatted results
@@ -122,9 +124,9 @@ const MenuSearch = ({ navigation }) => {
                 <View style={styles.itemDetailsContainer}>
                     <Text>칼로리: {selectedItem.calories} kcal</Text>
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
-                    <Text>지방: {selectedItem.fat} g</Text>
+                    <Text>지방: {selectedItem.fat} {selectedItem.unit}</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
-                    <Text>1회제공량: {selectedItem.SERVING_SIZE} g</Text>
+                    <Text>1회제공량: {selectedItem.quantity} g</Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
