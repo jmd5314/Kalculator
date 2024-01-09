@@ -31,9 +31,9 @@ const MenuSearch = ({ navigation }) => {
                 id: item.FOOD_CD,
                 title: item.DESC_KOR,
                 calories: item.NUTR_CONT1,
-                carbs: item.NUTR_CONT2,
-                protein: item.NUTR_CONT3,
-                fat: item.NUTR_CONT4,
+                carbs: item.NUTR_CONT2||0,
+                protein: item.NUTR_CONT3||0,
+                fat: item.NUTR_CONT4||0,
                 quantity: item.SERVING_SIZE,
                 unit: item.SERVING_UNIT,
             }));
@@ -124,9 +124,9 @@ const MenuSearch = ({ navigation }) => {
                 <View style={styles.itemDetailsContainer}>
                     <Text>칼로리: {selectedItem.calories} kcal</Text>
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
-                    <Text>지방: {selectedItem.fat} {selectedItem.unit}</Text>
+                    <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
-                    <Text>1회제공량: {selectedItem.quantity} g</Text>
+                    <Text>1회제공량: {selectedItem.quantity} {selectedItem.unit}</Text>
                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
@@ -136,7 +136,7 @@ const MenuSearch = ({ navigation }) => {
                             handleInputCertainItemToArray();
                         }}
                     >
-                        <Text style={[styles.addButton, isButtonPressed ? styles.buttonPressed : null]}>추가하기</Text>
+                        <Text style={[styles.addButton]}>추가하기</Text>
                     </TouchableOpacity>
                 </View>
             )}
