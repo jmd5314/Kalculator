@@ -3,19 +3,19 @@ package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.FoodRecords;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Foods;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.FoodsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.FoodsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.FoodRecordsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.FoodsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,5 +39,32 @@ public class FoodRecordsController {
         }
         FoodRecords foodRecords = foodRecordsService.foodRecord(foodsList,users);
         return foodRecords.getRecordId();
+    }
+    @GetMapping("/calories")
+    @ResponseBody
+    public FoodsResponseDto total(Authentication authentication){
+        int totalCalories = 0;
+        int totalCarbohydrates = 0;
+        int totalProteins = 0;
+        int totalFats = 0;
+        String userId = authentication.getName();
+        List<FoodRecords> foodRecordsList = usersService.findByUserId(userId).getFoodRecords();
+        LocalDate today = LocalDate.now();
+        List<FoodRecords> todayFoodRecords = foodRecordsList
+                .stream()
+                .filter(record -> record.getDate().equals(today))
+                .collect(Collectors.toList());
+        for(FoodRecords foodRecords:todayFoodRecords){
+            List<Foods> foods = foodRecords.getFoods();
+            for(Foods food: foods){
+                totalCalories += food.getCalories();
+                totalCarbohydrates += food.getCarbohydrates();
+                totalProteins += food.getProteins();
+                totalFats += food.getFats();
+            }
+        }
+        FoodsResponseDto foodsResponseDto = FoodsResponseDto.builder().totalCalories(totalCalories).totalCarbohydrates(totalCarbohydrates)
+                .totalProteins(totalProteins).totalFats(totalFats).build();
+        return foodsResponseDto;
     }
 }
