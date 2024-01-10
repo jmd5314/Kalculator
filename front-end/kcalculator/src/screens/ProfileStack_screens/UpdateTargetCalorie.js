@@ -88,7 +88,7 @@ function Calculate({ navigation, route }) {
 
         <View style={{ marginTop: 160 }}>
               <WhiteButton
-         onPress={() => navigation.navigate('MainTab')}>
+         onPress={() => navigation.navigate('Profile')}>
                 <ButtonText>프로필수정완료</ButtonText>
               </WhiteButton>
             </View>

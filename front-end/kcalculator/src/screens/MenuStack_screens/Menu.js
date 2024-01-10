@@ -32,7 +32,7 @@ const Menu = ({ navigation }) => {
     <Container>
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
         <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                   <Icon name="account-circle" size={40} color="black" />
                 </TouchableOpacity>
       </View>

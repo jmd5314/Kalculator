@@ -15,10 +15,22 @@ const Home = ({ navigation }) => {
   const [ recommendedCarbohydrates, setRecommendedCarbohydrates ] = useState('');
   const [ recommendedProteins, setRecommendedProteins ] = useState('');
   const [ recommendedFats, setRecommendedFats ] = useState('');
-
+  const [ totalCalories, setTotalCalories ] = useState('');
+  const [ totalCarbohydrates, setTotalCarbohydrates ] = useState('');
+  const [ totalProteins, setTotalProteins ] = useState('');
+  const [ totalFats, setTotalFats ] = useState('');
+/*
+  const CarbsPercentage = totalCarbohydrates / recommendedCarbohydrates
+  const ProteinPercentage = totalProteins / recommendedProteins
+  const FatPercentage = totalFats / recommendedFats
+*/
   const data = {
-    labels: ["탄수화물", "단백질", "지방"],
-    data: [0, 0, 0],
+      labels: ["탄수화물", "단백질", "지방"],
+      data: [ 0, 0, 0
+        //parseFloat((CarbsPercentage)).toFixed(1),
+        //parseFloat((ProteinPercentage)).toFixed(1),
+        //parseFloat((FatPercentage)).toFixed(1),
+    ],
   };
 
   const chartConfig = {
@@ -28,9 +40,9 @@ const Home = ({ navigation }) => {
     strokeWidth: 2,
   };
 /*
-  const consumedCarbsPercentage = Math.round((10 / recommendedCarbohydrates) * 100);
-  const consumedProteinPercentage = Math.round((10 / recommendedProteins) * 100);
-  const consumedFatPercentage = Math.round((10 / recommendedFats) * 100);
+  const consumedCarbsPercentage = parseInt(((CarbsPercentage) * 100) , 10);
+  const consumedProteinPercentage = parseInt(((ProteinPercentage) * 100) , 10);
+  const consumedFatPercentage = parseInt(((FatPercentage) * 100) , 10);
 */
   useEffect(() => {
     const fetchRecommendedFromBackend = async () => {
@@ -50,6 +62,26 @@ const Home = ({ navigation }) => {
       }
     };
     fetchRecommendedFromBackend();
+  }, []);
+
+  useEffect(() => {
+    const fetchTotalFromBackend = async () => {
+        const token = await AsyncStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/api/foodRecords/calories`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        setTotalCalories(response.data.totalCalories);
+        setTotalCarbohydrates(response.data.totalCarbohydrates);
+        setTotalProteins(response.data.totalProteins);
+        setTotalFats(response.data.totalFats);
+      } catch (error) {
+        console.error('Error fetching total:', error);
+      }
+    };
+    fetchTotalFromBackend();
   }, []);
 
   const sendWeightToServer = async () => {
@@ -93,7 +125,7 @@ const Home = ({ navigation }) => {
         </View>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 20, marginBottom: 10 }}>
-              {recommendedCalories}kcal / {recommendedCalories}kcal
+              {totalCalories}kcal / {recommendedCalories}kcal
             </Text>
             
         </View>
@@ -112,20 +144,20 @@ const Home = ({ navigation }) => {
             <View style={styles.infoContainer}>
                 <View style={[styles.icon, { backgroundColor: '#F79800' }]} />
                 <Text style={{ fontSize: 20, marginRight: 90}}>탄수화물</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
-                <Text style={{ fontSize: 20}}>0%</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>{totalCarbohydrates}g</Text>
+                <Text style={{ fontSize: 20}}>{0}%</Text>
             </View>
             <View style={styles.infoContainer}>
                 <View style={[styles.icon, { backgroundColor: '#34F200' }]} />
                 <Text style={{ fontSize: 20, marginRight: 110}}>단백질</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
-                <Text style={{ fontSize: 20}}>0%</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>{totalProteins}g</Text>
+                <Text style={{ fontSize: 20}}>{0}%</Text>
             </View>
             <View style={styles.infoContainer}>
                 <View style={[styles.icon, { backgroundColor: '#0095A3' }]} />
                 <Text style={{ fontSize: 20, marginRight: 130}}>지방</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>0g</Text>
-                <Text style={{ fontSize: 20}}>0%</Text>
+                <Text style={{ fontSize: 20, marginRight: 120}}>{totalFats}g</Text>
+                <Text style={{ fontSize: 20}}>{0}%</Text>
             </View>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 12, marginTop:10}}>

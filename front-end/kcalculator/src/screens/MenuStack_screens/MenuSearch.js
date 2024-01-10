@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,8 +12,23 @@ const MenuSearch = ({ navigation }) => {
     const [ selectedItem, setSelectedItem ] = useState(null);
     const [ selectedItemList, setSelectedItemList ] = useState([]);
 
+    const updateSelectedItemList = useCallback((updatedList) => {
+        setSelectedItemList(updatedList);
+    }, []);
 
+    // useEffect를 사용하여 화면 포커스 시 이벤트 추가
+    useEffect(() => {
+        // MenuSearch 화면이 포커스를 얻을 때마다 동기화
+        const unsubscribe = navigation.addListener('focus', () => {
+            console.log('MenuSearch 화면이 포커스를 얻었습니다.');
+            // 여기서 서버에서 데이터를 가져오거나 다른 동기화 작업을 수행할 수 있습니다.
+            // 예시: setSelectedItemList(새로운 데이터);
+        });
 
+        return () => {
+            unsubscribe();
+        };
+    }, [navigation]);
 
 
 
@@ -73,6 +88,7 @@ const MenuSearch = ({ navigation }) => {
 
         const handleButtonPress = () => {
             // 버튼이 눌렸을 때 실행할 로직 추가
+            
             setButtonPressed(true);
         };
 
@@ -87,7 +103,7 @@ const MenuSearch = ({ navigation }) => {
                 ]}
                 onPress={() => {
                     handleButtonPress();
-                    navigation.navigate('FoodAddList', { selectedItemList });
+                    navigation.navigate('FoodAddList', { selectedItemList, updateSelectedItemList });
                 }}
             >
                 <Text style={styles.buttonText}>{`${selectedItemList.length}`}</Text>

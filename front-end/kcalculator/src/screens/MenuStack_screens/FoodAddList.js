@@ -1,21 +1,67 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import config from "../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const FoodAddList = ({ navigation, onUpdateList, route }) => {
-    const { selectedItemList } = route.params;
+const backendUrl = config.backendUrl;
+const FoodAddList = ({ navigation, route }) => {
+  const [selectedItemList, setSelectedItemList] = useState(route.params.selectedItemList || []);
 
     const totalCalories = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.calories, 10), 0) : 0;
     const totalCarbs = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.carbs, 10), 0) : 0;
     const totalProtein = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.protein, 10), 0) : 0;
     const totalFat = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.fat, 10), 0) : 0;
 
-  const handleDeleteItem = (itemId) => {
+    const handleDeleteItem = (itemId) => {
+      // 선택한 음식 항목에서 itemId에 해당하는 항목을 제거
+      const updatedItemList = selectedItemList.filter(item => item.id !== itemId);
+  
+      // 상태 업데이트
+      setSelectedItemList(updatedItemList);
+  
+      // MenuSearch로 업데이트된 항목 전달
+      route.params.updateSelectedItemList(updatedItemList);
+    };
 
-    const updatedList = selectedItemList.filter(item => item.id !== itemId);
-    
+  const sendFoodToServer = async () => {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+        console.error('Token not found');
+        return;
+    }
 
-    onUpdateList(updatedList);
+    const foodDataList = selectedItemList.map(item => ({
+        foodName: item.title, 
+        calories: item.calories,
+        fats: item.fats,
+        carbohydrates: item.carbs,
+        proteins: item.protein,
+        quantity: item.quantity,
+    }));
+
+    // 서버에 네트워크 요청을 보냅니다
+    fetch(`${backendUrl}/api/foodRecords/save`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(foodDataList),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 정상이 아닙니다');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('음식정보가 성공적으로 전송되었습니다:', data);
+            navigation.navigate("Menu");
+        })
+        .catch(error => {
+            console.error('음식정보 전송 중 오류 발생:', error);
+        });
   };
 
   return (
@@ -54,7 +100,9 @@ const FoodAddList = ({ navigation, onUpdateList, route }) => {
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity style={{ 
             height: 50, width: 350, backgroundColor: '#39D02C', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
-            onPress={() => navigation.navigate('Menu')}
+            onPress={() => {
+              sendFoodToServer();
+            }}
             >
             <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>기록완료</Text>
         </TouchableOpacity>
