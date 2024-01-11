@@ -75,6 +75,7 @@ const FoodAddList = ({ navigation, route }) => {
         </Text>
       </View>
       <View style={styles.summaryContainer}>
+      {console.log(selectedItemList)}
         <Text style={styles.boxText}>총 칼로리: {totalCalories} kcal</Text>
         <Text style={styles.boxText}>총 탄수화물: {totalCarbs} g</Text>
         <Text style={styles.boxText}>총 단백질: {totalProtein} g</Text>

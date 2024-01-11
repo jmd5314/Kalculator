@@ -14,19 +14,41 @@ const backendUrl = config.backendUrl;
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: white;
+  background-color: #e5e5e5;
+  padding: 16px;
 `;
 
 const ProfileContainer = styled.View`
-  flex: 1;
-  background-color: white;
-  padding: 20px;
+   background-color: #fff;
+   padding: 16px;
+   border-radius: 8px;
+   shadow-color: #000;
+   shadow-offset: 0 2px;
+   shadow-opacity: 0.2;
+   shadow-radius: 4px;
+   elevation: 3;
+`;
+
+const ProfileCard = styled.View`
+     margin-top: 25px;
+     background-color: #e5e5e5;
+     shadow-color: #000;
+     shadow-offset: 0 2px;
+     shadow-opacity: 0.2;
+     shadow-radius: 4px;
+     elevation: 3;
 `;
 
 const ProfileItem = styled.View`
+  background-color: #e5e5e5;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  shadow-color: #000;
+  shadow-offset: 0 2px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
 `;
 const ProfileText = styled.Text`
   font-size: 20px;
@@ -46,6 +68,7 @@ const Value = styled.Text`
 
 const EditProfileButton = styled.TouchableOpacity`
   position: absolute;
+  z-index: 999;
   top: 0;
   right: 0;
 `;
@@ -91,7 +114,6 @@ const Profile = ({ navigation }) => {
                 console.error('Error fetching profile:', error);
             }
         };
-
         fetchProfileFromBackend();
     }, []);
 
@@ -108,13 +130,14 @@ const Profile = ({ navigation }) => {
 
     return (
         <Container>
+
             <ProfileContainer>
+            <EditProfileButton onPress={() => navigation.navigate("ProfileRevise")}>
+                                    <EditProfileButtonText>프로필 수정</EditProfileButtonText>
+            </EditProfileButton>
+            <ProfileCard>
                 <ProfileItem>
-                    <Label>닉네임:</Label>
-                    <Label>{nickname}</Label>
-                    <EditProfileButton onPress={() => navigation.navigate("ProfileRevise")}>
-                        <EditProfileButtonText>프로필 수정</EditProfileButtonText>
-                    </EditProfileButton>
+                <ProfileText>닉네임: {nickname}</ProfileText>
                 </ProfileItem>
 
                 <ProfileItem>
@@ -134,17 +157,17 @@ const Profile = ({ navigation }) => {
                 </ProfileItem>
 
                 <ProfileItem>
-                    <ProfileText>성별: {gender}</ProfileText>
+                    <ProfileText>성별: {gender === 'MALE' ? '남성': '여성'}</ProfileText>
                 </ProfileItem>
 
                 <ProfileItem>
-                    <ProfileText>활동량: {activityLevel}</ProfileText>
+                    <ProfileText>활동량: {activityLevel === 'GENERAL_ACTIVITY' ? '일반': (activityLevel === 'LOW_ACTIVITY' ? '적음' : '많음')}</ProfileText>
                 </ProfileItem>
 
                 <ProfileItem>
-                    <ProfileText>이용목적: {purposeOfUse}</ProfileText>
+                    <ProfileText>이용목적: {purposeOfUse === 'DIET' ? '다이어트' : '체중증가'}</ProfileText>
                 </ProfileItem>
-
+            </ProfileCard>
                 <BtnContainer>
                     <Button title="회원탈퇴" onPress={() => navigation.navigate("UserDelete")} />
                 </BtnContainer>

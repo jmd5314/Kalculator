@@ -11,6 +11,7 @@ const MenuSearch = ({ navigation }) => {
     const [ searchResults, setSearchResults ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState(null);
     const [ selectedItemList, setSelectedItemList ] = useState([]);
+    const [ selectedItemQuantity, setSelectedItemQuantity ] = useState(0);
 
     const updateSelectedItemList = useCallback((updatedList) => {
         setSelectedItemList(updatedList);
@@ -68,11 +69,22 @@ const MenuSearch = ({ navigation }) => {
     const handleInputCertainItemToArray = () => {
         try {
             if(selectedItem){
-                setSelectedItemList([...selectedItemList, selectedItem]);
-                console.log('선택한 음식이 추가되었습니다.');
-                console.log(selectedItemList);
+                if(selectedItemQuantity > 0){
 
-                setSelectedItem(null);
+                    const selectedItemWithQuantity = {
+                        item: selectedItem,
+                        quantity: selectedItemQuantity
+                    }
+
+                    setSelectedItemList([...selectedItemList, selectedItemWithQuantity]);
+                    console.log(`선택한 음식이 추가되었습니다. 수량은 ${selectedItemWithQuantity.quantity}개 입니다.`);
+                    console.log(selectedItemList);
+
+                    setSelectedItemQuantity(0);
+                    setSelectedItem(null);
+                } else {
+                    console.log('음식이 선택되지 않았습니다.');
+                }
             } else {
                 console.log('선택한 음식이 없습니다.');
                 setSelectedItem(null);
@@ -88,7 +100,7 @@ const MenuSearch = ({ navigation }) => {
 
         const handleButtonPress = () => {
             // 버튼이 눌렸을 때 실행할 로직 추가
-            
+
             setButtonPressed(true);
         };
 
@@ -153,6 +165,13 @@ const MenuSearch = ({ navigation }) => {
                         }}
                     >
                         <Text style={[styles.addButton]}>추가하기</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity + 1)}>
+                        <Text>+</Text>
+                    </TouchableOpacity>
+                    <Text>{selectedItemQuantity}</Text>
+                    <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity > 0 ? selectedItemQuantity - 1 : 0)}>
+                        <Text>-</Text>
                     </TouchableOpacity>
                 </View>
             )}
