@@ -68,13 +68,12 @@ const MenuSearch = ({ navigation }) => {
 
     const handleInputCertainItemToArray = () => {
         try {
-            if(selectedItem){
-                if(selectedItemQuantity > 0){
-
+            if (selectedItem) {
+                if (selectedItemQuantity > 0) {
                     const selectedItemWithQuantity = {
-                        item: selectedItem,
-                        quantity: selectedItemQuantity
-                    }
+                        ...selectedItem,
+                        quantity: selectedItemQuantity,
+                    };
 
                     setSelectedItemList([...selectedItemList, selectedItemWithQuantity]);
                     console.log(`선택한 음식이 추가되었습니다. 수량은 ${selectedItemWithQuantity.quantity}개 입니다.`);
@@ -89,10 +88,10 @@ const MenuSearch = ({ navigation }) => {
                 console.log('선택한 음식이 없습니다.');
                 setSelectedItem(null);
             }
-        } catch(error) {
+        } catch (error) {
             console.error('에러가 발생하였습니다.', error);
         }
-    }
+    };
 
 
 
