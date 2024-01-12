@@ -150,12 +150,25 @@ const MenuSearch = ({ navigation }) => {
             {/* Display item details */}
             {selectedItem && (
                 <View style={styles.itemDetailsContainer}>
-                    <Text>칼로리: {selectedItem.calories} kcal</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: '', marginTop: 10 }}>
+                    <Text style= {{marginRight: 100}}>칼로리: {selectedItem.calories} kcal</Text>
+
+                                <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity > 0 ? selectedItemQuantity - 1 : 0)}>
+                                    <Text style={{marginHorizontal: 5}}>-</Text>
+                                </TouchableOpacity>
+                                <Text style={{marginHorizontal: 5}}>{selectedItemQuantity}</Text>
+                                <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity + 1)}>
+                                    <Text style={{marginHorizontal: 5}}>+</Text>
+                                </TouchableOpacity>
+
+                    </View>
+
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
                     <Text>1회제공량: {selectedItem.servingSize} {selectedItem.unit}</Text>
-                    <TouchableOpacity onPress={() => setSelectedItem(null)}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: '', marginTop: 10 }}>
+                     <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -164,17 +177,13 @@ const MenuSearch = ({ navigation }) => {
                             handleInputCertainItemToArray();
                         }}
                     >
-                        <Text style={[styles.addButton]}>추가하기</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity + 1)}>
-                        <Text>+</Text>
-                    </TouchableOpacity>
-                    <Text>{selectedItemQuantity}</Text>
-                    <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity > 0 ? selectedItemQuantity - 1 : 0)}>
-                        <Text>-</Text>
-                    </TouchableOpacity>
+                        <Text style={{ marginTop: 10, marginLeft: 200 }}>추가하기</Text>
+                     </TouchableOpacity>
+                     </View>
+
                 </View>
             )}
+
         </View>
     );
 };
