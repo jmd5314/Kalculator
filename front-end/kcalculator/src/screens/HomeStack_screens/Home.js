@@ -68,7 +68,7 @@ const Home = ({ navigation }) => {
     const fetchTotalFromBackend = async () => {
         const token = await AsyncStorage.getItem('token');
       try {
-        const response = await axios.get(`${backendUrl}/api/foodRecords/calories`,{
+        const response = await axios.get(`${backendUrl}/api/foodRecords/total`,{
             headers: {
                 Authorization: `Bearer ${token}`,
             },
