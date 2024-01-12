@@ -34,7 +34,7 @@ const FoodAddList = ({ navigation, route }) => {
     const foodDataList = selectedItemList.map(item => ({
         foodName: item.title, 
         calories: item.calories,
-        fats: item.fats,
+        fats: item.fat,
         carbohydrates: item.carbs,
         proteins: item.protein,
         quantity: item.quantity,
