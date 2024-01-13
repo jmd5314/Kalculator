@@ -29,10 +29,17 @@ const MainTab = () => {
                 },
                 headerShown: false
             })}>
-            <Tab.Screen 
+            <Tab.Screen
                 name="Home"
                 component={Home}
-                options={{ tabBarLabel: 'Home',headerShown: false}}/>
+                options={{ tabBarLabel: 'Home', headerShown: false }}
+                listeners={({ navigation, route }) => ({
+                    tabPress: e => {
+                        // 화면을 리랜더링하려면 navigation.navigate를 호출합니다.
+                        navigation.navigate('Home', { key: Math.random() });
+                    },
+                })}
+            />
             <Tab.Screen 
                 name="Menu"
                 component={Menu}

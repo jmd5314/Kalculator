@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Tab} from "react-native-elements";
 
 const backendUrl = config.backendUrl;
 
@@ -43,46 +44,54 @@ const Home = ({ navigation }) => {
   const consumedCarbsPercentage = parseInt(((CarbsPercentage) * 100) , 10);
   const consumedProteinPercentage = parseInt(((ProteinPercentage) * 100) , 10);
   const consumedFatPercentage = parseInt(((FatPercentage) * 100) , 10);
-*/
-  useEffect(() => {
-    const fetchRecommendedFromBackend = async () => {
-        const token = await AsyncStorage.getItem('token');
-      try {
-        const response = await axios.get(`${backendUrl}/api/profiles/home`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setRecommendedCalories(response.data.recommendedCalories);
-        setRecommendedCarbohydrates(response.data.recommendedCarbohydrates);
-        setRecommendedProteins(response.data.recommendedProteins);
-        setRecommendedFats(response.data.recommendedFats);
-      } catch (error) {
-        console.error('Error fetching recommended:', error);
-      }
-    };
-    fetchRecommendedFromBackend();
-  }, []);
+*/useEffect(() => {
+        const fetchDataFromBackend = async () => {
+            const token = await AsyncStorage.getItem('token');
 
-  useEffect(() => {
-    const fetchTotalFromBackend = async () => {
-        const token = await AsyncStorage.getItem('token');
-      try {
-        const response = await axios.get(`${backendUrl}/api/foodRecords/total`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setTotalCalories(response.data.totalCalories);
-        setTotalCarbohydrates(response.data.totalCarbohydrates);
-        setTotalProteins(response.data.totalProteins);
-        setTotalFats(response.data.totalFats);
-      } catch (error) {
-        console.error('Error fetching total:', error);
-      }
-    };
-    fetchTotalFromBackend();
-  }, []);
+            try {
+                const [recommendedResponse, totalResponse] = await Promise.all([
+                    axios.get(`${backendUrl}/api/profiles/home`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }),
+                    axios.get(`${backendUrl}/api/foodRecords/total`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }),
+                ]);
+                const {
+                    recommendedCalories,
+                    recommendedCarbohydrates,
+                    recommendedProteins,
+                    recommendedFats,
+                } = recommendedResponse.data;
+
+                const {
+                    totalCalories,
+                    totalCarbohydrates,
+                    totalProteins,
+                    totalFats,
+                } = totalResponse.data;
+
+
+                setRecommendedCalories(recommendedCalories);
+                setRecommendedCarbohydrates(recommendedCarbohydrates);
+                setRecommendedProteins(recommendedProteins);
+                setRecommendedFats(recommendedFats);
+
+                setTotalCalories(totalCalories);
+                setTotalCarbohydrates(totalCarbohydrates);
+                setTotalProteins(totalProteins);
+                setTotalFats(totalFats);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataFromBackend();
+    });
 
   const sendWeightToServer = async () => {
     const token = await AsyncStorage.getItem('token');
