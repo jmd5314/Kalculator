@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FoodsSaveRequestDto {
-    private String mealType;
+    //private String mealType;
     private String foodName;
     private double calories;
     private double carbohydrates;

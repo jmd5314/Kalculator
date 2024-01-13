@@ -33,7 +33,7 @@ public class FoodRecordsController {
         for(FoodsSaveRequestDto requestDto:requestDtoList){
             Foods foods = Foods.builder().foodName(requestDto.getFoodName()).calories(requestDto.getCalories())
                     .fats(requestDto.getFats()).carbohydrates(requestDto.getCarbohydrates()).proteins(requestDto.getProteins())
-                    .mealType(MealType.valueOf(requestDto.getMealType().toUpperCase()))
+                    //.mealType(MealType.valueOf(requestDto.getMealType().toUpperCase()))
                     .quantity(requestDto.getQuantity()).build();
             foodsService.save(foods);
             foodsList.add(foods);
