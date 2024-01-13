@@ -20,17 +20,17 @@ const Home = ({ navigation }) => {
   const [ totalCarbohydrates, setTotalCarbohydrates ] = useState('');
   const [ totalProteins, setTotalProteins ] = useState('');
   const [ totalFats, setTotalFats ] = useState('');
-/*
-  const CarbsPercentage = totalCarbohydrates / recommendedCarbohydrates
-  const ProteinPercentage = totalProteins / recommendedProteins
-  const FatPercentage = totalFats / recommendedFats
-*/
+
+  const CarbsPercentage = totalCarbohydrates / recommendedCarbohydrates||0;
+  const ProteinPercentage = totalProteins / recommendedProteins||0;
+  const FatPercentage = totalFats / recommendedFats||0;
+
   const data = {
       labels: ["탄수화물", "단백질", "지방"],
-      data: [ 0, 0, 0
-        //parseFloat((CarbsPercentage)).toFixed(1),
-        //parseFloat((ProteinPercentage)).toFixed(1),
-        //parseFloat((FatPercentage)).toFixed(1),
+      data: [
+        parseFloat((CarbsPercentage).toFixed(2)),
+        parseFloat((ProteinPercentage).toFixed(2)),
+        parseFloat((FatPercentage).toFixed(2)),
     ],
   };
 
@@ -40,11 +40,11 @@ const Home = ({ navigation }) => {
     color: (opacity = 1) => `rgba(57,208,44, ${opacity})`,
     strokeWidth: 2,
   };
-/*
-  const consumedCarbsPercentage = parseInt(((CarbsPercentage) * 100) , 10);
-  const consumedProteinPercentage = parseInt(((ProteinPercentage) * 100) , 10);
-  const consumedFatPercentage = parseInt(((FatPercentage) * 100) , 10);
-*/useEffect(() => {
+
+  const consumedCarbsPercentage = parseFloat((CarbsPercentage).toFixed(2))*100;
+  const consumedProteinPercentage =  parseFloat((ProteinPercentage).toFixed(2))*100;
+  const consumedFatPercentage = parseFloat((FatPercentage).toFixed(2))*100;
+useEffect(() => {
         const fetchDataFromBackend = async () => {
             const token = await AsyncStorage.getItem('token');
 
@@ -154,19 +154,19 @@ const Home = ({ navigation }) => {
                 <View style={[styles.icon, { backgroundColor: '#F79800' }]} />
                 <Text style={{ fontSize: 20, marginRight: 90}}>탄수화물</Text>
                 <Text style={{ fontSize: 20, marginRight: 120}}>{totalCarbohydrates}g</Text>
-                <Text style={{ fontSize: 20}}>{0}%</Text>
+                <Text style={{ fontSize: 20}}>{consumedCarbsPercentage}%</Text>
             </View>
             <View style={styles.infoContainer}>
                 <View style={[styles.icon, { backgroundColor: '#34F200' }]} />
                 <Text style={{ fontSize: 20, marginRight: 110}}>단백질</Text>
                 <Text style={{ fontSize: 20, marginRight: 120}}>{totalProteins}g</Text>
-                <Text style={{ fontSize: 20}}>{0}%</Text>
+                <Text style={{ fontSize: 20}}>{consumedProteinPercentage}%</Text>
             </View>
             <View style={styles.infoContainer}>
                 <View style={[styles.icon, { backgroundColor: '#0095A3' }]} />
                 <Text style={{ fontSize: 20, marginRight: 130}}>지방</Text>
                 <Text style={{ fontSize: 20, marginRight: 120}}>{totalFats}g</Text>
-                <Text style={{ fontSize: 20}}>{0}%</Text>
+                <Text style={{ fontSize: 20}}>{consumedFatPercentage}%</Text>
             </View>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 12, marginTop:10}}>
