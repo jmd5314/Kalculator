@@ -20,7 +20,7 @@ public class FoodRecordsService {
     public FoodRecords foodRecord(List<Foods> foodsList,Users users){
         //현재 날짜
         LocalDate today = LocalDate.now();
-        Optional<FoodRecords> foodRecordsOptional = foodRecordsRepository.findByDate(today);
+        Optional<FoodRecords> foodRecordsOptional = foodRecordsRepository.findByDateAndUsers(today,users);
         FoodRecords foodRecords;
         if(foodRecordsOptional.isPresent()) { // 존재하면
             foodRecords = foodRecordsOptional.get();
