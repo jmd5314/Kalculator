@@ -38,6 +38,7 @@ const FoodAddList = ({ navigation, route }) => {
         carbohydrates: item.carbs,
         proteins: item.protein,
         quantity: item.quantity,
+        mealType:item.mealType
     }));
 
     // 서버에 네트워크 요청을 보냅니다

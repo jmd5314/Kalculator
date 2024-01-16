@@ -3,6 +3,7 @@ import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'r
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -30,6 +31,26 @@ const MenuSearch = ({ navigation }) => {
             unsubscribe();
         };
     }, [navigation]);
+    const handleButton = async () => {
+        try {
+            // AsyncStorage에서 mealType 가져오기
+            const mealType = await AsyncStorage.getItem('selectedMealType');
+
+            // 선택된 음식 목록을 준비
+            const selectedItemListWithMealType = selectedItemList.map(item => ({
+                ...item,
+                mealType: mealType || 'defaultMealType', // 기본값은 'defaultMealType'
+            }));
+
+            // FoodAddList 화면으로 이동하면서 selectedItemList 및 updateSelectedItemList 함수 전달
+            navigation.navigate('FoodAddList', {
+                selectedItemList: selectedItemListWithMealType,
+                updateSelectedItemList,
+            });
+        } catch (error) {
+            console.error('AsyncStorage에서 mealType을 가져오는 중 오류 발생:', error);
+        }
+    };
 
 
 
@@ -112,10 +133,7 @@ const MenuSearch = ({ navigation }) => {
                     styles.buttonContainer,
                     isButtonPressed ? styles.buttonPressed : null,
                 ]}
-                onPress={() => {
-                    handleButtonPress();
-                    navigation.navigate('FoodAddList', { selectedItemList, updateSelectedItemList });
-                }}
+                onPress= {handleButton}
             >
                 <Text style={styles.buttonText}>{`${selectedItemList.length}`}</Text>
             </TouchableOpacity>

@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import profile from '../Images/profile.jpg';
 import { Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
@@ -28,6 +29,16 @@ const GrayButton = styled(TouchableOpacity)`
 `;
 
 const Menu = ({ navigation }) => {
+    const handleButtonPress = async (mealType) => {
+        try {
+            // 선택된 mealType 을 AsyncStorage 에 저장
+            await AsyncStorage.setItem('selectedMealType', mealType);
+            // MenuSearch 화면으로 선택된 mealType 을 전달하여 이동
+            navigation.navigate('MenuSearch', { mealType });
+        } catch (error) {
+            console.error('AsyncStorage에 mealType 저장 중 오류 발생:', error);
+        }
+    };
   return (
     <Container>
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
@@ -45,13 +56,13 @@ const Menu = ({ navigation }) => {
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
    <GrayButton
      style={{ marginRight: 20 }}
-     onPress={() => navigation.navigate('MenuSearch')}>
+     onPress={() => handleButtonPress('breakfast')}>
      <IconWrapper>
        <Icon name="plus-circle" size={30} color="black" />
      </IconWrapper>
    </GrayButton>
      <GrayButton
-      onPress={() => navigation.navigate('MenuSearch')}>
+      onPress={() => handleButtonPress('lunch')}>
                  <IconWrapper>
                  <Icon name="plus-circle" size={30} color="black" />
                  </IconWrapper>
@@ -67,13 +78,13 @@ const Menu = ({ navigation }) => {
            <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
            <GrayButton
              style={{ marginRight: 20 }}
-             onPress={() => navigation.navigate('MenuSearch')}>
+             onPress={() => handleButtonPress('dinner')}>
              <IconWrapper>
                <Icon name="plus-circle" size={30} color="black" />
              </IconWrapper>
            </GrayButton>
           <GrayButton
-            onPress={() => navigation.navigate('MenuSearch')}>
+            onPress={() => handleButtonPress('dessert')}>
                <IconWrapper>
                            <Icon name="plus-circle" size={30} color="black" />
                          </IconWrapper>

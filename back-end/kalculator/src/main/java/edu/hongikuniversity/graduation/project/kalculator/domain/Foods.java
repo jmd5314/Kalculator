@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Foods {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long foodId;
+    @Enumerated(EnumType.STRING)
     private MealType mealType;
     private String foodName;
     private double calories;
