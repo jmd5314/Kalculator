@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text, Button, TextInput, StyleSheet, Image } from 'react-native';
 import styled from 'styled-components/native';
 import profile from '../Images/profile.jpg';
@@ -33,10 +33,10 @@ const GrayButton = styled(TouchableOpacity)`
 const backendUrl = config.backendUrl;
 
 const Menu = ({ navigation }) => {
-  const [ Bcalories, setBcalories ] = useState('');
+  const [ Bcalories, setBcalories ] = useState(0);
 
   useEffect(() => {
-    const fetchBreackfastFromBackend = async () => {
+    const fetchBreakfastFromBackend = async () => {
         const token = await AsyncStorage.getItem('token');
       try {
         const response = await axios.get(`${backendUrl}/api/foodRecords/Breakfast/Calories`,{
@@ -44,12 +44,12 @@ const Menu = ({ navigation }) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        setBcalories(response.data.Bcalories);
+        setBcalories(response.data)
       } catch (error) {
         console.error('Error fetching breakfast:', error);
       }
     };
-    fetchBreackfastFromBackend();
+    fetchBreakfastFromBackend();
   }, []);
 
     const handleButtonPress = async (mealType) => {
