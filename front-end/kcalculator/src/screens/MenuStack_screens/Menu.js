@@ -5,6 +5,8 @@ import profile from '../Images/profile.jpg';
 import { Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../config";
+import axios from 'axios';
 
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
@@ -28,7 +30,28 @@ const GrayButton = styled(TouchableOpacity)`
   border-radius: 10px;
 `;
 
+const backendUrl = config.backendUrl;
+
 const Menu = ({ navigation }) => {
+  const [ Bcalories, setBcalories ] = useState('');
+
+  useEffect(() => {
+    const fetchBreackfastFromBackend = async () => {
+        const token = await AsyncStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/api/foodRecords/Breakfast/Calories`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        setBcalories(response.data.Bcalories);
+      } catch (error) {
+        console.error('Error fetching breakfast:', error);
+      }
+    };
+    fetchBreackfastFromBackend();
+  }, []);
+
     const handleButtonPress = async (mealType) => {
         try {
             // 선택된 mealType 을 AsyncStorage 에 저장
@@ -39,6 +62,8 @@ const Menu = ({ navigation }) => {
             console.error('AsyncStorage에 mealType 저장 중 오류 발생:', error);
         }
     };
+
+
   return (
     <Container>
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
@@ -60,6 +85,7 @@ const Menu = ({ navigation }) => {
      <IconWrapper>
        <Icon name="plus-circle" size={30} color="black" />
      </IconWrapper>
+     <Text>{Bcalories}</Text>
    </GrayButton>
      <GrayButton
       onPress={() => handleButtonPress('lunch')}>
