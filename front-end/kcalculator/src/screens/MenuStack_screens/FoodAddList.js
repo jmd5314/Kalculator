@@ -8,10 +8,10 @@ const backendUrl = config.backendUrl;
 const FoodAddList = ({ navigation, route }) => {
   const [selectedItemList, setSelectedItemList] = useState(route.params.selectedItemList || []);
 
-    const totalCalories = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.calories, 10), 0) : 0;
-    const totalCarbs = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.carbs, 10), 0) : 0;
-    const totalProtein = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.protein, 10), 0) : 0;
-    const totalFat = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.fat, 10), 0) : 0;
+    const totalCalories = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.calories, 10)* item.quantity, 0) : 0;
+    const totalCarbs = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.carbs, 10)* item.quantity, 0) : 0;
+    const totalProtein = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.protein, 10)* item.quantity, 0) : 0;
+    const totalFat = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.fat, 10)* item.quantity, 0) : 0;
 
     const handleDeleteItem = (itemId) => {
       // 선택한 음식 항목에서 itemId에 해당하는 항목을 제거

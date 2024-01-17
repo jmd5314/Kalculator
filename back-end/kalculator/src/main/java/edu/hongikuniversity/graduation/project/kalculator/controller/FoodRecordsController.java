@@ -58,10 +58,10 @@ public class FoodRecordsController {
         for(FoodRecords foodRecords:todayFoodRecords){
             List<Foods> foods = foodRecords.getFoods();
             for(Foods food: foods){
-                totalCalories += food.getCalories();
-                totalCarbohydrates += food.getCarbohydrates();
-                totalProteins += food.getProteins();
-                totalFats += food.getFats();
+                totalCalories += food.getCalories()*food.getQuantity();
+                totalCarbohydrates += food.getCarbohydrates()*food.getQuantity();
+                totalProteins += food.getProteins()*food.getQuantity();
+                totalFats += food.getFats()*food.getQuantity();
             }
         }
         FoodsResponseDto foodsResponseDto = FoodsResponseDto.builder().totalCalories(totalCalories).totalCarbohydrates(totalCarbohydrates)
@@ -82,7 +82,7 @@ public class FoodRecordsController {
                 .filter(food -> MealType.valueOf(mealType.toUpperCase()).equals(food.getMealType()))
                 .collect(Collectors.toList());
         for(Foods foods:foodsList){
-            Calories += foods.getCalories();
+            Calories += foods.getCalories()*foods.getQuantity();
         }
         return Calories;
     }
