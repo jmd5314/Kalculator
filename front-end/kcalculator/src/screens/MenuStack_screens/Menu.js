@@ -34,23 +34,68 @@ const backendUrl = config.backendUrl;
 
 const Menu = ({ navigation }) => {
   const [ Bcalories, setBcalories ] = useState(0);
+  const [ Lcalories, setLcalories ] = useState(0);
+  const [ Dinnercalories, setDinnercalories ] = useState(0);
+  const [ Dessertcalories, setDessertcalories ] =useState(0);
+      const fetchBreakfastFromBackend = async () => {
+          const token = await AsyncStorage.getItem('token');
+        try {
+          const response = await axios.get(`${backendUrl}/api/foodRecords/Breakfast/Calories`,{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          setBcalories(response.data)
+        } catch (error) {
+          console.error('Error fetching breakfast:', error);
+        }
+      };
+      const fetchLunchFromBackend = async () => {
+          const token = await AsyncStorage.getItem('token');
+        try {
+          const response = await axios.get(`${backendUrl}/api/foodRecords/Lunch/Calories`,{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          setLcalories(response.data)
+        } catch (error) {
+          console.error('Error fetching lunch:', error);
+        }
+      };
+      const fetchDinnerFromBackend = async () => {
+          const token = await AsyncStorage.getItem('token');
+        try {
+          const response = await axios.get(`${backendUrl}/api/foodRecords/Dinner/Calories`,{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          setDinnercalories(response.data)
+        } catch (error) {
+          console.error('Error fetching dinner:', error);
+        }
+      };
+      const fetchDessertFromBackend = async () => {
+          const token = await AsyncStorage.getItem('token');
+        try {
+          const response = await axios.get(`${backendUrl}/api/foodRecords/Dessert/Calories`,{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          setDessertcalories(response.data)
+        } catch (error) {
+          console.error('Error fetching dessert:', error);
+        }
+      };
+      useEffect(() => {
+           fetchBreakfastFromBackend();
+           fetchLunchFromBackend();
+           fetchDinnerFromBackend();
+           fetchDessertFromBackend();
+        }, []);
 
-  useEffect(() => {
-    const fetchBreakfastFromBackend = async () => {
-        const token = await AsyncStorage.getItem('token');
-      try {
-        const response = await axios.get(`${backendUrl}/api/foodRecords/Breakfast/Calories`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setBcalories(response.data)
-      } catch (error) {
-        console.error('Error fetching breakfast:', error);
-      }
-    };
-    fetchBreakfastFromBackend();
-  }, []);
 
     const handleButtonPress = async (mealType) => {
         try {
@@ -62,6 +107,8 @@ const Menu = ({ navigation }) => {
             console.error('AsyncStorage에 mealType 저장 중 오류 발생:', error);
         }
     };
+
+
 
 
   return (
@@ -81,17 +128,27 @@ const Menu = ({ navigation }) => {
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
    <GrayButton
      style={{ marginRight: 20 }}
-     onPress={() => handleButtonPress('breakfast')}>
-     <IconWrapper>
-       <Icon name="plus-circle" size={30} color="black" />
-     </IconWrapper>
-     <Text>{Bcalories}</Text>
+     >
+
+      {Bcalories > 0 ? (<IconWrapper>
+      <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('breakfast')} />
+     </IconWrapper>) : (<IconWrapper>
+       <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('breakfast')} />
+     </IconWrapper>)}
+
+
+
+     <CalorieText>{Bcalories}</CalorieText>
    </GrayButton>
      <GrayButton
-      onPress={() => handleButtonPress('lunch')}>
-                 <IconWrapper>
-                 <Icon name="plus-circle" size={30} color="black" />
-                 </IconWrapper>
+           >
+                    {Lcalories > 0 ? (<IconWrapper>
+                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('lunch')} />
+                   </IconWrapper>) : (<IconWrapper>
+                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('lunch')} />
+                   </IconWrapper>)}
+           <CalorieText>{Lcalories}</CalorieText>
+
      </GrayButton>
      </View>
 
@@ -104,16 +161,24 @@ const Menu = ({ navigation }) => {
            <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
            <GrayButton
              style={{ marginRight: 20 }}
-             onPress={() => handleButtonPress('dinner')}>
-             <IconWrapper>
-               <Icon name="plus-circle" size={30} color="black" />
-             </IconWrapper>
+            >
+                    {Dinnercalories > 0 ? (<IconWrapper>
+                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('dinner')} />
+                   </IconWrapper>) : (<IconWrapper>
+                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dinner')} />
+                   </IconWrapper>)}
+                <CalorieText>{Dinnercalories}</CalorieText>
+
            </GrayButton>
           <GrayButton
-            onPress={() => handleButtonPress('dessert')}>
-               <IconWrapper>
-                           <Icon name="plus-circle" size={30} color="black" />
-                         </IconWrapper>
+            >
+                    {Dessertcalories > 0 ? (<IconWrapper>
+                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('dessert')} />
+                   </IconWrapper>) : (<IconWrapper>
+                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dessert')} />
+                   </IconWrapper>)}
+              <CalorieText>{Dessertcalories}</CalorieText>
+
           </GrayButton>
           </View>
 
@@ -121,5 +186,14 @@ const Menu = ({ navigation }) => {
     </Container>
   );
 };
+
+const CalorieText = styled.Text`
+  margin-top: 25px;
+  text-align: center;
+  font-size: 18px;
+   font-family:  'Roboto';
+`;
+
+
 
 export default Menu;
