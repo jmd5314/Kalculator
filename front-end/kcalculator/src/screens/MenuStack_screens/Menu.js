@@ -32,11 +32,12 @@ const GrayButton = styled(TouchableOpacity)`
 
 const backendUrl = config.backendUrl;
 
-const Menu = ({ navigation }) => {
+const Menu = ({ navigation,route }) => {
   const [ Bcalories, setBcalories ] = useState(0);
   const [ Lcalories, setLcalories ] = useState(0);
   const [ Dinnercalories, setDinnercalories ] = useState(0);
   const [ Dessertcalories, setDessertcalories ] =useState(0);
+    const refreshKey = route.params?.refreshKey || Math.random().toString();
       const fetchBreakfastFromBackend = async () => {
           const token = await AsyncStorage.getItem('token');
         try {
@@ -94,7 +95,7 @@ const Menu = ({ navigation }) => {
            fetchLunchFromBackend();
            fetchDinnerFromBackend();
            fetchDessertFromBackend();
-        }, []);
+        }, [refreshKey]);
 
 
     const handleButtonPress = async (mealType) => {

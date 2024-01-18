@@ -64,7 +64,7 @@ const FoodAddList = ({ navigation, route }) => {
         })
         .then(data => {
             console.log('음식정보가 성공적으로 전송되었습니다:', data);
-            navigation.navigate("Menu");
+            navigation.navigate("Menu",{ refreshKey: Math.random().toString() });
         })
         .catch(error => {
             console.error('음식정보 전송 중 오류 발생:', error);
