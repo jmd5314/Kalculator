@@ -7,6 +7,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const backendUrl = config.backendUrl;
 const FoodAddList = ({ navigation, route }) => {
   const [selectedItemList, setSelectedItemList] = useState(route.params.selectedItemList || []);
+    // 이 부분에서 함수를 직렬화 가능한 형태로 변경
+    const updateSelectedItemList = useCallback((updatedItemList) => {
+        setSelectedItemList(updatedItemList);
+        // MenuSearch로 업데이트된 항목 전달
+        route.params.updateSelectedItemList(updatedItemList);
+    }, [route.params.updateSelectedItemList]);
 
     const totalCalories = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.calories, 10)* item.quantity, 0) : 0;
     const totalCarbs = selectedItemList ? selectedItemList.reduce((acc, item) => acc + parseInt(item.carbs, 10)* item.quantity, 0) : 0;
