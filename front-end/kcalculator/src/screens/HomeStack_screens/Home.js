@@ -126,7 +126,7 @@ useEffect(() => {
 };
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white'}}>
+    <SafeAreaView style={{ backgroundColor: 'white', flex: 1}}>
         <View style={{ flexDirection: 'row-reverse', marginTop: 10, marginBottom: 20, marginLeft: 10 }}>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <MaterialIcons name="account-circle" size={50} />
@@ -149,23 +149,20 @@ useEffect(() => {
               />
             </View>
         </View>
-        <View style={{ marginLeft: 20 }}>
+        <View style={{ marginLeft: 20}}>
             <View style={styles.infoContainer}>
-                <View style={[styles.icon, { backgroundColor: '#F79800' }]} />
-                <Text style={{ fontSize: 20, marginRight: 90}}>탄수화물</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>{totalCarbohydrates}g</Text>
-                <Text style={{ fontSize: 20}}>{consumedCarbsPercentage}%</Text>
+                <Text style={{ fontSize: 20}}>탄수화물</Text>
+                    <Text style={{ fontSize: 20}}>{totalCarbohydrates}g</Text>
+                    <Text style={{ fontSize: 20}}>{consumedCarbsPercentage}%</Text>
             </View>
             <View style={styles.infoContainer}>
-                <View style={[styles.icon, { backgroundColor: '#34F200' }]} />
-                <Text style={{ fontSize: 20, marginRight: 110}}>단백질</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>{totalProteins}g</Text>
+                <Text style={{ fontSize: 20, marginRight: 10}}>단백질</Text>
+                <Text style={{ fontSize: 20}}>{totalProteins}g</Text>
                 <Text style={{ fontSize: 20}}>{consumedProteinPercentage}%</Text>
             </View>
             <View style={styles.infoContainer}>
-                <View style={[styles.icon, { backgroundColor: '#0095A3' }]} />
-                <Text style={{ fontSize: 20, marginRight: 130}}>지방</Text>
-                <Text style={{ fontSize: 20, marginRight: 120}}>{totalFats}g</Text>
+                <Text style={{ fontSize: 20, marginRight: 30}}>지방</Text>
+                <Text style={{ fontSize: 20}}>{totalFats}g</Text>
                 <Text style={{ fontSize: 20}}>{consumedFatPercentage}%</Text>
             </View>
         </View>
@@ -206,6 +203,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 20,
     flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginRight: 10,
   },
