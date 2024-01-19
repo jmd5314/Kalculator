@@ -41,9 +41,9 @@ const Home = ({ navigation }) => {
     strokeWidth: 2,
   };
 
-  const consumedCarbsPercentage = parseFloat((CarbsPercentage).toFixed(2))*100;
-  const consumedProteinPercentage =  parseFloat((ProteinPercentage).toFixed(2))*100;
-  const consumedFatPercentage = parseFloat((FatPercentage).toFixed(2))*100;
+  const consumedCarbsPercentage = Math.round(parseFloat((CarbsPercentage).toFixed(2))*100);
+  const consumedProteinPercentage =  Math.round(parseFloat((ProteinPercentage).toFixed(2))*100);
+  const consumedFatPercentage = Math.round(parseFloat((FatPercentage).toFixed(2))*100);
 useEffect(() => {
         const fetchDataFromBackend = async () => {
             const token = await AsyncStorage.getItem('token');
