@@ -1,5 +1,6 @@
-package edu.hongikuniversity.graduation.project.kalculator.domain;
+package edu.hongikuniversity.graduation.project.kalculator.repository;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

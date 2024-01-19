@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
+import edu.hongikuniversity.graduation.project.kalculator.repository.FoodRecordsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,32 +42,6 @@ public class FoodRecordsService {
     @Transactional
     public Long save(FoodRecords foodRecords){
         return foodRecordsRepository.save(foodRecords).getRecordId();
-    }
-    // 식사 유형별 칼로리
-    public Integer MealCalories(MealType mealType){
-        LocalDate today = LocalDate.now();
-        FoodRecords foodRecords = foodRecordsRepository.findByDate(today)
-                .orElseThrow(()->new IllegalArgumentException("식단이 존재하지 않습니다."));
-        List<Foods> foodsList = foodRecords.getFoods().stream()
-                .filter(foods -> foods.getMealType() == mealType)
-                .collect(Collectors.toList());
-        double sum = 0.0;
-        for(Foods foods:foodsList){
-            sum+=foods.getCalories();
-        }
-        return (int)Math.round(sum);
-    }
-    // 하루 전체 칼로리
-    public Integer DailyCalories(){
-        LocalDate today = LocalDate.now();
-        FoodRecords foodRecords = foodRecordsRepository.findByDate(today)
-                .orElseThrow(()->new IllegalArgumentException("식단이 존재하지 않습니다."));
-        List<Foods>foodsList = foodRecords.getFoods();
-        double sum = 0.0;
-        for(Foods foods: foodsList){
-            sum+=foods.getCalories();
-        }
-        return (int) Math.round(sum);
     }
 
     public FoodRecords findByRecordId(Long recordId) {

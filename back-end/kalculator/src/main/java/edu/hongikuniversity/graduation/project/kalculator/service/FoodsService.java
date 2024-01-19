@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Foods;
-import edu.hongikuniversity.graduation.project.kalculator.domain.FoodsRepository;
+import edu.hongikuniversity.graduation.project.kalculator.repository.FoodsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

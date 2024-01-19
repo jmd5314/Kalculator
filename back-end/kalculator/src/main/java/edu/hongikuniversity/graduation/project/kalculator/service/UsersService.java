@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.service;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.UsersRepository;
+import edu.hongikuniversity.graduation.project.kalculator.repository.UsersRepository;
 import edu.hongikuniversity.graduation.project.kalculator.exception.AppException;
 import edu.hongikuniversity.graduation.project.kalculator.exception.ErrorCode;
 import edu.hongikuniversity.graduation.project.kalculator.utils.JwtTokenUtil;
@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

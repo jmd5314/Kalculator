@@ -1,16 +1,11 @@
 package edu.hongikuniversity.graduation.project.kalculator.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Profiles;
-import edu.hongikuniversity.graduation.project.kalculator.domain.ProfilesRepository;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.DietModeRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesSaveRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.repository.ProfilesRepository;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.ProfilesUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Service
