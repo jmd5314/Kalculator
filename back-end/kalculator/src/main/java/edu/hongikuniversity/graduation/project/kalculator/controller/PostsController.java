@@ -1,16 +1,16 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
-
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +27,15 @@ public class PostsController {
                 .creationDate(requestDto.getCreationDate()).build();
         posts.setUsers(users);
         return postsService.save(posts);
+    }
+    @GetMapping("/list")
+    @ResponseBody
+    public List<PostsResponseDto> postsList(){
+        List<PostsResponseDto> responseDtoList = new ArrayList<>();
+        List<Posts> postsList = postsService.findAll();
+        for(Posts posts:postsList){
+            responseDtoList.add(new PostsResponseDto(posts));
+        }
+        return responseDtoList;
     }
 }
