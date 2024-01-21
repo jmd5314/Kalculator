@@ -27,7 +27,7 @@ const AuthStack = () => {
             <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
            <Stack.Screen name="Post" component={Post} options={{ headerShown: false }}/>
-           <Stack.Screen name="PostRegister" component={PostRegister} options={{ headerShown: false }}/>
+           <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
 
         </Stack.Navigator>
     );

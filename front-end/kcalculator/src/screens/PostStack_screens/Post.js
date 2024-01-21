@@ -1,32 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity,ScrollView, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import config from '../config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
-
-const getListFromServer = async () => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-
-        const response = await axios.get(`${backendUrl}/api/posts/list`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        if (response) {
-            return response.data;
-        }
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-
-
 
 const Post = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
@@ -36,33 +15,37 @@ const Post = ({ navigation }) => {
         <PostComponent title={item.title} content={item.content} />
     );
 
-useEffect(() => {
-    const fetchData = async() => {
-        try {
-            const data = await getListFromServer();
-            console.log(data);
-            setPosts(data);
-        } catch(error) {
-            console.error(error);
-        }
-    };
-
-    fetchData();
-   },[]);
+    useEffect(() => {
+        const getListFromServer = async () => {
+            try {
+                const token = await AsyncStorage.getItem('token');
+        
+                const response = await axios.get(`${backendUrl}/api/posts/list`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+        
+                setPosts(response.data.posts);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        getListFromServer();
+    },[]);
 
     return (
-        <View style={styles.container}>
-            <ScrollView>
+        <SafeAreaView style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ ...styles.header, marginRight: 180 }}>Community</Text>
-                                     <TouchableOpacity onPress={() => navigation.navigate('PostRegister')}>
-                    <Icon name="plus" size={20} color="#555" style={styles.header} />
-                                    </TouchableOpacity>
+                    <Text style={[ styles.header, {marginRight: 190} ]}>Community</Text>
+                    <TouchableOpacity style={{ marginTop: 5}}  
+                        onPress={() => navigation.navigate('PostRegister')}>
+                        <Icon name="plus" size={20} color="#555" style={styles.header} />
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-
- {posts && (<FlatList data={posts} renderItem={renderItem} keyExtractor={item => item.id}/>)}
-        </View>
+            {posts && (<FlatList data={posts} renderItem={renderItem} keyExtractor={item => item.id}/>)}
+        </SafeAreaView>
+        
     );
 };
 
@@ -70,9 +53,9 @@ useEffect(() => {
             <View style={styles.postContainer}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.content}>{content}</Text>
-        <View style={styles.iconContainer}>
-            <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 20 }} />
-            <Icon name="comment-o" size={20} color="#555" />
+            <View style={styles.iconContainer}>
+                <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 20 }} />
+                <Icon name="comment-o" size={20} color="#555" />
         </View>
 
     </View>

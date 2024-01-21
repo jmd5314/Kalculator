@@ -117,7 +117,7 @@ const Menu = ({ navigation,route }) => {
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
         <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                  <Icon name="account-circle" size={40} color="black" />
+                  <Icon name="account-circle" size={50} color="black" />
                 </TouchableOpacity>
       </View>
 
@@ -139,7 +139,7 @@ const Menu = ({ navigation,route }) => {
 
 
 
-     <CalorieText>{Bcalories}</CalorieText>
+     <CalorieText>{Bcalories}kcal</CalorieText>
    </GrayButton>
      <GrayButton
            >
@@ -148,7 +148,7 @@ const Menu = ({ navigation,route }) => {
                    </IconWrapper>) : (<IconWrapper>
                      <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('lunch')} />
                    </IconWrapper>)}
-           <CalorieText>{Lcalories}</CalorieText>
+           <CalorieText>{Lcalories}kcal</CalorieText>
 
      </GrayButton>
      </View>
@@ -168,7 +168,7 @@ const Menu = ({ navigation,route }) => {
                    </IconWrapper>) : (<IconWrapper>
                      <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dinner')} />
                    </IconWrapper>)}
-                <CalorieText>{Dinnercalories}</CalorieText>
+                <CalorieText>{Dinnercalories}kcal</CalorieText>
 
            </GrayButton>
           <GrayButton
@@ -178,7 +178,7 @@ const Menu = ({ navigation,route }) => {
                    </IconWrapper>) : (<IconWrapper>
                      <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dessert')} />
                    </IconWrapper>)}
-              <CalorieText>{Dessertcalories}</CalorieText>
+              <CalorieText>{Dessertcalories}kcal</CalorieText>
 
           </GrayButton>
           </View>
