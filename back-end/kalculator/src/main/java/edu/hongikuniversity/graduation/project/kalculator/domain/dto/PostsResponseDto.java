@@ -1,9 +1,10 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.dto;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
+import lombok.Getter;
 
 import java.time.LocalDate;
-
+@Getter
 public class PostsResponseDto {
     private String userId;
     private String title;
