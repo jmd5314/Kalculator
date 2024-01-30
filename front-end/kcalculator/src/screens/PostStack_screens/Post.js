@@ -7,9 +7,9 @@ import config from '../config';
 
 const backendUrl = config.backendUrl;
 
-const Post = ({ navigation }) => {
+const Post = ({ navigation,route}) => {
     const [posts, setPosts] = useState([]);
-
+    const refreshKey = route.params?.refreshKey || Math.random().toString();
     const renderItem = ({ item }) => (
         <PostComponent title={item.title} content={item.content} />
     );
@@ -31,7 +31,7 @@ const Post = ({ navigation }) => {
             }
         };
         getListFromServer();
-    }, []);
+    }, [refreshKey]);
 
     return (
         <SafeAreaView style={styles.container}>

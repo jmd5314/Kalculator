@@ -60,7 +60,7 @@ const PostRegister = ({navigation}) => {
             if(response)
             {
             alert("게시글이 등록되었습니다.")
-            navigation.navigate('Post')
+            navigation.navigate('Post',{ refreshKey: Math.random().toString() })
             }
         } catch (error) {
             console.error(error);
