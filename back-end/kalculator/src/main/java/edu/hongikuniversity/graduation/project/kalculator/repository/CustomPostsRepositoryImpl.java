@@ -3,7 +3,9 @@ package edu.hongikuniversity.graduation.project.kalculator.repository;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @RequiredArgsConstructor
 public class CustomPostsRepositoryImpl implements CustomPostsRepository {
     private final EntityManager em;
