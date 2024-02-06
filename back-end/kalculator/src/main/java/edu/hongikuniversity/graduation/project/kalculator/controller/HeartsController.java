@@ -1,0 +1,35 @@
+package edu.hongikuniversity.graduation.project.kalculator.controller;
+
+import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.HeartsRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.service.HeartsService;
+import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/hearts")
+public class HeartsController {
+    private final HeartsService heartsService;
+    private final PostsService postsService;
+    @PostMapping("/insert")
+    public ResponseEntity<?> insert(@RequestBody HeartsRequestDto requestDto) {
+        heartsService.insert(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(@RequestBody HeartsRequestDto requestDto) {
+        heartsService.delete(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+    @GetMapping("/count")
+    @ResponseBody
+    public Integer count(@RequestBody HeartsRequestDto requestDto){
+        Posts posts = postsService.findById(requestDto.getPostId());
+        return posts.getLikeCount();
+    }
+}
