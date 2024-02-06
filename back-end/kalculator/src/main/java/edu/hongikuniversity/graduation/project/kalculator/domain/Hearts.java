@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -14,4 +15,10 @@ public class Hearts {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId")
     private Posts posts;
+
+    @Builder
+    public Hearts(Users users, Posts posts) {
+        this.users = users;
+        this.posts = posts;
+    }
 }
