@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -18,4 +19,11 @@ public class Comments {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="postId")
     private Posts posts;
+    @Builder
+    public Comments(String content,Users users,Posts posts,LocalDate creationDate){
+        this.users = users;
+        this.posts = posts;
+        this.content = content;
+        this.creationDate = creationDate;
+    }
 }
