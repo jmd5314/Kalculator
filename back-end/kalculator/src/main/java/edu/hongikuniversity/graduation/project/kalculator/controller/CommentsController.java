@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsCountRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.HeartsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.CommentsService;
@@ -20,7 +21,7 @@ public class CommentsController {
     }
     @GetMapping("/count")
     @ResponseBody
-    public Integer count(@RequestBody HeartsRequestDto requestDto){
+    public Integer count(@RequestBody CommentsCountRequestDto requestDto){
         Posts posts = postsService.findById(requestDto.getPostId());
         return posts.getComments().size();
     }
