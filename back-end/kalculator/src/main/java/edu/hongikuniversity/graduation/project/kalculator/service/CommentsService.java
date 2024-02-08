@@ -3,7 +3,7 @@ package edu.hongikuniversity.graduation.project.kalculator.service;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Comments;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.repository.CommentsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.PostsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.UsersRepository;
@@ -18,7 +18,7 @@ public class CommentsService {
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
     @Transactional
-    public Long save(CommentsRequestDto requestDto){
+    public Long save(CommentsSaveRequestDto requestDto){
         Users users = usersRepository.findByUserId(requestDto.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
         Posts posts = postsRepository.findById(requestDto.getPostId())
