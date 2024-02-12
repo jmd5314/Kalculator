@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -11,18 +11,29 @@ const Running = ({ navigation }) => {
   const [distance, setDistance] = useState(0);
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [initialRegion, setInitialRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 37.5514,
+    longitude: 126.9419,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
 
   const watchId = useRef(null);
   const startTime = useRef(null);
-  const mapRef = useRef(null);
 
   useEffect(() => {
+    const getLocationPermission = async () => {
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('위치 권한이 허용되지 않았습니다.');
+          return;
+        }
+      } catch (error) {
+        console.error('위치 권한을 요청하는 도중 오류가 발생했습니다:', error);
+      }
+    };
+
     const startLocationUpdates = async () => {
       try {
         await Location.startLocationUpdatesAsync('locationUpdates', {
@@ -35,10 +46,13 @@ const Running = ({ navigation }) => {
       }
     };
 
+    getLocationPermission();
     startLocationUpdates();
 
     return () => {
-      Location.stopLocationUpdatesAsync('locationUpdates');
+      if (watchId.current !== null) {
+        Location.stopLocationUpdatesAsync('locationUpdates');
+      }
     };
   }, []);
 
@@ -101,31 +115,40 @@ const Running = ({ navigation }) => {
     const newDistance = calculateDistance([...routeCoordinates, newCoordinate]);
     setDistance(newDistance);
 
-    const mapRegion = {
+    setMapRegion(prevRegion => ({
+      ...prevRegion,
       latitude: newCoordinate.latitude,
-      longitude: newCoordinate.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    };
-    setInitialRegion(mapRegion);
-    mapRef.current.animateToRegion(mapRegion, 1000);
+      longitude: newCoordinate.longitude
+    }));
   };
 
   const calculateDistance = (coordinates) => {
     let distanceInMeters = 0;
     for (let i = 1; i < coordinates.length; i++) {
-      distanceInMeters += Location.distance(
-        {
-          latitude: coordinates[i - 1].latitude,
-          longitude: coordinates[i - 1].longitude,
-        },
-        {
-          latitude: coordinates[i].latitude,
-          longitude: coordinates[i].longitude,
-        }
-      );
+      const prevLatLng = coordinates[i - 1];
+      const newLatLng = coordinates[i];
+      const distance = haversine(prevLatLng, newLatLng);
+      distanceInMeters += distance;
     }
     return distanceInMeters / 1000; // Convert to kilometers
+  };
+  
+  const haversine = (prevLatLng, newLatLng) => {
+    const earthRadius = 6371; // in kilometers
+    const { latitude: prevLat, longitude: prevLng } = prevLatLng;
+    const { latitude: newLat, longitude: newLng } = newLatLng;
+    const latDelta = toRadians(newLat - prevLat);
+    const lngDelta = toRadians(newLng - prevLng);
+  
+    const a = Math.sin(latDelta / 2) * Math.sin(latDelta / 2) +
+              Math.cos(toRadians(prevLat)) * Math.cos(toRadians(newLat)) *
+              Math.sin(lngDelta / 2) * Math.sin(lngDelta / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthRadius * c;
+  };
+  
+  const toRadians = (angle) => {
+    return angle * (Math.PI / 180);
   };
 
   const saveRunData = async () => {
@@ -144,29 +167,36 @@ const Running = ({ navigation }) => {
     } catch (error) {
       console.error('Error saving run data:', error);
     }
-  };
+  }; 
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    const formattedHours = hours > 0 ? `${hours}:` : '';
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
   };
 
   const handleSave = () => {
     saveRunData();
     setElapsedTime(0);
     setDistance(0);
+    setLocation(null);
+    setRouteCoordinates([]);
   };
 
-
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
-        ref={mapRef}
-        initialRegion={initialRegion}
+        region={mapRegion}
+        onRegionChangeComplete={setMapRegion}
       >
         {location && <Marker coordinate={location} />}
         {routeCoordinates.length > 1 && <Polyline coordinates={routeCoordinates} strokeColor="#00F" strokeWidth={3} />}
@@ -185,7 +215,7 @@ const Running = ({ navigation }) => {
             <MaterialIcons name="history" size={25} color="white" />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -224,7 +254,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     padding: 20,
     borderRadius: 10,
-    marginLeft: 10,
     marginBottom: 16,
   },
   buttonText: {

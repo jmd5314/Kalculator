@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const RunHistory = ({navigation}) => {
+const RunHistory = ({ navigation }) => {
   const [runHistory, setRunHistory] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
 
   useEffect(() => {
     const loadRunHistory = async () => {
@@ -18,19 +18,19 @@ const RunHistory = ({navigation}) => {
         console.error('Error loading run history:', error);
       }
     };
-
+  
     // 화면이 focus될 때마다 저장된 데이터를 불러옴
     const unsubscribe = navigation.addListener('focus', () => {
       loadRunHistory();
     });
-
+  
     return () => {
       unsubscribe();
     };
   }, []);
 
-  const groupDataByDate = () => {
-    const groupedData = runHistory.reduce((acc, item) => {
+  const groupDataByDate = (data) => {
+    const groupedData = data.reduce((acc, item) => {
       const date = item.date;
       if (!acc[date]) {
         acc[date] = [];
@@ -38,45 +38,40 @@ const RunHistory = ({navigation}) => {
       acc[date].push(item);
       return acc;
     }, {});
+
     return groupedData;
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item}>
-      <Text>Time: {item.time}</Text>
-      <Text>Distance: {item.distance} km</Text>
-    </TouchableOpacity>
-  );
-
   const renderGroupedData = () => {
-    const groupedData = groupDataByDate();
-    const dataArray = Object.entries(groupedData).map(([date, data]) => ({
-      date,
-      data,
-    }));
+    const groupedData = groupDataByDate(runHistory);
 
     return (
       <FlatList
-        data={selectedDate ? groupedData[selectedDate] : dataArray.flatMap((group) => group.data)}
-        keyExtractor={(index) => index.toString()}
-        renderItem={({ item }) => renderItem({ item })}
+        data={Object.entries(groupedData)}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => {
+          const date = item[0]; // 날짜
+          const data = item[1]; // 해당 날짜에 대한 데이터 배열
+
+          return (
+            <View style={styles.item}>
+              <Text style={styles.date}>{date}</Text>
+              {data.map((item, index) => (
+                <View key={index} style={styles.dataItem}>
+                  <Text style={{fontSize: 16}}>Time: {item.time}</Text>
+                  <Text style={{fontSize: 16}}>Distance: {item.distance} km</Text>
+                </View>
+              ))}
+            </View>
+          );
+        }}
       />
     );
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date.dateString);
-    setCalendarModalVisible(false);
-  };
-
-  const toggleCalendarModal = () => {
-    setCalendarModalVisible(!isCalendarModalVisible);
-  };
-
-
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>달리기 기록</Text>
+      <Text style={{fontSize: 30, marginLeft: 15, marginBottom: 10}}>달리기 기록</Text>
       {runHistory.length === 0 ? (
         <Text>No run history available</Text>
       ) : (
@@ -89,37 +84,40 @@ const RunHistory = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    paddingTop: 20,
-    backgroundColor: "#fff"
+    justifyContent: 'center',
+    backgroundColor: "#fff",
   },
-  icon: {
-    marginRight: 8,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   title: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: 'bold',
     marginLeft: 10,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   item: {
-    padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    marginBottom: 10,
+    marginLeft: 15,
+    marginRight: 15,
   },
-  backButton: {
-    marginTop: 20,
-    padding: 16,
-    backgroundColor: 'blue',
+  date: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  dataItem: {
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 10,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
+    padding: 5,
+    marginVertical: 5,
+    marginBottom: 5,
   },
 });
 
