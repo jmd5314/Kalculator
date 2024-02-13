@@ -23,6 +23,7 @@ import FoodAddList from './MenuStack_screens/FoodAddList';
 
 import Post from './PostStack_screens/Post';
 import PostRegister from './PostStack_screens/PostRegister';
+import Postdetail from './PostStack_screens/Postdetail';
 
 
 import Running from './RunningStack_screens/Running';
@@ -33,4 +34,4 @@ import RunHistory from './RunningStack_screens/RunHistory';
 export {Profile, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
     Login, Signup, Battle, Home, Menu, MenuSearch, FoodAddList, 
-    Post, PostRegister, Running, RunHistory};
+    Post, PostRegister, Running, RunHistory, Postdetail};

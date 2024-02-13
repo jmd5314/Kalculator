@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Login, Signup, ProfileProduction, MenuSelection, TargetCalorie,
     Profile, UserDelete, ProfileRevise, MenuSearch,
-    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, PostRegister, RunHistory
+    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, PostRegister, RunHistory, Postdetail
 } from '../screens';
 import MainTab from "./MainTab";
 
@@ -27,6 +27,8 @@ const AuthStack = () => {
             <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
             <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
+            <Stack.Screen name="Postdetail" component={Postdetail} options={{ title:'' }}/>
+
             <Stack.Screen name="RunHistory" component={RunHistory} options={{ title:'' }}/>
         </Stack.Navigator>
     );

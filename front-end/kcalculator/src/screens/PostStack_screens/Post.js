@@ -11,9 +11,8 @@ const Post = ({ navigation,route}) => {
     const [posts, setPosts] = useState([]);
     const refreshKey = route.params?.refreshKey || Math.random().toString();
     const renderItem = ({ item }) => (
-        <PostComponent title={item.title} content={item.content} />
-    );
-
+   <PostComponent title={item.title} content={item.content} userId={item.userId} postId={item.postId} navigation={navigation} />
+   )
     useEffect(() => {
         const getListFromServer = async () => {
             try {
@@ -26,6 +25,7 @@ const Post = ({ navigation,route}) => {
                 });
 
                 setPosts(response.data); // Assuming the response directly contains the array of posts
+
             } catch (error) {
                 console.error(error);
             }
@@ -53,15 +53,19 @@ const Post = ({ navigation,route}) => {
     );
 };
 
-const PostComponent = ({ title, content }) => (
+const PostComponent = ({ title, content, userId, postId, navigation}) => (
+    <TouchableOpacity
+        onPress={() => navigation.navigate('Postdetail' ,{userId, postId})}
+      >
     <View style={styles.postContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.content}>{content}</Text>
+        <Text style={styles.user}>{userId}</Text>
         <View style={styles.iconContainer}>
             <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 20 }} />
             <Icon name="comment-o" size={20} color="#555" />
         </View>
     </View>
+    </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

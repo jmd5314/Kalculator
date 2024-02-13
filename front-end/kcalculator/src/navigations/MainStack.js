@@ -8,7 +8,7 @@ import { ProfileProduction,
              Profile,
              UserDelete,
              ProfileRevise, MenuSearch, FoodAddList,
-             UpdateMenuSelection, UpdateTargetCalorie, PostRegister, RunHistory } from '../screens';
+             UpdateMenuSelection, UpdateTargetCalorie, PostRegister, RunHistory, Postdetail } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +28,7 @@ const MainStack = () => {
             <Stack.Screen name="MenuSearch" component={MenuSearch} options={{ title:'' }} />
             <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
             <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
+            <Stack.Screen name="Postdetail" component={Postdetail} options={{ title:'' }}/>
             <Stack.Screen name="RunHistory" component={RunHistory} options={{ title:'' }}/>
         </Stack.Navigator>
     );
