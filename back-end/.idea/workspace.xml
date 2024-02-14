@@ -7,10 +7,6 @@
     <list default="true" id="2ceb3eb6-85ec-4996-9339-a49513fdd1f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../front-end/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../front-end/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front-end/kcalculator/src/navigations/AuthStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front-end/kcalculator/src/navigations/AuthStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/PostStack_screens/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/PostStack_screens/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front-end/kcalculator/src/screens/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
