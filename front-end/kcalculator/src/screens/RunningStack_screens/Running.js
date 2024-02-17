@@ -20,6 +20,7 @@ const Running = ({ navigation }) => {
 
   const watchId = useRef(null);
   const startTime = useRef(null);
+  const lastElapsedTime = useRef(0); // Keep track of last elapsed time when pausing
 
   useEffect(() => {
     const getLocationPermission = async () => {
@@ -78,7 +79,12 @@ const Running = ({ navigation }) => {
 
   const startRun = async () => {
     setIsRunning(true);
-    startTime.current = new Date().getTime();
+    if (!startTime.current) {
+      startTime.current = new Date().getTime();
+    } else {
+      // Subtract last elapsed time when restarting
+      startTime.current = new Date().getTime() - lastElapsedTime.current;
+    }
     watchId.current = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Highest,
@@ -100,7 +106,8 @@ const Running = ({ navigation }) => {
 
     const endTime = new Date().getTime();
     const runTime = endTime - startTime.current;
-    setElapsedTime(runTime);
+    lastElapsedTime.current = runTime;
+    // Do not update total elapsed time here
   };
 
   const handleLocationChange = (location) => {
@@ -184,6 +191,8 @@ const Running = ({ navigation }) => {
 
   const handleSave = () => {
     saveRunData();
+    startTime.current = null; // Reset start time when saving
+    lastElapsedTime.current = 0; // Reset last elapsed time when saving
     setElapsedTime(0);
     setDistance(0);
     setLocation(null);
@@ -197,6 +206,7 @@ const Running = ({ navigation }) => {
         provider={PROVIDER_GOOGLE}
         region={mapRegion}
         onRegionChangeComplete={setMapRegion}
+        moveOnMarkerPress={false} // 마커를 눌러도 지도가 자동으로 이동하지 않음
       >
         {location && <Marker coordinate={location} />}
         {routeCoordinates.length > 1 && <Polyline coordinates={routeCoordinates} strokeColor="#00F" strokeWidth={3} />}
