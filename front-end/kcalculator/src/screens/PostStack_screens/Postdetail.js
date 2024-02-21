@@ -79,7 +79,6 @@ const Postdetail = ({navigation, route}) => {
             const token = await AsyncStorage.getItem('token');
 
             const postToServer = {
-                userId : userId,
                 postId : postId,
             }
 
@@ -141,7 +140,6 @@ const Postdetail = ({navigation, route}) => {
             const token = await AsyncStorage.getItem('token');
 
             const postToServer = {
-                userId : userId,
                 postId : postId,
                 content: content,
                 creationDate: convertDateToString()
