@@ -69,6 +69,11 @@ const Running = ({ navigation }) => {
     return () => clearInterval(timer);
   }, [isRunning]);
 
+  useEffect(() => {
+    const newDistance = calculateDistance(routeCoordinates);
+    setDistance(newDistance);
+  }, [routeCoordinates]);
+
   const startStopToggle = () => {
     if (isRunning) {
       stopRun();
@@ -119,9 +124,6 @@ const Running = ({ navigation }) => {
     setRouteCoordinates(prevRouteCoordinates => [...prevRouteCoordinates, newCoordinate]);
     setLocation(newCoordinate);
 
-    const newDistance = calculateDistance([...routeCoordinates, newCoordinate]);
-    setDistance(newDistance);
-
     setMapRegion(prevRegion => ({
       ...prevRegion,
       latitude: newCoordinate.latitude,
@@ -137,7 +139,7 @@ const Running = ({ navigation }) => {
       const distance = haversine(prevLatLng, newLatLng);
       distanceInMeters += distance;
     }
-    return distanceInMeters / 1000; // Convert to kilometers
+    return distanceInMeters;
   };
   
   const haversine = (prevLatLng, newLatLng) => {
