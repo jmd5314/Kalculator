@@ -9,6 +9,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.dto.HeartsReque
 import edu.hongikuniversity.graduation.project.kalculator.service.CommentsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ public class CommentsController {
     private final CommentsService commentsService;
     private final PostsService postsService;
     @PostMapping("/save")
-    public Long save(@RequestBody CommentsSaveRequestDto requestDto){
-        return commentsService.save(requestDto);
+    public Long save(@RequestBody CommentsSaveRequestDto requestDto, Authentication authentication){
+        String userId = authentication.getName();
+        return commentsService.save(requestDto, userId);
     }
     @GetMapping("/count")
     @ResponseBody

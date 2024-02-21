@@ -20,10 +20,10 @@ public class HeartsService {
     private final PostsRepository postsRepository;
     private final CustomPostsRepository customPostsRepository;
     @Transactional
-    public void insert (HeartsRequestDto requestDto){
-        Users users = usersRepository.findByUserId(requestDto.getUserId())
+    public void insert (Long postId,String userId){
+        Users users = usersRepository.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Posts posts = postsRepository.findById(requestDto.getPostId())
+        Posts posts = postsRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다"));
         // 이미 좋아요 되어있으면 오류 반환
         if(heartsRepository.findByUsersAndPosts(users,posts).isPresent()){
@@ -36,10 +36,10 @@ public class HeartsService {
         customPostsRepository.updateCount(posts, true);
     }
     @Transactional
-    public void delete(HeartsRequestDto requestDto){
-        Users users = usersRepository.findByUserId(requestDto.getUserId())
+    public void delete(Long postId,String userId){
+        Users users = usersRepository.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Posts posts = postsRepository.findById(requestDto.getPostId())
+        Posts posts = postsRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다."));
         Hearts hearts = heartsRepository.findByUsersAndPosts(users, posts)
                 .orElseThrow(() -> new IllegalArgumentException("해당 좋아요를 찾을 수 없습니다."));
