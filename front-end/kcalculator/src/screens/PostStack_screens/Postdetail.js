@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import config from '../config'; // Import your backend URL configuration
@@ -7,236 +7,248 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const backendUrl = config.backendUrl;
 
+const Postdetail = ({ navigation, route }) => {
+  const { userId, postId } = route.params;
 
+  const [certainPost, setCertainPost] = useState();
+  const [certainComment, setCertainComment] = useState([{
+    userId: 'ho',
+    content: 'Test',
+    creationDate: new Date()
+  }]);
 
-const Postdetail = ({navigation, route}) => {
-    const { userId, postId } = route.params;
-    const [certainPost, setCertainPost] = useState();
+  const [toggleFavoriteState, setToggleFavoriteState] = useState(false);
+  const [toggleCommentState, setToggleCommentState] = useState(false);
+  const [comment, setComment] = useState("");
 
-    const [content, setContent] = useState();
-    const [favoriteCount, setFavoriteCount] = useState(0);
-    const [commentCount, setCommentCount] = useState(0);
-    const [toggleFavoriteState, setToggleFavoriteState] = useState(false);
-    const [toggleCommentState, setToggleCommentState] = useState(false);
-    const [comment, setComment] = useState("");
+  const iconColor = toggleFavoriteState ? '#FF0000' : '#555';
 
-    const refreshKey = route.params?.refreshKey || Math.random().toString();
-    useEffect(() => {
-        const getListFromServer = async () => {
-            try {
-                const token = await AsyncStorage.getItem('token');
+  useEffect(() => {
+    const getPostListFromServer = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
 
-                const response = await axios.get(`${backendUrl}/api/posts/list`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+        const response = await axios.get(`${backendUrl}/api/posts/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-                const postList = response.data;
-            setCertainPost(postList.filter(post => post.userId === userId && post.postId === postId));
+        const postList = response.data;
+        setCertainPost(postList.filter(post => post.userId === userId && post.postId === postId));
 
-            } catch (error) {
-                console.error(error);
-            }
-        };
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-        const getFavoriteCount = async() => {
-            try {
-                const token  = await AsyncStorage.getItem('token');
+    const getCommentListFromServer = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
 
-                const response = await axios.get(`${backendUrl}/api/hearts/count`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                });
-                setFavoriteCount(response.data);
-            } catch(error) {
-                console.error(error);
-            }
-        }
+        const response = await axios.get(`${backendUrl}/api/comments/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const getCommentCount = async() => {
-            try {
-                const token  = await AsyncStorage.getItem('token');
+        const commentList = response.data;
+        setCertainComment(commentList);
 
-                const response = await axios.get(`${backendUrl}/api/comments/count`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                });
-                setCommentCount(response.data);
-            } catch(error) {
-                console.error(error);
-            }
-        }
-        getListFromServer();
-       // getFavoriteCount();
-       // getCommentCount();
-    }, []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    const addFavorite = async() => {
-        try {
-            const token = await AsyncStorage.getItem('token');
+    getPostListFromServer();
+    getCommentListFromServer();
 
-            const postToServer = {
-                postId : postId,
-            }
+  }, []);
 
-            const response = await axios.post(`${backendUrl}/api/hearts/insert`, postToServer, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-        } catch (error) {
-            console.error(error);
-        }
+  const addFavorite = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      const postToServer = {
+        userId: userId,
+        postId: postId,
+      }
+
+      await axios.post(`${backendUrl}/api/hearts/insert`, postToServer, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setToggleFavoriteState(true);
+
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    const deleteFavorite = async() => {
-        try {
-            const token = await AsyncStorage.getItem('token');
+  const deleteFavorite = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
 
-            const response = await axios.delete(`${backendUrl}/api/hearts/delete`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-        } catch(error) {
-            console.error(error);
-        }
+      const postToServer = {
+        postId: postId,
+      }
+
+      await axios.delete(`${backendUrl}/api/hearts/delete`, {
+        data: postToServer,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setToggleFavoriteState(false);
+
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    const toggleFavorite = () => {
-        if(toggleFavoriteState === false) {
-            addFavorite();
-            setToggleFavoriteState(true);
-        } else {
-            deleteFavorite();
-            setToggleFavoriteState(false);
-        }
+  const toggleFavorite = () => {
+    if (toggleFavoriteState === false) {
+      addFavorite();
+      setToggleFavoriteState(true);
+    } else {
+      deleteFavorite();
+      setToggleFavoriteState(false);
     }
+  }
 
-    const toggleComment = () => {
-      setToggleCommentState(!toggleCommentState);
+  const toggleComment = () => {
+    setToggleCommentState(!toggleCommentState);
+  }
+
+  const convertDateToString = () => {
+    const currentDate = new Date();
+
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth() + 1;
+    let day = currentDate.getDate();
+
+    month = (month < 10 ? '0' : '') + month;
+    day = (day < 10 ? '0' : '') + day;
+
+    const formattedDate = year + '-' + month + '-' + day;
+
+    return formattedDate;
+  }
+
+  const addComment = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      const postToServer = {
+        postId: postId,
+        content: comment,
+        creationDate: convertDateToString()
+      }
+
+      await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Update comment state after adding a new comment
+      setCertainComment(prevComments => [...prevComments, postToServer]);
+
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    const convertDateToString = () => {
-        const currentDate = new Date();
+  return (
+    <View style={styles.container}>
+      {certainPost && certainPost.length > 0 && (
+        <>
+          <TextInput
+            placeholder="Title"
+            value={certainPost[0].title}
+            style={styles.input}
+          />
+          <TextInput
+            style={[styles.input, styles.multilineInput]}
+            multiline
+            value={certainPost[0].content}
+            textAlignVertical="top"
+          />
 
-        let year = currentDate.getFullYear();
-        let month = currentDate.getMonth() + 1;
-        let day = currentDate.getDate();
-
-        month = (month < 10 ? '0' : '') + month;
-        day = (day < 10 ? '0' : '') + day;
-
-        const formattedDate = year + '-' + month + '-' + day;
-
-        return formattedDate;
-    }
-
-    const addComment = async() => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-
-            const postToServer = {
-                postId : postId,
-                content: content,
-                creationDate: convertDateToString()
-            }
-
-            const response = await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    return (
-        <View style={styles.container}>
-        {certainPost && certainPost.length > 0 && (
-          <>
-            <TextInput
-                placeholder="제목"
-                value={certainPost[0].title}
-                style={styles.input}
-            />
-            <TextInput
-                style={[styles.input, styles.multilineInput]}
-                multiline
-                value={certainPost[0].content}
-                textAlignVertical="top" // 이 부분을 추가
-            />
-
-        <View style={styles.iconContainer}>
+          <View style={[styles.iconContainer, { borderColor: iconColor }]}>
             <TouchableOpacity onPress={toggleFavorite}>
-              <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 20 }} />
+              {toggleFavoriteState ?
+                (<Icon name="heart" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+                : (<Icon name="heart-o" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+              }
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleComment}>
-                <Icon name="comment-o" size={20} color="#555" />
+              <Icon name="comment-o" size={20} color="#555" />
             </TouchableOpacity>
-                      {console.log(toggleCommentState)}
-        </View>
+          </View>
 
-             {toggleCommentState && (
-               <>
-                 <TextInput
-                   value={comment}
-                   onChangeText={(e) => setComment(e)}
-                   placeholder="댓글을 입력하세요."
-                   style={styles.input}
-                 />
-                 <TouchableOpacity onPress={addComment}>
-                   <Text>댓글 추가</Text>
-                 </TouchableOpacity>
-                </>
-              )}
+          {toggleCommentState && (
+            <>
+              <TextInput
+                value={comment}
+                onChangeText={(e) => setComment(e)}
+                placeholder="댓글을 입력해주세요"
+                style={styles.input}
+              />
+              <TouchableOpacity onPress={addComment}>
+                <Text>댓글 추가</Text>
+              </TouchableOpacity>
+              <View style={styles.commentContainer}>
+                  {certainComment.map((comment, index) => (
+                  <>
+                     <Text key={index} style={styles.commentText}>{comment.userId}:{comment.content}</Text>
+                     <Text>{comment.creationDate}</Text>
+                  </>
+                  ))}
+              </View>
+            </>
+          )}
 
-        </>)}
-
-        </View>
-    );
+        </>
+      )}
+    </View>
+  );
 };
 
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  input: {
+    marginTop: 20,
+    borderWidth: 1,
+    marginBottom: 20,
+    padding: 12,
+    fontSize: 16,
+  },
+  multilineInput: {
+    height: 150,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 16,
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 8,
+  },
+   commentContainer: {
+      marginTop: 10,
     },
-    titleText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 15,
-        marginTop: 15,
+    commentText: {
+      fontSize: 16,
+      marginBottom: 5,
     },
-    input: {
-        marginTop: 20,
-        borderWidth: 1,
-        marginBottom: 20,
-        padding: 12,
-        fontSize: 16,
-    },
-    multilineInput: {
-        height: 150,
-    },
-    registerButton: {
-        height: 50,
-        width: 365,
-        backgroundColor: '#39D02C',
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-        iconContainer: {
-            flexDirection: 'row',
-            justifyContent: '',
-            marginTop: 16,
-        },
 });
 
 export default Postdetail;

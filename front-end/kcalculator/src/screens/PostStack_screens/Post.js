@@ -9,9 +9,11 @@ const backendUrl = config.backendUrl;
 
 const Post = ({ navigation,route}) => {
     const [posts, setPosts] = useState([]);
+    const [favoriteCount, setFavoriteCount] = useState(0);
+    const [commentCount, setCommentCount] = useState(0);
     const refreshKey = route.params?.refreshKey || Math.random().toString();
     const renderItem = ({ item }) => (
-   <PostComponent title={item.title} content={item.content} userId={item.userId} postId={item.postId} navigation={navigation} />
+   <PostComponent title={item.title} content={item.content} userId={item.userId} postId={item.postId} favoriteCount={favoriteCount} commentCount={commentCount} navigation={navigation} />
    )
     useEffect(() => {
         const getListFromServer = async () => {
@@ -30,7 +32,38 @@ const Post = ({ navigation,route}) => {
                 console.error(error);
             }
         };
+         const getFavoriteCount = async() => {
+                    try {
+                        const token  = await AsyncStorage.getItem('token');
+
+                        const response = await axios.get(`${backendUrl}/api/hearts/count`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            }
+                        });
+                        setFavoriteCount(response.data);
+                    } catch(error) {
+                        console.error(error);
+                    }
+                }
+
+                const getCommentCount = async() => {
+                    try {
+                        const token  = await AsyncStorage.getItem('token');
+
+                        const response = await axios.get(`${backendUrl}/api/comments/count`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            }
+                        });
+                        setCommentCount(response.data);
+                    } catch(error) {
+                        console.error(error);
+                    }
+                }
         getListFromServer();
+//        getFavoriteCount();
+//        getCommentCount();
     }, [refreshKey]);
 
     return (
@@ -53,7 +86,7 @@ const Post = ({ navigation,route}) => {
     );
 };
 
-const PostComponent = ({ title, content, userId, postId, navigation}) => (
+const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount ,navigation}) => (
     <TouchableOpacity
         onPress={() => navigation.navigate('Postdetail' ,{userId, postId})}
       >
@@ -61,8 +94,10 @@ const PostComponent = ({ title, content, userId, postId, navigation}) => (
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.user}>{userId}</Text>
         <View style={styles.iconContainer}>
-            <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 20 }} />
-            <Icon name="comment-o" size={20} color="#555" />
+            <Icon name="thumbs-o-up" size={20} color="#555" style={{marginRight: 8 }}/>
+              <Text style= {{marginRight: 100}}>{favoriteCount}</Text>
+            <Icon name="comment-o" size={20} color="#555" style={{marginLeft: 8 }} />
+             <Text style= {{marginRight: 100}}>{commentCount}</Text>
         </View>
     </View>
     </TouchableOpacity>
@@ -95,11 +130,20 @@ const styles = StyleSheet.create({
     content: {
         fontSize: 16,
     },
-    iconContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 16,
-    },
+  iconContainer: {
+      flexDirection: 'row',
+      marginTop: 16,
+      justifyContent: 'space-around',
+      alignItems: 'center', // 수직 방향 가운데 정렬
+      padding: 10, // 좌우 여백 추가
+      backgroundColor: '#F0F0F0', // 배경색 추가
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 3,
+      elevation: 3,
+  },
 });
 
 export default Post;
