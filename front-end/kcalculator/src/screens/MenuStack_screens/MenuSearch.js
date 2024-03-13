@@ -183,7 +183,7 @@ const MenuSearch = ({ navigation }) => {
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
-                    <Text>1회제공량: {selectedItem.servingSize} {selectedItem.unit}</Text>
+                    <Text>1회제공량: {selectedItem.servingSize} g</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: '', marginTop: 10 }}>
                      <TouchableOpacity onPress={() => setSelectedItem(null)}>
                         <Text style={{ marginTop: 10 }}>닫기</Text>
