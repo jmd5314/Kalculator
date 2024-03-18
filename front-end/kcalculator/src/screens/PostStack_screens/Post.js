@@ -11,7 +11,6 @@ const Post = ({ navigation,route}) => {
     const [posts, setPosts] = useState([]);
     const [favoriteCount, setFavoriteCount] = useState(0);
     const [commentCount, setCommentCount] = useState(0);
-    const refreshKey = route.params?.refreshKey || Math.random().toString();
     const renderItem = ({ item }) => (
    <PostComponent title={item.title} content={item.content} userId={item.userId} postId={item.postId} favoriteCount={favoriteCount} commentCount={commentCount} navigation={navigation} />
    )
@@ -26,45 +25,15 @@ const Post = ({ navigation,route}) => {
                     },
                 });
 
-                setPosts(response.data); // Assuming the response directly contains the array of posts
+                setPosts(response.data);
 
             } catch (error) {
                 console.error(error);
             }
         };
-         const getFavoriteCount = async() => {
-                    try {
-                        const token  = await AsyncStorage.getItem('token');
 
-                        const response = await axios.get(`${backendUrl}/api/hearts/count`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            }
-                        });
-                        setFavoriteCount(response.data);
-                    } catch(error) {
-                        console.error(error);
-                    }
-                }
-
-                const getCommentCount = async() => {
-                    try {
-                        const token  = await AsyncStorage.getItem('token');
-
-                        const response = await axios.get(`${backendUrl}/api/comments/count`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            }
-                        });
-                        setCommentCount(response.data);
-                    } catch(error) {
-                        console.error(error);
-                    }
-                }
         getListFromServer();
-//        getFavoriteCount();
-//        getCommentCount();
-    }, [refreshKey]);
+    },[] );
 
     return (
         <SafeAreaView style={styles.container}>
@@ -88,7 +57,7 @@ const Post = ({ navigation,route}) => {
 
 const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount ,navigation}) => (
     <TouchableOpacity
-        onPress={() => navigation.navigate('Postdetail' ,{userId, postId})}
+        onPress={() => navigation.navigate('Postdetail' ,{postId})}
       >
     <View style={styles.postContainer}>
         <Text style={styles.title}>{title}</Text>
