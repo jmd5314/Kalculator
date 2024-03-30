@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsConfirmRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
@@ -27,6 +28,15 @@ public class PostsController {
                 .creationDate(requestDto.getCreationDate()).build();
         posts.setUsers(users);
         return postsService.save(posts);
+    }
+    @GetMapping("confirm")
+    @ResponseBody
+    public PostsResponseDto confirm(@RequestBody PostsConfirmRequestDto requestDto){
+        Long postId = requestDto.getPostId();
+        String userId = requestDto.getUserId();
+        Posts posts = postsService.findById(postId);
+        PostsResponseDto responseDto = new PostsResponseDto(posts);
+        return responseDto;
     }
     @GetMapping("/list")
     @ResponseBody
