@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,9 @@ public class CommentsService {
         return commentsRepository.save(comments).getCommentId();
     }
 
-    public List<Comments> findAll() {
-        return commentsRepository.findAll();
+    public List<Comments> findByPostId(Long postId) {
+        Posts posts = postsRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
+        List<Comments> comments = commentsRepository.findByPosts(posts);
+        return comments;
     }
 }
