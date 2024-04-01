@@ -1,7 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsConfirmRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
@@ -31,9 +30,7 @@ public class PostsController {
     }
     @GetMapping("confirm")
     @ResponseBody
-    public PostsResponseDto confirm(@RequestBody PostsConfirmRequestDto requestDto){
-        Long postId = requestDto.getPostId();
-        String userId = requestDto.getUserId();
+    public PostsResponseDto confirm(@RequestParam Long postId){
         Posts posts = postsService.findById(postId);
         PostsResponseDto responseDto = new PostsResponseDto(posts);
         return responseDto;
