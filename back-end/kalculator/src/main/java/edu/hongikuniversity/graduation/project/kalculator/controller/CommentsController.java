@@ -2,10 +2,8 @@ package edu.hongikuniversity.graduation.project.kalculator.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.Comments;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsCountRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsSaveRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.HeartsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.CommentsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +26,15 @@ public class CommentsController {
     }
     @GetMapping("/count")
     @ResponseBody
-    public Integer count(@RequestBody CommentsCountRequestDto requestDto){
-        Posts posts = postsService.findById(requestDto.getPostId());
+    public Integer count(@RequestParam Long postId){
+        Posts posts = postsService.findById(postId);
         return posts.getComments().size();
     }
     @GetMapping("/list")
     @ResponseBody
-    public List<CommentsResponseDto> commentsList(){
+    public List<CommentsResponseDto> commentsList(@RequestParam Long postId){
         List<CommentsResponseDto> responseDtoList = new ArrayList<>();
-        List<Comments> commentsList = commentsService.findAll();
+        List<Comments> commentsList = commentsService.findByPostId(postId);
         for(Comments comments:commentsList){
             responseDtoList.add(new CommentsResponseDto(comments));
         }

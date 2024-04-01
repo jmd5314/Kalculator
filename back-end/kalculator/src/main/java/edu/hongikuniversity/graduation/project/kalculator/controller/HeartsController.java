@@ -17,23 +17,22 @@ public class HeartsController {
     private final HeartsService heartsService;
     private final PostsService postsService;
     @PostMapping("/insert")
-    public ResponseEntity<?> insert(@RequestBody HeartsRequestDto requestDto,Authentication authentication) {
+    public ResponseEntity<?> insert(@RequestBody HeartsRequestDto requestDto, Authentication authentication) {
         Long postId = requestDto.getPostId();
         String userId = authentication.getName();
         heartsService.insert(postId,userId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody HeartsRequestDto requestDto,Authentication authentication) {
-        Long postId = requestDto.getPostId();
+    public ResponseEntity<?> delete(@RequestParam Long postId,Authentication authentication) {
         String userId = authentication.getName();
         heartsService.delete(postId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
     @GetMapping("/count")
     @ResponseBody
-    public Integer count(@RequestBody HeartsRequestDto requestDto){
-        Posts posts = postsService.findById(requestDto.getPostId());
+    public Integer count(@RequestParam Long postId){
+        Posts posts = postsService.findById(postId);
         return posts.getLikeCount();
     }
 }
