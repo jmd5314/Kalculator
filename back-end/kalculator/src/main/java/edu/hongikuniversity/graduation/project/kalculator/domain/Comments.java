@@ -3,11 +3,13 @@ package edu.hongikuniversity.graduation.project.kalculator.domain;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Comments {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
