@@ -3,7 +3,6 @@ package edu.hongikuniversity.graduation.project.kalculator.service;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Hearts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.HeartsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.repository.CustomPostsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.HeartsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.PostsRepository;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class HeartsService {
+
     private final HeartsRepository heartsRepository;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
@@ -45,5 +45,15 @@ public class HeartsService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 좋아요를 찾을 수 없습니다."));
         heartsRepository.delete(hearts);
         customPostsRepository.updateCount(posts, false);
+    }
+    public boolean confirm(Long postId,String userId){
+        Users users = usersRepository.findByUserId(userId)
+                .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+        Posts posts = postsRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다."));
+        if(heartsRepository.findByUsersAndPosts(users,posts).isPresent())
+            return true;
+        else
+            return false;
     }
 }

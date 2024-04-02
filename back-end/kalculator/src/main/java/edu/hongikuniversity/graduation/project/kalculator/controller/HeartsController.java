@@ -23,11 +23,18 @@ public class HeartsController {
         heartsService.insert(postId,userId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam Long postId,Authentication authentication) {
+    @DeleteMapping("/delete/{postId}")
+    public ResponseEntity<?> delete(@PathVariable Long postId,Authentication authentication) {
         String userId = authentication.getName();
         heartsService.delete(postId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+    @GetMapping("/confirm")
+    @ResponseBody
+    public ResponseEntity<Boolean> confirm(@RequestParam Long postId,Authentication authentication){
+        String userId = authentication.getName();
+        boolean confirm = heartsService.confirm(postId, userId);
+        return ResponseEntity.ok(confirm);
     }
     @GetMapping("/count")
     @ResponseBody
