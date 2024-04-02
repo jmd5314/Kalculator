@@ -157,7 +157,7 @@ const Postdetail = ({ navigation, route }) => {
   }
 
   return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {certainPost && (
             <>
               <TextInput
@@ -195,21 +195,22 @@ const Postdetail = ({ navigation, route }) => {
                         style={styles.input}
                     />
                     <TouchableOpacity onPress={addComment}>
-                      <Text>댓글 추가</Text>
+                      <Text style={styles.commentButtonText}>댓글 추가</Text>
                     </TouchableOpacity>
-                    <ScrollView style={styles.commentContainer}>
+                    <View style={styles.commentContainer}>
                       {certainComments.map((comment, index) => (
-                          <View key={index}>
-                            <Text style={styles.commentText}>{comment.userId}: {comment.content}</Text>
-                            <Text>{comment.creationDate}</Text>
+                          <View key={index} style={styles.commentItem}>
+                            <Text style={styles.commentUsername}>{comment.userId}</Text>
+                            <Text style={styles.commentContent}>{comment.content}</Text>
+                            <Text style={styles.commentDate}>{comment.creationDate}</Text>
                           </View>
                       ))}
-                    </ScrollView>
+                    </View>
                   </>
               )}
             </>
         )}
-      </View>
+      </ScrollView>
   );
 };
 
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   multilineInput: {
-    height: 150,
+    minHeight: 300,
   },
   iconContainer: {
     flexDirection: 'row',
@@ -242,9 +243,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
     maxHeight: 200,
   },
-  commentText: {
-    fontSize: 16,
+  commentItem: {
+    marginBottom: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  commentUsername: {
+    fontWeight: 'bold',
     marginBottom: 5,
+  },
+  commentContent: {
+    marginBottom: 5,
+  },
+  commentDate: {
+    color: '#777',
+    fontSize: 12,
+  },
+  commentButtonText: {
+    color: 'black',
+    marginLeft:300,
+    marginTop:-12,
+    marginBottom:5
   },
 });
 
