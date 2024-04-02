@@ -57,7 +57,7 @@ const Post = ({ navigation,route}) => {
 
 const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount ,navigation}) => (
     <TouchableOpacity
-        onPress={() => navigation.navigate('Postdetail' ,{postId})}
+        onPress={() => navigation.navigate('Postdetail' ,{userId,postId})}
       >
     <View style={styles.postContainer}>
         <Text style={styles.title}>{title}</Text>

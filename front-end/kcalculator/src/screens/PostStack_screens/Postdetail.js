@@ -9,14 +9,8 @@ const backendUrl = config.backendUrl;
 
 const Postdetail = ({ navigation, route }) => {
   const { userId, postId } = route.params;
-
-  const [certainPost, setCertainPost] = useState();
-  const [certainComment, setCertainComment] = useState([{
-    userId: 'ho',
-    content: 'Test',
-    creationDate: new Date()
-  }]);
-
+  const [certainPost, setCertainPost] = useState(null);
+  const [certainComments, setCertainComments] = useState([]);
   const [toggleFavoriteState, setToggleFavoriteState] = useState(false);
   const [toggleCommentState, setToggleCommentState] = useState(false);
   const [comment, setComment] = useState("");
@@ -24,44 +18,42 @@ const Postdetail = ({ navigation, route }) => {
   const iconColor = toggleFavoriteState ? '#FF0000' : '#555';
 
   useEffect(() => {
-    const getPostListFromServer = async () => {
+    const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
 
-        const response = await axios.get(`${backendUrl}/api/posts/list`, {
+        // Fetching post
+        const postResponse = await axios.get(`${backendUrl}/api/posts/confirm`, {
+          params: {
+            postId: postId
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        const postList = response.data;
-        setCertainPost(postList.filter(post => post.userId === userId && post.postId === postId));
+        const post = postResponse.data;
+        setCertainPost(post);
+
+        // Fetching comments
+        const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
+          params: {
+            postId: postId
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const comments = commentsResponse.data;
+        setCertainComments(comments);
 
       } catch (error) {
         console.error(error);
       }
     };
 
-    const getCommentListFromServer = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-
-        const response = await axios.get(`${backendUrl}/api/comments/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const commentList = response.data;
-        setCertainComment(commentList);
-
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getPostListFromServer();
-    getCommentListFromServer();
+    fetchData();
 
   }, []);
 
@@ -87,28 +79,6 @@ const Postdetail = ({ navigation, route }) => {
     }
   }
 
-  const deleteFavorite = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-
-      const postToServer = {
-        postId: postId,
-      }
-
-      await axios.delete(`${backendUrl}/api/hearts/delete`, {
-        data: postToServer,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setToggleFavoriteState(false);
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const toggleFavorite = () => {
     if (toggleFavoriteState === false) {
       addFavorite();
@@ -123,21 +93,6 @@ const Postdetail = ({ navigation, route }) => {
     setToggleCommentState(!toggleCommentState);
   }
 
-  const convertDateToString = () => {
-    const currentDate = new Date();
-
-    let year = currentDate.getFullYear();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
-
-    month = (month < 10 ? '0' : '') + month;
-    day = (day < 10 ? '0' : '') + day;
-
-    const formattedDate = year + '-' + month + '-' + day;
-
-    return formattedDate;
-  }
-
   const addComment = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -145,7 +100,7 @@ const Postdetail = ({ navigation, route }) => {
       const postToServer = {
         postId: postId,
         content: comment,
-        creationDate: convertDateToString()
+        creationDate: new Date().toISOString() // Use ISO string directly
       }
 
       await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
@@ -154,67 +109,65 @@ const Postdetail = ({ navigation, route }) => {
         },
       });
 
-      // Update comment state after adding a new comment
-      setCertainComment(prevComments => [...prevComments, postToServer]);
-
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <View style={styles.container}>
-      {certainPost && certainPost.length > 0 && (
-        <>
-          <TextInput
-            placeholder="Title"
-            value={certainPost[0].title}
-            style={styles.input}
-          />
-          <TextInput
-            style={[styles.input, styles.multilineInput]}
-            multiline
-            value={certainPost[0].content}
-            textAlignVertical="top"
-          />
-
-          <View style={[styles.iconContainer, { borderColor: iconColor }]}>
-            <TouchableOpacity onPress={toggleFavorite}>
-              {toggleFavoriteState ?
-                (<Icon name="heart" size={20} color={iconColor} style={{ marginRight: 20 }} />)
-                : (<Icon name="heart-o" size={20} color={iconColor} style={{ marginRight: 20 }} />)
-              }
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleComment}>
-              <Icon name="comment-o" size={20} color="#555" />
-            </TouchableOpacity>
-          </View>
-
-          {toggleCommentState && (
+      <View style={styles.container}>
+        {certainPost && (
             <>
               <TextInput
-                value={comment}
-                onChangeText={(e) => setComment(e)}
-                placeholder="댓글을 입력해주세요"
-                style={styles.input}
+                  placeholder="Title"
+                  value={certainPost.title}
+                  style={styles.input}
+                  editable={false}
               />
-              <TouchableOpacity onPress={addComment}>
-                <Text>댓글 추가</Text>
-              </TouchableOpacity>
-              <View style={styles.commentContainer}>
-                  {certainComment.map((comment, index) => (
-                  <>
-                     <Text key={index} style={styles.commentText}>{comment.userId}:{comment.content}</Text>
-                     <Text>{comment.creationDate}</Text>
-                  </>
-                  ))}
-              </View>
-            </>
-          )}
+              <TextInput
+                  style={[styles.input, styles.multilineInput]}
+                  multiline
+                  value={certainPost.content}
+                  textAlignVertical="top"
+                  editable={false}
+              />
 
-        </>
-      )}
-    </View>
+              <View style={[styles.iconContainer, { borderColor: iconColor }]}>
+                <TouchableOpacity onPress={toggleFavorite}>
+                  {toggleFavoriteState ?
+                      (<Icon name="heart" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+                      : (<Icon name="heart-o" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+                  }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleComment}>
+                  <Icon name="comment-o" size={20} color="#555" />
+                </TouchableOpacity>
+              </View>
+
+              {toggleCommentState && (
+                  <>
+                    <TextInput
+                        value={comment}
+                        onChangeText={(text) => setComment(text)}
+                        placeholder="댓글을 입력해주세요"
+                        style={styles.input}
+                    />
+                    <TouchableOpacity onPress={addComment}>
+                      <Text>댓글 추가</Text>
+                    </TouchableOpacity>
+                    <View style={styles.commentContainer}>
+                      {certainComments.map((comment, index) => (
+                          <View key={index}>
+                            <Text style={styles.commentText}>{comment.userId}: {comment.content}</Text>
+                            <Text>{comment.creationDate}</Text>
+                          </View>
+                      ))}
+                    </View>
+                  </>
+              )}
+            </>
+        )}
+      </View>
   );
 };
 
@@ -230,6 +183,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 12,
     fontSize: 16,
+    color: 'black',
   },
   multilineInput: {
     height: 150,
@@ -242,13 +196,13 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
   },
-   commentContainer: {
-      marginTop: 10,
-    },
-    commentText: {
-      fontSize: 16,
-      marginBottom: 5,
-    },
+  commentContainer: {
+    marginTop: 10,
+  },
+  commentText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
 });
 
 export default Postdetail;
