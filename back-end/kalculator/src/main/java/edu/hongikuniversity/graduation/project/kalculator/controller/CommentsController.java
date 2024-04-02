@@ -24,12 +24,6 @@ public class CommentsController {
         String userId = authentication.getName();
         return commentsService.save(requestDto, userId);
     }
-    @GetMapping("/count")
-    @ResponseBody
-    public Integer count(@RequestParam Long postId){
-        Posts posts = postsService.findById(postId);
-        return posts.getComments().size();
-    }
     @GetMapping("/list")
     @ResponseBody
     public List<CommentsResponseDto> commentsList(@RequestParam Long postId){

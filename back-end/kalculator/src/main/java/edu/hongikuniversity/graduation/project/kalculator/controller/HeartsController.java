@@ -36,10 +36,4 @@ public class HeartsController {
         boolean confirm = heartsService.confirm(postId, userId);
         return ResponseEntity.ok(confirm);
     }
-    @GetMapping("/count")
-    @ResponseBody
-    public Integer count(@RequestParam Long postId){
-        Posts posts = postsService.findById(postId);
-        return posts.getLikeCount();
-    }
 }

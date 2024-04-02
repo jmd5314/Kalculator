@@ -18,7 +18,6 @@ public class HeartsService {
     private final HeartsRepository heartsRepository;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
-    private final CustomPostsRepository customPostsRepository;
     @Transactional
     public void insert (Long postId,String userId){
         Users users = usersRepository.findByUserId(userId)
@@ -33,7 +32,6 @@ public class HeartsService {
                 .users(users)
                 .posts(posts).build();
         heartsRepository.save(hearts);
-        customPostsRepository.updateCount(posts, true);
     }
     @Transactional
     public void delete(Long postId,String userId){
@@ -44,7 +42,6 @@ public class HeartsService {
         Hearts hearts = heartsRepository.findByUsersAndPosts(users, posts)
                 .orElseThrow(() -> new IllegalArgumentException("해당 좋아요를 찾을 수 없습니다."));
         heartsRepository.delete(hearts);
-        customPostsRepository.updateCount(posts, false);
     }
     public boolean confirm(Long postId,String userId){
         Users users = usersRepository.findByUserId(userId)

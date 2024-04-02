@@ -19,8 +19,6 @@ public class Posts {
     private String title;
     private String content;
     private LocalDate creationDate;
-    @ColumnDefault("0")
-    private Integer likeCount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Users users;
