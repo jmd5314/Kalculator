@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import config from '../config'; // Import your backend URL configuration
+import config from '../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const backendUrl = config.backendUrl;
 
 const Postdetail = ({ navigation, route }) => {
-  const { userId, postId } = route.params;
+  const { postId } = route.params;
   const [certainPost, setCertainPost] = useState(null);
   const [certainComments, setCertainComments] = useState([]);
   const [toggleFavoriteState, setToggleFavoriteState] = useState(false);
@@ -100,7 +100,7 @@ const Postdetail = ({ navigation, route }) => {
       const postToServer = {
         postId: postId,
         content: comment,
-        creationDate: new Date().toISOString() // Use ISO string directly
+        creationDate: new Date().toISOString()
       }
 
       await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
@@ -108,16 +108,22 @@ const Postdetail = ({ navigation, route }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // 새로운 댓글을 서버에 추가한 후, 로컬 상태에 추가하여 렌더링
-      const newComment = {
-        userId: userId,
-        content: comment,
-        creationDate: new Date().toISOString()
-      };
 
-      setCertainComments([...certainComments, newComment]);
-      setComment(""); // 댓글 입력 필드 비우기
+      // After adding comment, fetch comments again to update the UI
+      const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
+        params: {
+          postId: postId
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
+      const comments = commentsResponse.data;
+      setCertainComments(comments);
+
+      // Clear the comment input
+      setComment("");
 
     } catch (error) {
       console.error(error);
@@ -165,14 +171,14 @@ const Postdetail = ({ navigation, route }) => {
                     <TouchableOpacity onPress={addComment}>
                       <Text>댓글 추가</Text>
                     </TouchableOpacity>
-                    <View style={styles.commentContainer}>
+                    <ScrollView style={styles.commentContainer}>
                       {certainComments.map((comment, index) => (
                           <View key={index}>
                             <Text style={styles.commentText}>{comment.userId}: {comment.content}</Text>
                             <Text>{comment.creationDate}</Text>
                           </View>
                       ))}
-                    </View>
+                    </ScrollView>
                   </>
               )}
             </>
@@ -208,6 +214,7 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     marginTop: 10,
+    maxHeight: 200,
   },
   commentText: {
     fontSize: 16,
