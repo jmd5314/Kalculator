@@ -3,9 +3,11 @@ package edu.hongikuniversity.graduation.project.kalculator.domain;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Hearts {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartId;
