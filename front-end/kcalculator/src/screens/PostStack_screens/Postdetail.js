@@ -55,7 +55,7 @@ const Postdetail = ({ navigation, route }) => {
 
     fetchData();
 
-  }, []);
+  }, [certainComments]);
 
   const addFavorite = async () => {
     try {
