@@ -55,7 +55,7 @@ const Postdetail = ({ navigation, route }) => {
 
     fetchData();
 
-  }, [certainComments]);
+  }, []);
 
   const addFavorite = async () => {
     try {
@@ -108,6 +108,16 @@ const Postdetail = ({ navigation, route }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      // 새로운 댓글을 서버에 추가한 후, 로컬 상태에 추가하여 렌더링
+      const newComment = {
+        userId: userId,
+        content: comment,
+        creationDate: new Date().toISOString()
+      };
+
+      setCertainComments([...certainComments, newComment]);
+      setComment(""); // 댓글 입력 필드 비우기
+
 
     } catch (error) {
       console.error(error);
