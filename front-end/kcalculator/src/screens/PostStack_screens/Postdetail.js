@@ -35,6 +35,18 @@ const Postdetail = ({ navigation, route }) => {
         const post = postResponse.data;
         setCertainPost(post);
 
+        const likeStatusResponse = await axios.get(`${backendUrl}/api/hearts/confirm`, {
+          params: {
+            postId: postId
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const hasLiked = likeStatusResponse.data;
+        setToggleFavoriteState(hasLiked);
+
         // Fetching comments
         const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
           params: {
@@ -62,7 +74,6 @@ const Postdetail = ({ navigation, route }) => {
       const token = await AsyncStorage.getItem('token');
 
       const postToServer = {
-        userId: userId,
         postId: postId,
       }
 
@@ -78,7 +89,22 @@ const Postdetail = ({ navigation, route }) => {
       console.error(error);
     }
   }
+  const deleteFavorite = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
 
+      await axios.delete(`${backendUrl}/api/hearts/delete/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setToggleFavoriteState(false);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const toggleFavorite = () => {
     if (toggleFavoriteState === false) {
       addFavorite();
