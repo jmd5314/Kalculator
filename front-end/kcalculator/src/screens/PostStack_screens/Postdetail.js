@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import config from '../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {decode as atob} from 'base-64';
 
 const backendUrl = config.backendUrl;
 
@@ -14,6 +15,7 @@ const Postdetail = ({ navigation, route }) => {
   const [toggleFavoriteState, setToggleFavoriteState] = useState(false);
   const [toggleCommentState, setToggleCommentState] = useState(false);
   const [comment, setComment] = useState("");
+  const [userId, setUserId] = useState(null);
 
   const iconColor = toggleFavoriteState ? '#FF0000' : '#555';
 
@@ -21,6 +23,11 @@ const Postdetail = ({ navigation, route }) => {
     const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
+        // JWT 토큰을 디코딩하여 사용자 ID를 추출
+        const [, payloadBase64] = token.split('.');
+        const payload = JSON.parse(atob(payloadBase64));
+        const decodedUserId = payload.userId;
+        setUserId(decodedUserId);
 
         // Fetching post
         const postResponse = await axios.get(`${backendUrl}/api/posts/confirm`, {
