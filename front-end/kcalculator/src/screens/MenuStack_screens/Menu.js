@@ -115,9 +115,13 @@ const Menu = ({ navigation,route }) => {
   return (
     <Container>
       <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
-        <Text style={{ fontSize: 40, marginRight:210 }}>식단 </Text>
+        <Text style={{ fontSize: 40, marginRight:190 }}>식단</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                   <Icon name="account-circle" size={50} color="black" />
+                </TouchableOpacity>
+                <View style={{ marginRight: 5 }}></View>
+                <TouchableOpacity onPress={() => navigation.navigate('ChatBot')}>
+                  <Icon name="chat" size={50} color="black" />
                 </TouchableOpacity>
       </View>
 
