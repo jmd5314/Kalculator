@@ -20,6 +20,7 @@ import Home from './HomeStack_screens/Home';
 import Menu from './MenuStack_screens/Menu';
 import MenuSearch from './MenuStack_screens/MenuSearch';
 import FoodAddList from './MenuStack_screens/FoodAddList';
+import ChatBot from './MenuStack_screens/ChatBot';
 
 import Post from './PostStack_screens/Post';
 import PostRegister from './PostStack_screens/PostRegister';
@@ -33,5 +34,5 @@ import RunHistory from './RunningStack_screens/RunHistory';
 
 export {Profile, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
-    Login, Signup, Battle, Home, Menu, MenuSearch, FoodAddList, 
+    Login, Signup, Battle, Home, Menu, MenuSearch, FoodAddList, ChatBot,
     Post, PostRegister, Running, RunHistory, Postdetail};
