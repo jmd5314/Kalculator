@@ -2,7 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Login, Signup, ProfileProduction, MenuSelection, TargetCalorie,
     Profile, UserDelete, ProfileRevise, MenuSearch, ChatBot,
-    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, PostRegister, RunHistory, Postdetail
+    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, PostRegister, RunHistory, Postdetail,
+    BattleRegister, BattleDetail, MyBattle, MyBattleDetail
 } from '../screens';
 import MainTab from "./MainTab";
 
@@ -30,6 +31,10 @@ const AuthStack = () => {
             <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
             <Stack.Screen name="Postdetail" component={Postdetail} options={{ title:'' }}/>
             <Stack.Screen name="RunHistory" component={RunHistory} options={{ title:'' }}/>
+            <Stack.Screen name="BattleRegister" component={BattleRegister} options={{ title:'' }}/>
+            <Stack.Screen name="BattleDetail" component={BattleDetail} options={{ title:'' }}/>
+            <Stack.Screen name="MyBattle" component={MyBattle} options={{ title:'' }}/>
+            <Stack.Screen name="MyBattleDetail" component={MyBattleDetail} options={{ title:'' }}/>
         </Stack.Navigator>
     );
 };

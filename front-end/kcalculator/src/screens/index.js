@@ -14,6 +14,10 @@ import Login from './AuthStack_screens/Login';
 import Signup from './AuthStack_screens/Signup';
 
 import Battle from './BattleStack_screens/Battle';
+import BattleRegister from './BattleStack_screens/BattleRegister';
+import BattleDetail from './BattleStack_screens/BattleDetail';
+import MyBattle from './BattleStack_screens/MyBattle';
+import MyBattleDetail from './BattleStack_screens/MyBattleDetail';
 
 import Home from './HomeStack_screens/Home';
 
@@ -34,5 +38,6 @@ import RunHistory from './RunningStack_screens/RunHistory';
 
 export {Profile, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
-    Login, Signup, Battle, Home, Menu, MenuSearch, FoodAddList, ChatBot,
+    Login, Signup, Battle, BattleRegister, BattleDetail, MyBattle, MyBattleDetail,
+    Home, Menu, MenuSearch, FoodAddList, ChatBot,
     Post, PostRegister, Running, RunHistory, Postdetail};
