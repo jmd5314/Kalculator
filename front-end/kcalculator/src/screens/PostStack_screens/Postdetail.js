@@ -6,6 +6,7 @@ import config from '../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {decode as atob} from 'base-64';
 
+
 const backendUrl = config.backendUrl;
 
 const Postdetail = ({ navigation, route }) => {
@@ -192,7 +193,6 @@ const Postdetail = ({ navigation, route }) => {
                   <Icon name="comment-o" size={20} color="#555" />
                 </TouchableOpacity>
               </View>
-
               {toggleCommentState && (
                   <>
                     <TextInput
@@ -207,9 +207,23 @@ const Postdetail = ({ navigation, route }) => {
                     <View style={styles.commentContainer}>
                       {certainComments.map((comment, index) => (
                           <View key={index} style={styles.commentItem}>
-                            <Text style={styles.commentUsername}>{comment.userId}</Text>
+                            <View style={styles.commentHeader}>
+                              <Text style={styles.commentUsername}>{comment.userId}</Text>
+                              <Text style={styles.commentDate}>{comment.creationDate}</Text>
+                            </View>
                             <Text style={styles.commentContent}>{comment.content}</Text>
-                            <Text style={styles.commentDate}>{comment.creationDate}</Text>
+
+                            {/* 추가: 댓글 작성자와 현재 사용자의 ID가 일치하는 경우에만 수정 및 삭제 버튼 표시 */}
+                            {comment.userId === userId && (
+                                <View style={styles.commentActionButtons}>
+                                  <TouchableOpacity onPress={() => handleEditComment(comment)}>
+                                    <Text style={styles.commentActionButtonText}>수정</Text>
+                                  </TouchableOpacity>
+                                  <TouchableOpacity onPress={() => handleDeleteComment(comment.id)}>
+                                    <Text style={styles.commentActionButtonText}>삭제</Text>
+                                  </TouchableOpacity>
+                                </View>
+                            )}
                           </View>
                       ))}
                     </View>
@@ -245,6 +259,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     borderRadius: 8,
+  },
+  commentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  commentActionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  commentActionButtonText: {
+    color: '#555',
+    marginLeft: 10,
   },
   commentContainer: {
     marginTop: 10,
