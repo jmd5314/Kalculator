@@ -5,7 +5,7 @@ import axios from 'axios';
 import config from '../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {decode as atob} from 'base-64';
-
+import { FlatList } from 'react-native';
 
 const backendUrl = config.backendUrl;
 
@@ -24,13 +24,11 @@ const Postdetail = ({ navigation, route }) => {
     const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        // JWT 토큰을 디코딩하여 사용자 ID를 추출
         const [, payloadBase64] = token.split('.');
         const payload = JSON.parse(atob(payloadBase64));
         const decodedUserId = payload.userId;
         setUserId(decodedUserId);
 
-        // Fetching post
         const postResponse = await axios.get(`${backendUrl}/api/posts/confirm`, {
           params: {
             postId: postId
@@ -55,7 +53,6 @@ const Postdetail = ({ navigation, route }) => {
         const hasLiked = likeStatusResponse.data;
         setToggleFavoriteState(hasLiked);
 
-        // Fetching comments
         const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
           params: {
             postId: postId
@@ -97,6 +94,7 @@ const Postdetail = ({ navigation, route }) => {
       console.error(error);
     }
   }
+
   const deleteFavorite = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -113,6 +111,7 @@ const Postdetail = ({ navigation, route }) => {
       console.error(error);
     }
   }
+
   const toggleFavorite = () => {
     if (toggleFavoriteState === false) {
       addFavorite();
@@ -143,7 +142,6 @@ const Postdetail = ({ navigation, route }) => {
         },
       });
 
-      // After adding comment, fetch comments again to update the UI
       const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
         params: {
           postId: postId
@@ -156,12 +154,19 @@ const Postdetail = ({ navigation, route }) => {
       const comments = commentsResponse.data;
       setCertainComments(comments);
 
-      // Clear the comment input
       setComment("");
 
     } catch (error) {
       console.error(error);
     }
+  }
+
+  const handleEditComment = (comment) => {
+    // 댓글 수정 기능 구현
+  }
+
+  const handleDeleteComment = (commentId) => {
+    // 댓글 삭제 기능 구현
   }
 
   return (
@@ -204,29 +209,30 @@ const Postdetail = ({ navigation, route }) => {
                     <TouchableOpacity onPress={addComment}>
                       <Text style={styles.commentButtonText}>댓글 추가</Text>
                     </TouchableOpacity>
-                    <View style={styles.commentContainer}>
-                      {certainComments.map((comment, index) => (
-                          <View key={index} style={styles.commentItem}>
-                            <View style={styles.commentHeader}>
-                              <Text style={styles.commentUsername}>{comment.userId}</Text>
-                              <Text style={styles.commentDate}>{comment.creationDate}</Text>
-                            </View>
-                            <Text style={styles.commentContent}>{comment.content}</Text>
 
-                            {/* 추가: 댓글 작성자와 현재 사용자의 ID가 일치하는 경우에만 수정 및 삭제 버튼 표시 */}
-                            {comment.userId === userId && (
-                                <View style={styles.commentActionButtons}>
-                                  <TouchableOpacity onPress={() => handleEditComment(comment)}>
-                                    <Text style={styles.commentActionButtonText}>수정</Text>
-                                  </TouchableOpacity>
-                                  <TouchableOpacity onPress={() => handleDeleteComment(comment.id)}>
-                                    <Text style={styles.commentActionButtonText}>삭제</Text>
-                                  </TouchableOpacity>
-                                </View>
-                            )}
-                          </View>
-                      ))}
-                    </View>
+                    <FlatList
+                        data={certainComments}
+                        renderItem={({ item, index }) => (
+                            <View style={[styles.commentItem, index === certainComments.length - 1 && styles.lastCommentItem]}>
+                              <View style={styles.commentHeader}>
+                                <Text style={styles.commentUsername}>{item.userId}</Text>
+                                <Text style={styles.commentDate}>{item.creationDate}</Text>
+                              </View>
+                              <Text style={styles.commentContent}>{item.content}</Text>
+                              {item.userId === userId && (
+                                  <View style={styles.commentActionButtons}>
+                                    <TouchableOpacity onPress={() => handleEditComment(item)}>
+                                      <Text style={styles.commentActionButtonText}>수정</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => handleDeleteComment(item.id)}>
+                                      <Text style={styles.commentActionButtonText}>삭제</Text>
+                                    </TouchableOpacity>
+                                  </View>
+                              )}
+                            </View>
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
                   </>
               )}
             </>
@@ -260,14 +266,10 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
   },
-  commentHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
   commentActionButtons: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: 5,
   },
   commentActionButtonText: {
     color: '#555',
@@ -275,7 +277,6 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     marginTop: 10,
-    maxHeight: 200,
   },
   commentItem: {
     marginBottom: 10,
@@ -299,6 +300,9 @@ const styles = StyleSheet.create({
     marginLeft:300,
     marginTop:-12,
     marginBottom:5
+  },
+  lastCommentItem: {
+    marginBottom: 100,
   },
 });
 
