@@ -168,76 +168,83 @@ const Postdetail = ({ navigation, route }) => {
   const handleDeleteComment = (commentId) => {
     // 댓글 삭제 기능 구현
   }
-
   return (
-      <ScrollView style={styles.container}>
-        {certainPost && (
-            <>
-              <TextInput
-                  placeholder="Title"
-                  value={certainPost.title}
-                  style={styles.input}
-                  editable={false}
-              />
-              <TextInput
-                  style={[styles.input, styles.multilineInput]}
-                  multiline
-                  value={certainPost.content}
-                  textAlignVertical="top"
-                  editable={false}
-              />
+      <FlatList
+          style={styles.container}
+          data={[certainPost]}
+          renderItem={({ item }) => (
+              <>
+                {item && (
+                    <>
+                      <TextInput
+                          placeholder="Title"
+                          value={item.title}
+                          style={styles.input}
+                          editable={false}
+                      />
+                      <TextInput
+                          style={[styles.input, styles.multilineInput]}
+                          multiline
+                          value={item.content}
+                          textAlignVertical="top"
+                          editable={false}
+                      />
 
-              <View style={[styles.iconContainer, { borderColor: iconColor }]}>
-                <TouchableOpacity onPress={toggleFavorite}>
-                  {toggleFavoriteState ?
-                      (<Icon name="heart" size={20} color={iconColor} style={{ marginRight: 20 }} />)
-                      : (<Icon name="heart-o" size={20} color={iconColor} style={{ marginRight: 20 }} />)
-                  }
-                </TouchableOpacity>
-                <TouchableOpacity onPress={toggleComment}>
-                  <Icon name="comment-o" size={20} color="#555" />
-                </TouchableOpacity>
-              </View>
-              {toggleCommentState && (
-                  <>
-                    <TextInput
-                        value={comment}
-                        onChangeText={(text) => setComment(text)}
-                        placeholder="댓글을 입력해주세요"
-                        style={styles.input}
-                    />
-                    <TouchableOpacity onPress={addComment}>
-                      <Text style={styles.commentButtonText}>댓글 추가</Text>
-                    </TouchableOpacity>
+                      <View style={[styles.iconContainer, { borderColor: iconColor }]}>
+                        <TouchableOpacity onPress={toggleFavorite}>
+                          {toggleFavoriteState ?
+                              (<Icon name="heart" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+                              : (<Icon name="heart-o" size={20} color={iconColor} style={{ marginRight: 20 }} />)
+                          }
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={toggleComment}>
+                          <Icon name="comment-o" size={20} color="#555" />
+                        </TouchableOpacity>
+                      </View>
+                      {toggleCommentState && (
+                          <>
+                            <TextInput
+                                value={comment}
+                                onChangeText={(text) => setComment(text)}
+                                placeholder="댓글을 입력해주세요"
+                                style={styles.input}
+                            />
+                            <TouchableOpacity onPress={addComment}>
+                              <Text style={styles.commentButtonText}>댓글 추가</Text>
+                            </TouchableOpacity>
 
-                    <FlatList
-                        data={certainComments}
-                        renderItem={({ item, index }) => (
-                            <View style={[styles.commentItem, index === certainComments.length - 1 && styles.lastCommentItem]}>
-                              <View style={styles.commentHeader}>
-                                <Text style={styles.commentUsername}>{item.userId}</Text>
-                                <Text style={styles.commentDate}>{item.creationDate}</Text>
-                              </View>
-                              <Text style={styles.commentContent}>{item.content}</Text>
-                              {item.userId === userId && (
-                                  <View style={styles.commentActionButtons}>
-                                    <TouchableOpacity onPress={() => handleEditComment(item)}>
-                                      <Text style={styles.commentActionButtonText}>수정</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handleDeleteComment(item.id)}>
-                                      <Text style={styles.commentActionButtonText}>삭제</Text>
-                                    </TouchableOpacity>
-                                  </View>
-                              )}
-                            </View>
-                        )}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                  </>
-              )}
-            </>
-        )}
-      </ScrollView>
+                            <FlatList
+                                data={certainComments}
+                                renderItem={({ item, index }) => (
+                                    <View style={[styles.commentItem, index === certainComments.length - 1 && styles.lastCommentItem]}>
+                                      <View style={styles.commentHeader}>
+                                        <Text style={styles.commentUsername}>{item.userId}</Text>
+                                        <Text style={styles.commentDate}>{item.creationDate}</Text>
+                                      </View>
+                                      <Text style={styles.commentContent}>{item.content}</Text>
+                                      {item.userId === userId && (
+                                          <View style={styles.commentActionButtons}>
+                                            <TouchableOpacity onPress={() => handleEditComment(item)}>
+                                              <Text style={styles.commentActionButtonText}>수정</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => handleDeleteComment(item.id)}>
+                                              <Text style={styles.commentActionButtonText}>삭제</Text>
+                                            </TouchableOpacity>
+                                          </View>
+                                      )}
+                                    </View>
+                                )}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                          </>
+                      )}
+                    </>
+                )}
+              </>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={{ paddingBottom: 20 }}// 하단 여백 설정
+      />
   );
 };
 
