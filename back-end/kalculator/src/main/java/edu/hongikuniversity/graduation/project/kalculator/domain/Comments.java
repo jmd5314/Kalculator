@@ -28,4 +28,8 @@ public class Comments {
         this.content = content;
         this.creationDate = creationDate;
     }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
