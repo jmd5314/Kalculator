@@ -17,6 +17,8 @@ const Postdetail = ({ navigation, route }) => {
   const [toggleCommentState, setToggleCommentState] = useState(false);
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState(null);
+  const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글의 ID 저장
+  const [editingComment, setEditingComment] = useState(""); // 수정 중인 댓글의 내용 저장
 
   const iconColor = toggleFavoriteState ? '#FF0000' : '#555';
 
@@ -161,13 +163,57 @@ const Postdetail = ({ navigation, route }) => {
     }
   }
 
-  const handleEditComment = (comment) => {
-    // 댓글 수정 기능 구현
+  const handleEditComment = (commentId) => {
+    setEditingCommentId(commentId); // 수정할 댓글의 ID 저장
   }
 
-  const handleDeleteComment = (commentId) => {
-    // 댓글 삭제 기능 구현
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      await axios.delete(`${backendUrl}/api/comments/delete/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const updatedComments = certainComments.filter(comment => comment.commentId !== commentId);
+      setCertainComments(updatedComments);
+
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  const handleUpdateComment = async (commentId) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      const updatedComment = {
+        commentId: commentId,
+        content: editingComment,
+      }
+
+      await axios.put(`${backendUrl}/api/comments/update/${commentId}`, updatedComment, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const updatedComments = certainComments.map(comment => {
+        if (comment.commentId === commentId) {
+          return { ...comment, content: editingComment };
+        }
+        return comment;
+      });
+      setCertainComments(updatedComments);
+      setEditingCommentId(null); // 수정 완료 후 수정 중인 댓글 ID 초기화
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
       <FlatList
           style={styles.container}
@@ -217,20 +263,38 @@ const Postdetail = ({ navigation, route }) => {
                                 data={certainComments}
                                 renderItem={({ item, index }) => (
                                     <View style={[styles.commentItem, index === certainComments.length - 1 && styles.lastCommentItem]}>
-                                      <View style={styles.commentHeader}>
-                                        <Text style={styles.commentUsername}>{item.userId}</Text>
-                                        <Text style={styles.commentDate}>{item.creationDate}</Text>
-                                      </View>
-                                      <Text style={styles.commentContent}>{item.content}</Text>
-                                      {item.userId === userId && (
-                                          <View style={styles.commentActionButtons}>
-                                            <TouchableOpacity onPress={() => handleEditComment(item)}>
-                                              <Text style={styles.commentActionButtonText}>수정</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => handleDeleteComment(item.id)}>
-                                              <Text style={styles.commentActionButtonText}>삭제</Text>
+                                      {editingCommentId === item.commentId ? (
+                                          // 수정 폼 렌더링
+                                          <View>
+                                            <TextInput
+                                                value={editingComment}
+                                                onChangeText={(text) => setEditingComment(text)}
+                                                placeholder="댓글 수정"
+                                                style={styles.input}
+                                            />
+                                            <TouchableOpacity onPress={() => handleUpdateComment(item.commentId)}>
+                                              <Text style={styles.commentButtonText}>수정 완료</Text>
                                             </TouchableOpacity>
                                           </View>
+                                      ) : (
+                                          // 댓글 렌더링
+                                          <>
+                                            <View style={styles.commentHeader}>
+                                              <Text style={styles.commentUsername}>{item.userId}</Text>
+                                              <Text style={styles.commentDate}>{item.creationDate}</Text>
+                                            </View>
+                                            <Text style={styles.commentContent}>{item.content}</Text>
+                                            {item.userId === userId && (
+                                                <View style={styles.commentActionButtons}>
+                                                  <TouchableOpacity onPress={() => handleEditComment(item.commentId)}>
+                                                    <Text style={styles.commentActionButtonText}>수정</Text>
+                                                  </TouchableOpacity>
+                                                  <TouchableOpacity onPress={() => handleDeleteComment(item.commentId)}>
+                                                    <Text style={styles.commentActionButtonText}>삭제</Text>
+                                                  </TouchableOpacity>
+                                                </View>
+                                            )}
+                                          </>
                                       )}
                                     </View>
                                 )}
@@ -304,7 +368,7 @@ const styles = StyleSheet.create({
   },
   commentButtonText: {
     color: 'black',
-    marginLeft:300,
+    marginLeft:280,
     marginTop:-12,
     marginBottom:5
   },
