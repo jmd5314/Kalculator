@@ -159,7 +159,16 @@ const Postdetail = ({ navigation, route }) => {
       setComment("");
 
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data;
+        if (errorMessage === "내용이 비어 있습니다.") {
+          alert("내용을 입력하세요");
+        } else {
+          console.error(errorMessage);
+        }
+      } else {
+        console.error(error);
+      }
     }
   }
 
@@ -210,7 +219,16 @@ const Postdetail = ({ navigation, route }) => {
       setEditingCommentId(null); // 수정 완료 후 수정 중인 댓글 ID 초기화
 
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data;
+        if (errorMessage === "내용이 비어 있습니다.") {
+          alert("내용을 입력하세요");
+        } else {
+          console.error(errorMessage);
+        }
+      } else {
+        console.error(error);
+      }
     }
   }
 
@@ -273,7 +291,7 @@ const Postdetail = ({ navigation, route }) => {
                                                 style={styles.input}
                                             />
                                             <TouchableOpacity onPress={() => handleUpdateComment(item.commentId)}>
-                                              <Text style={styles.commentButtonText}>수정 완료</Text>
+                                              <Text style={styles.commentUpdateButtonText}>수정 완료</Text>
                                             </TouchableOpacity>
                                           </View>
                                       ) : (
@@ -367,6 +385,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   commentButtonText: {
+    color: 'black',
+    marginLeft:300,
+    marginTop:-12,
+    marginBottom:5
+  },
+  commentUpdateButtonText:{
     color: 'black',
     marginLeft:280,
     marginTop:-12,

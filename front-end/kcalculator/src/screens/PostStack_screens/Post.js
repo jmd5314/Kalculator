@@ -47,7 +47,7 @@ const Post = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { marginRight: 190 }]}>Community</Text>
+                <Text style={[styles.header, { marginRight: 270 }]}>게시판</Text>
                 <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate('PostRegister')}>
                     <Icon name="plus" size={20} color="#555" style={styles.header} />
                 </TouchableOpacity>
