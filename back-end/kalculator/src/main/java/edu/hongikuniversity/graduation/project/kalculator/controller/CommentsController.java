@@ -8,6 +8,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.dto.CommentsUpd
 import edu.hongikuniversity.graduation.project.kalculator.service.CommentsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,14 @@ public class CommentsController {
     private final CommentsService commentsService;
     private final PostsService postsService;
     @PostMapping("/save")
-    public Long save(@RequestBody CommentsSaveRequestDto requestDto, Authentication authentication){
+    public ResponseEntity<?> save(@RequestBody CommentsSaveRequestDto requestDto, Authentication authentication){
+        // 내용이 비어있는 경우 에러처리
+        if(requestDto.getContent()==null||requestDto.getContent().isEmpty()){
+            return ResponseEntity.badRequest().body("내용이 비어 있습니다.");
+        }
         String userId = authentication.getName();
-        return commentsService.save(requestDto, userId);
+        Long commentId = commentsService.save(requestDto, userId);
+        return ResponseEntity.ok(commentId);
     }
     @GetMapping("/list")
     @ResponseBody
@@ -40,7 +46,11 @@ public class CommentsController {
         return responseDtoList;
     }
     @PutMapping("/update/{commentId}")
-    public Long update(@PathVariable Long commentId,@RequestBody CommentsUpdateRequestDto requestDto){
-        return commentsService.updateComments(commentId, requestDto.getContent()).getCommentId();
+    public ResponseEntity<?> update(@PathVariable Long commentId,@RequestBody CommentsUpdateRequestDto requestDto){
+        if (requestDto.getContent()==null||requestDto.getContent().isEmpty()){
+            return ResponseEntity.badRequest().body("내용이 비어 있습니다.");
+        }
+
+        return ResponseEntity.ok(commentsService.updateComments(commentId, requestDto.getContent()).getCommentId());
     }
 }
