@@ -53,4 +53,9 @@ public class CommentsController {
 
         return ResponseEntity.ok(commentsService.updateComments(commentId, requestDto.getContent()).getCommentId());
     }
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<?> delete(@PathVariable Long commentId){
+        commentsService.deleteComments(commentId);
+        return ResponseEntity.ok().body("해당 댓글을 삭제하였습니다.");
+    }
 }

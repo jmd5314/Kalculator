@@ -42,4 +42,9 @@ public class CommentsService {
         comments.setContent(content);
         return commentsRepository.save(comments);
     }
+
+    public void deleteComments(Long commentId) {
+        Comments comments = commentsRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
+        commentsRepository.delete(comments);
+    }
 }
