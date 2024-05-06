@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class PostsRequestDto {
+public class PostsSaveRequestDto {
     private String title;
     private String content;
     private LocalDate creationDate;

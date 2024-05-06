@@ -36,13 +36,13 @@ public class CommentsService {
         List<Comments> comments = commentsRepository.findByPosts(posts);
         return comments;
     }
-
+    @Transactional
     public Comments updateComments(Long commentId, String content) {
         Comments comments = commentsRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
         comments.setContent(content);
         return commentsRepository.save(comments);
     }
-
+    @Transactional
     public void deleteComments(Long commentId) {
         Comments comments = commentsRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
         commentsRepository.delete(comments);
