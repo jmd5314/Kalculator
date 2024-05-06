@@ -333,27 +333,34 @@ const PostDetail = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#f4f4f8',  // 밝은 회색조 배경
+    padding: 16,  // 전체적인 패딩 추가
   },
   input: {
-    marginTop: 20,
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 12,
-    fontSize: 16,
-    color: 'black',
+    backgroundColor: '#ffffff',  // 흰색 배경
+    borderWidth: 0,
+    borderRadius: 10,
+    padding: 16,
+    fontSize: 18,
+    color: '#333',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
+    marginVertical: 10,
+    marginHorizontal: 5,  // 좌우 여백 조정
   },
   multilineInput: {
-    minHeight: 300,
+    minHeight: 150,  // 내용 입력 공간 확장
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 16,
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 8,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
   },
   commentActionButtons: {
     flexDirection: 'row',
@@ -362,42 +369,52 @@ const styles = StyleSheet.create({
   },
   commentActionButtonText: {
     color: '#555',
+    fontWeight: 'bold',
     marginLeft: 10,
   },
   commentContainer: {
     marginTop: 10,
   },
   commentItem: {
+    backgroundColor: '#ffffff',
+    padding: 12,
+    borderWidth: 0,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
     marginBottom: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 8,
+    marginHorizontal: 5,  // 좌우 여백 조정
   },
   commentUsername: {
     fontWeight: 'bold',
     marginBottom: 5,
+    color: '#333',
   },
   commentContent: {
     marginBottom: 5,
+    fontSize: 16,
+    color: '#666',
   },
   commentDate: {
     color: '#777',
     fontSize: 12,
   },
   commentButtonText: {
-    color: 'black',
-    marginLeft:300,
-    marginTop:-12,
-    marginBottom:5
-  },
-  commentUpdateButtonText:{
-    color: 'black',
-    marginLeft:280,
-    marginTop:-12,
-    marginBottom:5
+    color: 'white',
+    backgroundColor: '#39D02C',  // 버튼 색상 강조
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 10,
+    textAlign: 'center',
   },
   lastCommentItem: {
-    marginBottom: 100,
+    marginBottom: 100,  // 스크롤 가능 영역 확장
   },
 });
 
