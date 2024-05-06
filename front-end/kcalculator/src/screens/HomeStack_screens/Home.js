@@ -124,95 +124,124 @@ useEffect(() => {
             console.error('몸무게 전송 중 오류 발생:', error);
         });
 };
-
-  return (
-    <SafeAreaView style={{ backgroundColor: 'white', flex: 1}}>
-        <View style={{ flexDirection: 'row-reverse', marginTop: 10, marginBottom: 20, marginLeft: 10 }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <MaterialIcons name="account-circle" size={50} />
-            </TouchableOpacity>
-        </View>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, marginBottom: 10 }}>
-              {totalCalories}kcal / {recommendedCalories}kcal
-            </Text>
-            
-        </View>
-        <View style={styles.container}>
-            <View>
-              <ProgressChart
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.header}>
+                <Text style={styles.calorieText}>
+                    {totalCalories}kcal / {recommendedCalories}kcal
+                </Text>
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Profile')}>
+                    <MaterialIcons name="account-circle" size={50} />
+                </TouchableOpacity>
+            </View>
+            <ProgressChart
                 data={data}
-                width={400}
+                width={380}
                 height={300}
                 chartConfig={chartConfig}
                 hideLegend={false}
-              />
+                style={styles.chart}
+            />
+            <View style={styles.nutrientContainer}>
+                <NutrientView label="탄수화물" amount={totalCarbohydrates} percentage={consumedCarbsPercentage} />
+                <NutrientView label="단백질" amount={totalProteins} percentage={consumedProteinPercentage} />
+                <NutrientView label="지방" amount={totalFats} percentage={consumedFatPercentage} />
             </View>
-        </View>
-        <View style={{ marginLeft: 20}}>
-            <View style={styles.infoContainer}>
-                <Text style={{ fontSize: 20}}>탄수화물</Text>
-                    <Text style={{ fontSize: 20}}>{totalCarbohydrates}g</Text>
-                    <Text style={{ fontSize: 20}}>{consumedCarbsPercentage}%</Text>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => setWeight(text)}
+                    placeholder="현재 체중 (kg)"
+                    keyboardType="numeric"
+                />
+                <TouchableOpacity style={styles.submitButton} onPress={sendWeightToServer}>
+                    <Text style={styles.submitText}>입력</Text>
+                </TouchableOpacity>
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={{ fontSize: 20, marginRight: 10}}>단백질</Text>
-                <Text style={{ fontSize: 20}}>{totalProteins}g</Text>
-                <Text style={{ fontSize: 20}}>{consumedProteinPercentage}%</Text>
-            </View>
-            <View style={styles.infoContainer}>
-                <Text style={{ fontSize: 20, marginRight: 30}}>지방</Text>
-                <Text style={{ fontSize: 20}}>{totalFats}g</Text>
-                <Text style={{ fontSize: 20}}>{consumedFatPercentage}%</Text>
-            </View>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, width: '80%', marginLeft: 12, marginTop:10}}>
-            <TextInput
-                  style={{ height: 40, width: 120, borderColor: 'gray', borderWidth: 1, margin: 10, padding:5 }}
-                  onChangeText={(text) => setWeight(text)}
-                  placeholder="현재 체중 (kg)"
-                  keyboardType="numeric"/>
-            <TouchableOpacity
-                style={{
-                    backgroundColor: '#39D02C',
-                    padding: 10,
-                    borderRadius: 5,
-                }}
-                onPress={sendWeightToServer}
-            >
-                <Text style={{ color: '#fff', fontSize: 16 }}>입력</Text>
-            </TouchableOpacity>
-        </View>
-    </SafeAreaView>
-  );
+        </SafeAreaView>
+    );
 };
 
+const NutrientView = ({ label, amount, percentage }) => (
+    <View style={styles.nutrientItem}>
+        <Text style={styles.nutrientText}>{label}</Text>
+        <Text style={styles.nutrientAmount}>{amount}g</Text>
+        <Text style={styles.nutrientPercentage}>{percentage}%</Text>
+    </View>
+);
+
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  labelContainer: {
-    flexDirection: 'column',
-    marginTop: 10,
-  },
-  labelItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  infoContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  icon: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 5,
-  },
+    safeArea: {
+        flex: 1,
+        backgroundColor: 'white',
+        padding: 10
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 20
+    },
+    profileButton: {
+        padding: 10,
+        borderRadius: 20
+    },
+    calorieText: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginLeft:40,
+        marginBottom:-100,
+        color: '#333'
+    },
+    chart: {
+        alignSelf: 'center',
+        marginTop: 10
+    },
+    nutrientContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 20,
+        marginBottom: 60
+    },
+    nutrientItem: {
+        alignItems: 'center'
+    },
+    nutrientText: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    nutrientAmount: {
+        fontSize: 18
+    },
+    nutrientPercentage: {
+        fontSize: 18,
+        color: '#555'
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 10,
+        backgroundColor: '#f9f9f9',
+        marginHorizontal: 20,
+        marginBottom: 20
+    },
+    input: {
+        flex: 1,
+        marginRight: 10,
+        paddingLeft: 10
+    },
+    submitButton: {
+        backgroundColor: '#39D02C',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 5
+    },
+    submitText: {
+        color: '#fff',
+        fontSize: 16
+    }
 });
 
 export default Home;

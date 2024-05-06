@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
         height: 55,
-        backgroundColor: '#39D02C', // 버튼 색상을 진한 파란색으로 변경
+        backgroundColor: '#39D02C',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
