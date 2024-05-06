@@ -95,31 +95,44 @@ const PostRegister = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
+        padding: 20,
+        backgroundColor: '#f0f4f7', // 밝은 회색조 배경으로 변경
     },
     titleText: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 20,
-        marginTop: 20,
+        marginBottom: 30,
+        color: '#333', // 제목의 색상 조정
     },
     input: {
         borderWidth: 1,
+        borderColor: '#ccc', // 테두리 색상 조정
         marginBottom: 20,
-        padding: 12,
-        fontSize: 16,
+        padding: 15,
+        fontSize: 18,
+        borderRadius: 10, // 입력 필드의 모서리 둥글게 처리
+        backgroundColor: '#fff', // 배경 색상
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
     },
     multilineInput: {
-        height: 300,
+        minHeight: 200, // 높이 조정
     },
     registerButton: {
-        height: 50, 
-        width: 365, 
-        backgroundColor: '#39D02C', 
-        borderRadius: 5, 
-        justifyContent: 'center', 
+        height: 55,
+        backgroundColor: '#39D02C', // 버튼 색상을 진한 파란색으로 변경
+        borderRadius: 10,
+        justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10, // 상단 여백 추가
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 4,
     },
 });
 
