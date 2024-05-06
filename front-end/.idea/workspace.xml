@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4675a0fb-a5af-4350-95af-23ac0f79a2cb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../back-end/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../back-end/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kcalculator/src/screens/PostStack_screens/PostEdit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kcalculator/src/screens/PostStack_screens/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/kcalculator/src/screens/PostStack_screens/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kcalculator/src/screens/PostStack_screens/Postdetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/kcalculator/src/screens/PostStack_screens/Postdetail.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kcalculator/src/screens/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/kcalculator/src/screens/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kcalculator/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kcalculator/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +134,7 @@
       <workItem from="1701847373402" duration="6000" />
       <workItem from="1702616741267" duration="8000" />
       <workItem from="1704784455836" duration="5000" />
+      <workItem from="1714734986650" duration="5000" />
     </task>
     <servers />
   </component>

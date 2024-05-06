@@ -28,7 +28,7 @@ import ChatBot from './MenuStack_screens/ChatBot';
 
 import Post from './PostStack_screens/Post';
 import PostRegister from './PostStack_screens/PostRegister';
-import Postdetail from './PostStack_screens/Postdetail';
+import Postdetail from './PostStack_screens/PostDetail';
 
 
 import Running from './RunningStack_screens/Running';

@@ -9,7 +9,7 @@ import { FlatList } from 'react-native';
 
 const backendUrl = config.backendUrl;
 
-const Postdetail = ({ navigation, route }) => {
+const PostDetail = ({ navigation, route }) => {
   const { postId } = route.params;
   const [certainPost, setCertainPost] = useState(null);
   const [certainComments, setCertainComments] = useState([]);
@@ -401,4 +401,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Postdetail;
+export default PostDetail;

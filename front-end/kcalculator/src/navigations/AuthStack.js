@@ -6,6 +6,8 @@ import { Login, Signup, ProfileProduction, MenuSelection, TargetCalorie,
     BattleRegister, BattleDetail, MyBattle, MyBattleDetail
 } from '../screens';
 import MainTab from "./MainTab";
+import PostDetail from "../screens/PostStack_screens/PostDetail";
+import PostEdit from "../screens/PostStack_screens/PostEdit";
 
 
 
@@ -29,7 +31,8 @@ const AuthStack = () => {
             <Stack.Screen name="ChatBot" component={ChatBot} options={{ title:'' }}/>
             <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }}/>
             <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
-            <Stack.Screen name="Postdetail" component={Postdetail} options={{ title:'' }}/>
+            <Stack.Screen name="PostDetail" component={PostDetail} options={{ title:'' }}/>
+            <Stack.Screen name="PostEdit" component={PostEdit} options={{ title:'' }}/>
             <Stack.Screen name="RunHistory" component={RunHistory} options={{ title:'' }}/>
             <Stack.Screen name="BattleRegister" component={BattleRegister} options={{ title:'' }}/>
             <Stack.Screen name="BattleDetail" component={BattleDetail} options={{ title:'' }}/>

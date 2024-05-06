@@ -1,18 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from '../config';
+import {decode as atob} from 'base-64';
 
 const backendUrl = config.backendUrl;
 
 const Post = ({ navigation, route }) => {
     const [posts, setPosts] = useState([]);
+    const [currentUserId, setCurrentUserId] = useState(null);
 
     const getListFromServer = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
+            const [, payloadBase64] = token.split('.');
+            const payload = JSON.parse(atob(payloadBase64));
+            const decodedUserId = payload.userId;
+            setCurrentUserId(decodedUserId);
             const response = await axios.get(`${backendUrl}/api/posts/list`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -32,6 +38,25 @@ const Post = ({ navigation, route }) => {
         return unsubscribe;
     }, [navigation, getListFromServer]);
 
+    const handleDelete = async (postId) => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const response = await axios.delete(`${backendUrl}/api/posts/delete/${postId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                Alert.alert('삭제 완료', '게시글이 성공적으로 삭제되었습니다.');
+                getListFromServer();  // 삭제 후 목록 새로고침
+            } else {
+                throw new Error('서버로부터 예상치 못한 응답을 받았습니다.');
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('삭제 실패', `게시글 삭제에 실패했습니다: ${error.message}`);
+        }
+    };
     const renderItem = ({ item }) => (
         <PostComponent
             title={item.title}
@@ -41,14 +66,16 @@ const Post = ({ navigation, route }) => {
             favoriteCount={item.likeCount}
             commentCount={item.commentCount}
             navigation={navigation}
+            isCurrentUser={item.userId === currentUserId}
+            onDelete={() => handleDelete(item.postId)}
         />
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { marginRight: 270 }]}>게시판</Text>
-                <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate('PostRegister')}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={styles.header}>게시판</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('PostRegister')}>
                     <Icon name="plus" size={20} color="#555" style={styles.header} />
                 </TouchableOpacity>
             </View>
@@ -63,17 +90,27 @@ const Post = ({ navigation, route }) => {
     );
 };
 
-const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount, navigation }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Postdetail', { postId })}>
+const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount, navigation, isCurrentUser, onDelete }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId })}>
         <View style={styles.postContainer}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.user}>{userId}</Text>
             <View style={styles.iconContainer}>
-                <Icon name="thumbs-o-up" size={20} color="#555" style={{ marginRight: 8 }} />
-                <Text style={{ marginRight: 100 }}>{favoriteCount}</Text>
-                <Icon name="comment-o" size={20} color="#555" style={{ marginLeft: 8 }} />
-                <Text style={{ marginRight: 100 }}>{commentCount}</Text>
+                <Icon name="thumbs-o-up" size={20} color="#555" />
+                <Text>{favoriteCount}</Text>
+                <Icon name="comment-o" size={20} color="#555" />
+                <Text>{commentCount}</Text>
             </View>
+            {isCurrentUser && (
+                <View style={styles.editDeleteContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate('PostEdit', { postId })} style={{ marginRight: 5 }}>
+                        <Icon name="edit" size={20} color="#4CAF50" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={onDelete}>
+                        <Icon name="trash" size={20} color="#F44336" />
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     </TouchableOpacity>
 );
@@ -102,22 +139,28 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 8,
     },
-    content: {
+    user: {
         fontSize: 16,
     },
     iconContainer: {
         flexDirection: 'row',
         marginTop: 16,
         justifyContent: 'space-around',
-        alignItems: 'center', // 수직 방향 가운데 정렬
-        padding: 10, // 좌우 여백 추가
-        backgroundColor: '#F0F0F0', // 배경색 추가
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#F0F0F0',
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
         elevation: 3,
+    },
+    editDeleteContainer: {
+        position: 'absolute',
+        right: 20,
+        top: 10,
+        flexDirection: 'row',
     },
 });
 

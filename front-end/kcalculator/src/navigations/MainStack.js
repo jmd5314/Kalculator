@@ -8,8 +8,10 @@ import { ProfileProduction,
              Profile,
              UserDelete,
              ProfileRevise, MenuSearch, FoodAddList, ChatBot,
-             UpdateMenuSelection, UpdateTargetCalorie, PostRegister, RunHistory, Postdetail,
+             UpdateMenuSelection, UpdateTargetCalorie, PostRegister, RunHistory,
              BattleRegister, BattleDetail, MyBattle, MyBattleDetail} from '../screens';
+import PostEdit from "../screens/PostStack_screens/PostEdit";
+import PostDetail from "../screens/PostStack_screens/PostDetail";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +32,8 @@ const MainStack = () => {
             <Stack.Screen name="FoodAddList" component={FoodAddList} options={{ title:'' }} initialParams={{ selectedItemList: [] }}/>
             <Stack.Screen name="ChatBot" component={ChatBot} options={{ title:'' }}/>
             <Stack.Screen name="PostRegister" component={PostRegister} options={{ title:'' }}/>
-            <Stack.Screen name="Postdetail" component={Postdetail} options={{ title:'' }}/>
+            <Stack.Screen name="PostDetail" component={PostDetail} options={{ title:'' }}/>
+            <Stack.Screen name="PostEdit" component={PostEdit} options={{ title:'' }}/>
             <Stack.Screen name="RunHistory" component={RunHistory} options={{ title:'' }}/>
             <Stack.Screen name="BattleRegister" component={BattleRegister} options={{ title:'' }}/>
             <Stack.Screen name="BattleDetail" component={BattleDetail} options={{ title:'' }}/>
