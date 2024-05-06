@@ -1,204 +1,159 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, Text, Button, TextInput, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TouchableOpacity, Text } from 'react-native';
 import styled from 'styled-components/native';
-import profile from '../Images/profile.jpg';
-import { Input } from "react-native-elements";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import config from "../config";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import config from '../config';
 
 const Container = styled.SafeAreaView`
-  background-color: #ffffff;
+  background-color: #F9FAFB;
+  flex: 1;
+  padding: 20px;
+`;
+
+const MealButton = styled(TouchableOpacity)`
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 5px;
   flex: 1;
 `;
+const MealRow = styled.View`
+  flex-direction: row;
+  flex: 1;
+  margin-top: 10px;
+`;
 
-const ButtonText = styled.Text`
+const MealInfo = styled.View`
+  align-items: center;
+`;
+const MealText = styled.Text`
+  font-size: 25px;
+  margin-bottom: 10px;
+  color: #333;
+`;
+
+const TitleText = styled.Text`
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+`;
+
+const CalorieText = styled.Text`
   font-size: 18px;
+  color: #666;
 `;
 
-const IconWrapper = styled.View`
-  align-items: flex-end;
-  marginRight: 5px;
-  marginTop:5px;
+const Header = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
 `;
 
-const GrayButton = styled(TouchableOpacity)`
-  background-color: #eeebeb;
-  height: 150px;
-  width: 45%; /* Adjusted width */
-  border-radius: 10px;
+const IconWrapper = styled.TouchableOpacity`
+  background-color: ${props => props.active ? '#4CAF50' : '#CCCCCC'};
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
 `;
 
 const backendUrl = config.backendUrl;
 
 const Menu = ({ navigation,route }) => {
-  const [ Bcalories, setBcalories ] = useState(0);
-  const [ Lcalories, setLcalories ] = useState(0);
-  const [ Dinnercalories, setDinnercalories ] = useState(0);
-  const [ Dessertcalories, setDessertcalories ] =useState(0);
+    const [mealCalories, setMealCalories] = useState({ breakfast: 0, lunch: 0, dinner: 0, dessert: 0 });
     const refreshKey = route.params?.refreshKey || Math.random().toString();
-      const fetchBreakfastFromBackend = async () => {
-          const token = await AsyncStorage.getItem('token');
-        try {
-          const response = await axios.get(`${backendUrl}/api/foodRecords/Breakfast/Calories`,{
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-          });
-          setBcalories(response.data)
-        } catch (error) {
-          console.error('Error fetching breakfast:', error);
-        }
-      };
-      const fetchLunchFromBackend = async () => {
-          const token = await AsyncStorage.getItem('token');
-        try {
-          const response = await axios.get(`${backendUrl}/api/foodRecords/Lunch/Calories`,{
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-          });
-          setLcalories(response.data)
-        } catch (error) {
-          console.error('Error fetching lunch:', error);
-        }
-      };
-      const fetchDinnerFromBackend = async () => {
-          const token = await AsyncStorage.getItem('token');
-        try {
-          const response = await axios.get(`${backendUrl}/api/foodRecords/Dinner/Calories`,{
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-          });
-          setDinnercalories(response.data)
-        } catch (error) {
-          console.error('Error fetching dinner:', error);
-        }
-      };
-      const fetchDessertFromBackend = async () => {
-          const token = await AsyncStorage.getItem('token');
-        try {
-          const response = await axios.get(`${backendUrl}/api/foodRecords/Dessert/Calories`,{
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-          });
-          setDessertcalories(response.data)
-        } catch (error) {
-          console.error('Error fetching dessert:', error);
-        }
-      };
-      useEffect(() => {
-           fetchBreakfastFromBackend();
-           fetchLunchFromBackend();
-           fetchDinnerFromBackend();
-           fetchDessertFromBackend();
-        }, [refreshKey]);
-
+    useEffect(() => {
+        const fetchCalories = async () => {
+            const token = await AsyncStorage.getItem('token');
+            const meals = ['breakfast', 'lunch', 'dinner', 'dessert'];
+            try {
+                const responses = await Promise.all(meals.map(meal =>
+                    axios.get(`${backendUrl}/api/foodRecords/${meal}/Calories`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    })
+                ));
+                setMealCalories({
+                    breakfast: responses[0].data,
+                    lunch: responses[1].data,
+                    dinner: responses[2].data,
+                    dessert: responses[3].data
+                });
+            } catch (error) {
+                console.error('Error fetching meal data:', error);
+            }
+        };
+        fetchCalories();
+    }, [refreshKey]);
 
     const handleButtonPress = async (mealType) => {
         try {
-            // 선택된 mealType 을 AsyncStorage 에 저장
             await AsyncStorage.setItem('selectedMealType', mealType);
-            // MenuSearch 화면으로 선택된 mealType 을 전달하여 이동
             navigation.navigate('MenuSearch', { mealType });
         } catch (error) {
-            console.error('AsyncStorage에 mealType 저장 중 오류 발생:', error);
+            console.error('Error storing mealType:', error);
         }
     };
 
-
-
-
-  return (
-    <Container>
-      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 40 }}>
-        <Text style={{ fontSize: 40, marginRight:190 }}>식단</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                  <Icon name="account-circle" size={50} color="black" />
-                </TouchableOpacity>
-                <View style={{ marginRight: 5 }}></View>
-                <TouchableOpacity onPress={() => navigation.navigate('ChatBot')}>
-                  <Icon name="chat" size={50} color="black" />
-                </TouchableOpacity>
-      </View>
-
-      <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 20, marginTop: 30 }}>
-        <Text style={{ fontSize: 25, marginRight: 130 }}>아침 </Text>
-        <Text style={{ fontSize: 25 }}>점심 </Text>
-      </View>
-
-      <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
-   <GrayButton
-     style={{ marginRight: 20 }}
-     >
-
-      {Bcalories > 0 ? (<IconWrapper>
-      <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('breakfast')} />
-     </IconWrapper>) : (<IconWrapper>
-       <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('breakfast')} />
-     </IconWrapper>)}
-
-
-
-     <CalorieText>{Bcalories}kcal</CalorieText>
-   </GrayButton>
-     <GrayButton
-           >
-                    {Lcalories > 0 ? (<IconWrapper>
-                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('lunch')} />
-                   </IconWrapper>) : (<IconWrapper>
-                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('lunch')} />
-                   </IconWrapper>)}
-           <CalorieText>{Lcalories}kcal</CalorieText>
-
-     </GrayButton>
-     </View>
-
-
-           <View style={{ flexDirection: 'row', marginBottom: 0, marginLeft: 20, marginTop: 20 }}>
-             <Text style={{ fontSize: 25, marginRight: 130 }}>저녁 </Text>
-             <Text style={{ fontSize: 25 }}>간식 </Text>
-           </View>
-
-           <View style={{ flexDirection: 'row', marginBottom: 30, marginLeft: 20, marginTop: 10 }}>
-           <GrayButton
-             style={{ marginRight: 20 }}
-            >
-                    {Dinnercalories > 0 ? (<IconWrapper>
-                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('dinner')} />
-                   </IconWrapper>) : (<IconWrapper>
-                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dinner')} />
-                   </IconWrapper>)}
-                <CalorieText>{Dinnercalories}kcal</CalorieText>
-
-           </GrayButton>
-          <GrayButton
-            >
-                    {Dessertcalories > 0 ? (<IconWrapper>
-                    <Icon name="check-circle" size={30} color="blue" onPress={() => handleButtonPress('dessert')} />
-                   </IconWrapper>) : (<IconWrapper>
-                     <Icon name="plus-circle" size={30} color="black" onPress={() => handleButtonPress('dessert')} />
-                   </IconWrapper>)}
-              <CalorieText>{Dessertcalories}kcal</CalorieText>
-
-          </GrayButton>
-          </View>
-
-
-    </Container>
-  );
+    return (
+        <Container>
+            <Header>
+                <TitleText>식단</TitleText>
+                <View style={{ flexDirection: 'row' }}>
+                    <IconWrapper onPress={() => navigation.navigate('Profile')}>
+                        <Icon name="account-circle" size={30} color="#FFFFFF" />
+                    </IconWrapper>
+                    <IconWrapper onPress={() => navigation.navigate('ChatBot')} style={{ marginLeft: 20 }}>
+                        <Icon name="chat" size={30} color="#FFFFFF" />
+                    </IconWrapper>
+                </View>
+            </Header>
+            <MealRow>
+                <MealButton onPress={() => handleButtonPress('breakfast')}>
+                    <MealInfo>
+                        <MealText>아침</MealText>
+                        <CalorieText>{mealCalories.breakfast}kcal</CalorieText>
+                        <IconWrapper active={mealCalories.breakfast > 0} onPress={() => handleButtonPress('breakfast')}>
+                            <Icon name={mealCalories.breakfast > 0 ? "check-circle" : "plus-circle"} size={30} color="#FFFFFF" />
+                        </IconWrapper>
+                    </MealInfo>
+                </MealButton>
+                <MealButton onPress={() => handleButtonPress('lunch')}>
+                    <MealInfo>
+                        <MealText>점심</MealText>
+                        <CalorieText>{mealCalories.lunch}kcal</CalorieText>
+                        <IconWrapper active={mealCalories.lunch > 0} onPress={() => handleButtonPress('lunch')}>
+                            <Icon name={mealCalories.lunch > 0 ? "check-circle" : "plus-circle"} size={30} color="#FFFFFF" />
+                        </IconWrapper>
+                    </MealInfo>
+                </MealButton>
+            </MealRow>
+            <MealRow>
+                <MealButton onPress={() => handleButtonPress('dinner')}>
+                    <MealInfo>
+                        <MealText>저녁</MealText>
+                        <CalorieText>{mealCalories.dinner}kcal</CalorieText>
+                        <IconWrapper active={mealCalories.dinner > 0} onPress={() => handleButtonPress('dinner')}>
+                            <Icon name={mealCalories.dinner > 0 ? "check-circle" : "plus-circle"} size={30} color="#FFFFFF" />
+                        </IconWrapper>
+                    </MealInfo>
+                </MealButton>
+                <MealButton onPress={() => handleButtonPress('dessert')}>
+                    <MealInfo>
+                        <MealText>간식</MealText>
+                        <CalorieText>{mealCalories.dessert}kcal</CalorieText>
+                        <IconWrapper active={mealCalories.dessert > 0} onPress={() => handleButtonPress('dessert')}>
+                            <Icon name={mealCalories.dessert > 0 ? "check-circle" : "plus-circle"} size={30} color="#FFFFFF" />
+                        </IconWrapper>
+                    </MealInfo>
+                </MealButton>
+            </MealRow>
+        </Container>
+    );
 };
-
-const CalorieText = styled.Text`
-  margin-top: 25px;
-  text-align: center;
-  font-size: 18px;
-   font-family:  'Roboto';
-`;
-
-
 
 export default Menu;

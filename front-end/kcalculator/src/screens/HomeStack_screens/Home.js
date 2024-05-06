@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, Button } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProgressChart } from 'react-native-chart-kit';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Tab} from "react-native-elements";
 
 const backendUrl = config.backendUrl;
 
