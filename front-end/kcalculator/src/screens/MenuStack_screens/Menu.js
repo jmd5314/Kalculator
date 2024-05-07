@@ -19,6 +19,7 @@ const MealButton = styled(TouchableOpacity)`
   margin: 5px;
   flex: 1;
 `;
+
 const MealRow = styled.View`
   flex-direction: row;
   flex: 1;
@@ -28,6 +29,7 @@ const MealRow = styled.View`
 const MealInfo = styled.View`
   align-items: center;
 `;
+
 const MealText = styled.Text`
   font-size: 25px;
   margin-bottom: 10px;
@@ -64,31 +66,35 @@ const IconWrapper = styled.TouchableOpacity`
 
 const backendUrl = config.backendUrl;
 
-const Menu = ({ navigation,route }) => {
+const Menu = ({ navigation, route }) => {
     const [mealCalories, setMealCalories] = useState({ breakfast: 0, lunch: 0, dinner: 0, dessert: 0 });
-    const refreshKey = route.params?.refreshKey || Math.random().toString();
+
     useEffect(() => {
-        const fetchCalories = async () => {
-            const token = await AsyncStorage.getItem('token');
-            const meals = ['breakfast', 'lunch', 'dinner', 'dessert'];
-            try {
-                const responses = await Promise.all(meals.map(meal =>
-                    axios.get(`${backendUrl}/api/foodRecords/${meal}/Calories`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    })
-                ));
-                setMealCalories({
-                    breakfast: responses[0].data,
-                    lunch: responses[1].data,
-                    dinner: responses[2].data,
-                    dessert: responses[3].data
-                });
-            } catch (error) {
-                console.error('Error fetching meal data:', error);
-            }
-        };
-        fetchCalories();
-    }, [refreshKey]);
+        const unsubscribe = navigation.addListener('focus', () => {
+            const fetchCalories = async () => {
+                const token = await AsyncStorage.getItem('token');
+                const meals = ['breakfast', 'lunch', 'dinner', 'dessert'];
+                try {
+                    const responses = await Promise.all(meals.map(meal =>
+                        axios.get(`${backendUrl}/api/foodRecords/${meal}/Calories`, {
+                            headers: { Authorization: `Bearer ${token}` },
+                        })
+                    ));
+                    setMealCalories({
+                        breakfast: responses[0].data,
+                        lunch: responses[1].data,
+                        dinner: responses[2].data,
+                        dessert: responses[3].data
+                    });
+                } catch (error) {
+                    console.error('Error fetching meal data:', error);
+                }
+            };
+            fetchCalories();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     const handleButtonPress = async (mealType) => {
         try {

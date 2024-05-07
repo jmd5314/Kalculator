@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styled from 'styled-components/native';
 import { ProgressChart } from 'react-native-chart-kit';
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios';
 import config from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const IconWrapper = styled.TouchableOpacity`
+  background-color: #CCCCCC;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+`;
+
 const backendUrl = config.backendUrl;
 
 const Home = ({ navigation }) => {
+
   const [ weight, setWeight ] = useState('');
   const [ recommendedCalories, setRecommendedCalories ] = useState('');
   const [ recommendedCarbohydrates, setRecommendedCarbohydrates ] = useState('');
@@ -129,9 +141,9 @@ useEffect(() => {
                 <Text style={styles.calorieText}>
                     {totalCalories}kcal / {recommendedCalories}kcal
                 </Text>
-                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Profile')}>
-                    <MaterialIcons name="account-circle" size={50} />
-                </TouchableOpacity>
+                <IconWrapper onPress={() => navigation.navigate('Profile')}>
+                    <Icon name="account-circle" size={30} color="#FFFFFF" />
+                </IconWrapper>
             </View>
             <ProgressChart
                 data={data}
