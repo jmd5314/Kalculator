@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -127,7 +126,7 @@ const MenuSearch = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={{ marginBottom: 20, marginLeft: 10,marginTop:20, flexDirection: 'row' }}>
-                <Text style={{ fontSize: 30, marginRight: 180 }}>음식 검색</Text>
+                <Text style={{ fontSize: 25, marginRight: 180,fontWeight:"bold" }}>음식 검색</Text>
             <TouchableOpacity
                 style={[
                     styles.buttonContainer,
@@ -209,49 +208,55 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        backgroundColor: '#FFFFFF',
     },
     input: {
         height: 50,
-        width: 300,
-        borderColor: 'gray',
+        width: '85%', // 전체 너비의 85%를 사용
+        borderColor: '#CCCCCC',
         borderWidth: 1,
-        marginBottom: 16,
-        paddingHorizontal: 8,
+        paddingHorizontal: 10,
+        borderRadius: 25, // 입력창에 둥근 모서리 적용
+        fontSize: 16, // 더 큰 글꼴 크기 사용
+        color: '#333', // 입력 글꼴 색상 조정
     },
     resultItem: {
-        paddingTop: 15,    // 위 여백
-        paddingRight: 15,  // 오른쪽 여백
-        paddingBottom: 15, // 아래 여백
-        paddingLeft: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        marginRight:50,
+        borderBottomColor: '#CCCCCC',
+        backgroundColor: '#FFFFFF', // 각 아이템 배경색 추가
+        marginTop: 2, // 아이템 간 간격 추가
     },
     itemDetailsContainer: {
-        padding: 16,
-        backgroundColor: '#fff',
+        padding: 20,
+        backgroundColor: '#FFFFFF',
         marginTop: 20,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#CCCCCC',
+        borderRadius: 12, // 상세 정보 패널에 둥근 모서리 적용
+        shadowOpacity: 0.1, // 그림자 효과 추가
+        shadowRadius: 5,
+        shadowColor: '#000000',
+        shadowOffset: { height: 2, width: 2 },
     },
-          buttonContainer: {
-              backgroundColor: '#2ecc71', // 초록색
-              padding: 10,
-              borderRadius: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-          },
-          buttonPressed: {
-              backgroundColor: '#e74c3c', // 빨강색
-          },
-        buttonText: {
-            color: '#ffffff',
-            fontSize: 16,
-            fontWeight: 'bold',
-        },
-
+    buttonContainer: {
+        width: 50,
+        height: 50,
+        backgroundColor: '#2ecc71',
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 10, // 버튼 위치 조정
+    },
+    buttonPressed: {
+        backgroundColor: '#e74c3c',
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+    },
 });
-
 
 
 export default MenuSearch;
