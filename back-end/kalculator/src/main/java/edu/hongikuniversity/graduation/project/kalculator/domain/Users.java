@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -25,9 +28,8 @@ public class Users {
     @OneToMany(mappedBy = "users")
     private List<RunningRecords> runningRecords = new ArrayList<>();
     @OneToMany(mappedBy = "users")
-    private List<BattleGroups> battleGroups = new ArrayList<>();
-    @OneToMany(mappedBy = "users")
-    private List<UserBattleParticipant>userBattleParticipants = new ArrayList<>();
+    private Set<GroupMembership> memberships = new HashSet<>();
+
     private String userId;
     private String name;
     private String password;

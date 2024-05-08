@@ -1,5 +1,4 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
-import edu.hongikuniversity.graduation.project.kalculator.domain.Comments;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsSaveRequestDto;
@@ -24,14 +23,17 @@ public class PostsController {
     private final UsersService usersService;
     private final PostsService postsService;
     @PostMapping("/save")
-    public Long save(@RequestBody PostsSaveRequestDto requestDto, Authentication authentication
+    public ResponseEntity<?> save(@RequestBody PostsSaveRequestDto requestDto, Authentication authentication
     ){
+        if(requestDto.getContent()==null||requestDto.getContent().isEmpty()){
+            return ResponseEntity.badRequest().body("내용이 비어 있습니다.");
+        }
         String userId = authentication.getName();
         Users users = usersService.findByUserId(userId);
         Posts posts = Posts.builder().title(requestDto.getTitle()).content(requestDto.getContent())
                 .creationDate(requestDto.getCreationDate()).build();
         posts.setUsers(users);
-        return postsService.save(posts);
+        return ResponseEntity.ok(postsService.save(posts));
     }
     @GetMapping("confirm")
     @ResponseBody
