@@ -4,6 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from "../config";
+const backendUrl = config.backendUrl;
 
 const Running = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
@@ -20,27 +22,23 @@ const Running = ({ navigation }) => {
 
   const watchId = useRef(null);
   const startTime = useRef(null);
-  const lastElapsedTime = useRef(0); // Keep track of last elapsed time when pausing
+  const lastElapsedTime = useRef(0);
 
   useEffect(() => {
     const getLocationPermission = async () => {
-      try {
-        let { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
-        if (foregroundStatus !== 'granted') {
-          console.log('Foreground location permission not granted.');
-          return;
-        }
-
-        let { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
-        if (backgroundStatus !== 'granted') {
-          console.log('Background location permission not granted.');
-          return;
-        }
-
-        await startLocationUpdates();
-      } catch (error) {
-        console.error('Error requesting location permissions:', error);
+      let { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+      if (foregroundStatus !== 'granted') {
+        console.log('Foreground location permission not granted.');
+        return;
       }
+
+      let { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
+      if (backgroundStatus !== 'granted') {
+        console.log('Background location permission not granted.');
+        return;
+      }
+
+      await startLocationUpdates();
     };
 
     const startLocationUpdates = async () => {
@@ -88,18 +86,17 @@ const Running = ({ navigation }) => {
     if (!startTime.current) {
       startTime.current = new Date().getTime();
     } else {
-      // Subtract last elapsed time when restarting
       startTime.current = new Date().getTime() - lastElapsedTime.current;
     }
     watchId.current = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.Highest,
-        timeInterval: 1000,
-        distanceInterval: 0,
-      },
-      (location) => {
-        handleLocationChange(location);
-      }
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 0,
+        },
+        (location) => {
+          handleLocationChange(location);
+        }
     );
   };
 
@@ -113,7 +110,6 @@ const Running = ({ navigation }) => {
     const endTime = new Date().getTime();
     const runTime = endTime - startTime.current;
     lastElapsedTime.current = runTime;
-    // Do not update total elapsed time here
   };
 
   const handleLocationChange = (location) => {
@@ -142,42 +138,63 @@ const Running = ({ navigation }) => {
     }
     return distanceInMeters;
   };
-  
+
   const haversine = (prevLatLng, newLatLng) => {
-    const earthRadius = 6371; // in kilometers
+    const earthRadius = 6371;
     const { latitude: prevLat, longitude: prevLng } = prevLatLng;
     const { latitude: newLat, longitude: newLng } = newLatLng;
     const latDelta = toRadians(newLat - prevLat);
     const lngDelta = toRadians(newLng - prevLng);
-  
+
     const a = Math.sin(latDelta / 2) * Math.sin(latDelta / 2) +
-              Math.cos(toRadians(prevLat)) * Math.cos(toRadians(newLat)) *
-              Math.sin(lngDelta / 2) * Math.sin(lngDelta / 2);
+        Math.cos(toRadians(prevLat)) * Math.cos(toRadians(newLat)) *
+        Math.sin(lngDelta / 2) * Math.sin(lngDelta / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return earthRadius * c;
   };
-  
+
   const toRadians = (angle) => {
     return angle * (Math.PI / 180);
   };
 
   const saveRunData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found');
+      return;
+    }
     const runData = {
-      date: new Date().toLocaleDateString(),
-      time: formatTime(elapsedTime),
-      distance: distance.toFixed(2),
-      coordinates: routeCoordinates,
+      date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD 포맷
+      time: parseFloat((elapsedTime / 3600000).toFixed(2)), // 밀리초를 시간 단위로 변환
+      distance: parseFloat(distance.toFixed(2)),
     };
 
     try {
-      const savedData = await AsyncStorage.getItem('runData');
-      const existingData = savedData ? JSON.parse(savedData) : [];
-      existingData.push(runData);
-      await AsyncStorage.setItem('runData', JSON.stringify(existingData));
+      const response = await fetch(`${backendUrl}/api/runningRecords/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(runData),
+      });
+
+      if (response.ok) {
+        console.log('달리기 기록이 성공적으로 저장되었습니다.');
+      } else {
+        console.error('달리기 기록 저장 실패:', response.status);
+      }
     } catch (error) {
-      console.error('Error saving run data:', error);
+      console.error('달리기 기록 저장 중 오류 발생:', error);
     }
-  }; 
+
+    startTime.current = null;
+    lastElapsedTime.current = 0;
+    setElapsedTime(0);
+    setDistance(0);
+    setLocation(null);
+    setRouteCoordinates([]);
+  };
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -194,8 +211,8 @@ const Running = ({ navigation }) => {
 
   const handleSave = () => {
     saveRunData();
-    startTime.current = null; // Reset start time when saving
-    lastElapsedTime.current = 0; // Reset last elapsed time when saving
+    startTime.current = null;
+    lastElapsedTime.current = 0;
     setElapsedTime(0);
     setDistance(0);
     setLocation(null);

@@ -1,123 +1,104 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import config from "../config";
+const backendUrl = config.backendUrl;
 
 const RunHistory = ({ navigation }) => {
   const [runHistory, setRunHistory] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [totalCalories, setTotalCalories] = useState(0);
 
   useEffect(() => {
-    const loadRunHistory = async () => {
+    const fetchRunHistory = async () => {
+      const token = await AsyncStorage.getItem('token'); // 사용자 인증을 위해 토큰을 가져옴
+      if (!token) {
+        console.log('Authentication token not found');
+        return;
+      }
+
       try {
-        const savedData = await AsyncStorage.getItem('runData');
-        const data = savedData ? JSON.parse(savedData) : [];
+        const response = await fetch(`${backendUrl}/api/runningRecords/list`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch run history');
+        }
+
+        const data = await response.json();
         setRunHistory(data);
+        calculateTotalCalories(data);
       } catch (error) {
         console.error('Error loading run history:', error);
       }
     };
-  
-    // 화면이 focus될 때마다 저장된 데이터를 불러옴
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadRunHistory();
-    });
-  
-    return () => {
-      unsubscribe();
-    };
+
+    fetchRunHistory();
   }, []);
 
-  const groupDataByDate = (data) => {
-    const groupedData = data.reduce((acc, item) => {
-      const date = item.date;
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(item);
-      return acc;
-    }, {});
-
-    return groupedData;
-  };
-
-  const renderGroupedData = () => {
-    const groupedData = groupDataByDate(runHistory);
-
-    return (
-      <FlatList
-        data={Object.entries(groupedData)}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => {
-          const date = item[0]; // 날짜
-          const data = item[1]; // 해당 날짜에 대한 데이터 배열
-
-          return (
-            <View style={styles.item}>
-              <Text style={styles.date}>{date}</Text>
-              {data.map((item, index) => (
-                <View key={index} style={styles.dataItem}>
-                  <Text style={{fontSize: 16}}>Time: {item.time}</Text>
-                  <Text style={{fontSize: 16}}>Distance: {item.distance} km</Text>
-                </View>
-              ))}
-            </View>
-          );
-        }}
-      />
-    );
+  const calculateTotalCalories = (data) => {
+    const total = data.reduce((sum, record) => sum + (record.caloriesBurned || 0), 0);
+    setTotalCalories(total);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 30, marginLeft: 15, marginBottom: 10}}>달리기 기록</Text>
-      {runHistory.length === 0 ? (
-        <Text>No run history available</Text>
-      ) : (
-        renderGroupedData()
-      )}
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.header}>달리기 기록</Text>
+        {runHistory.length === 0 ? (
+            <Text style={styles.noDataText}>달리기 기록이 없습니다.</Text>
+        ) : (
+            <FlatList
+                data={runHistory}
+                keyExtractor={(item, index) => `run-${index}`}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                      <Text style={styles.detail}>시간: {item.time.toFixed(2)} 시간</Text>
+                      <Text style={styles.detail}>거리: {item.distance.toFixed(2)} km</Text>
+                      <Text style={styles.detail}>칼로리: {item.caloriesBurned} kcal</Text>
+                    </View>
+                )}
+            />
+        )}
+        <Text style={styles.totalCalories}>오늘 소모한 총 칼로리: {totalCalories} kcal</Text>
+      </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 20,
     backgroundColor: "#fff",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginBottom: 20,
   },
   item: {
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 15,
+    paddingVertical: 10,
   },
   date: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 18,
   },
-  dataItem: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    padding: 5,
+  detail: {
+    fontSize: 16,
     marginVertical: 5,
-    marginBottom: 5,
+  },
+  noDataText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  totalCalories: {
+    fontSize: 16,
+    marginTop: 20,
+    fontWeight: 'bold',
   },
 });
 
