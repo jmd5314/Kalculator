@@ -25,13 +25,21 @@ const Running = ({ navigation }) => {
   useEffect(() => {
     const getLocationPermission = async () => {
       try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('위치 권한이 허용되지 않았습니다.');
+        let { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+        if (foregroundStatus !== 'granted') {
+          console.log('Foreground location permission not granted.');
           return;
         }
+
+        let { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
+        if (backgroundStatus !== 'granted') {
+          console.log('Background location permission not granted.');
+          return;
+        }
+
+        await startLocationUpdates();
       } catch (error) {
-        console.error('위치 권한을 요청하는 도중 오류가 발생했습니다:', error);
+        console.error('Error requesting location permissions:', error);
       }
     };
 
@@ -48,13 +56,6 @@ const Running = ({ navigation }) => {
     };
 
     getLocationPermission();
-    startLocationUpdates();
-
-    return () => {
-      if (watchId.current !== null) {
-        Location.stopLocationUpdatesAsync('locationUpdates');
-      }
-    };
   }, []);
 
   useEffect(() => {
