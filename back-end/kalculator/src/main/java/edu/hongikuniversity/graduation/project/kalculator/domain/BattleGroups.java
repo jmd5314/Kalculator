@@ -18,6 +18,7 @@ import java.util.Set;
 public class BattleGroups {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupId;
+    private String leaderId;
     private String title;
     private String content;
     private BattlePurpose battlePurpose;
@@ -25,10 +26,12 @@ public class BattleGroups {
     private LocalDate endDate;
     private BattleStatus status;
     private Integer numberOfMembers;
+
     @OneToMany(mappedBy = "group")
     private Set<GroupMembership> memberships = new HashSet<>();
     @Builder
-    public BattleGroups(String title,String content,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
+    public BattleGroups(String leaderId,String title,String content,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
+        this.leaderId = leaderId;
         this.title = title;
         this.content = content;
         this.battlePurpose = battlePurpose;
@@ -36,5 +39,9 @@ public class BattleGroups {
         this.endDate = endDate;
         this.status = status;
         this.numberOfMembers = numberOfMembers;
+    }
+
+    public void setStatus(BattleStatus status) {
+        this.status = status;
     }
 }
