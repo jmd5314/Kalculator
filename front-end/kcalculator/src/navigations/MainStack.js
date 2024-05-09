@@ -8,10 +8,10 @@ import { ProfileProduction,
              Profile,
              UserDelete,
              ProfileRevise, MenuSearch, FoodAddList, ChatBot,
-             UpdateMenuSelection, UpdateTargetCalorie, PostRegister, RunHistory,
+             UpdateMenuSelection, UpdateTargetCalorie, 
+             PostRegister, PostDetail, PostEdit,
+             RunHistory,
              BattleRegister, BattleDetail, MyBattle, MyBattleDetail} from '../screens';
-import PostEdit from "../screens/PostStack_screens/PostEdit";
-import PostDetail from "../screens/PostStack_screens/PostDetail";
 
 const Stack = createStackNavigator();
 

@@ -28,7 +28,8 @@ import ChatBot from './MenuStack_screens/ChatBot';
 
 import Post from './PostStack_screens/Post';
 import PostRegister from './PostStack_screens/PostRegister';
-import Postdetail from './PostStack_screens/PostDetail';
+import PostDetail from './PostStack_screens/PostDetail';
+import PostEdit from './PostStack_screens/PostEdit';
 
 
 import Running from './RunningStack_screens/Running';
@@ -40,4 +41,4 @@ export {Profile, UserDelete, UpdateMenuSelection, UpdateTargetCalorie,
     MenuSelection, ProfileProduction, TargetCalorie, ProfileRevise, 
     Login, Signup, Battle, BattleRegister, BattleDetail, MyBattle, MyBattleDetail,
     Home, Menu, MenuSearch, FoodAddList, ChatBot,
-    Post, PostRegister, Running, RunHistory, Postdetail};
+    Post, PostRegister, PostDetail, PostEdit, Running, RunHistory };

@@ -2,12 +2,12 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Login, Signup, ProfileProduction, MenuSelection, TargetCalorie,
     Profile, UserDelete, ProfileRevise, MenuSearch, ChatBot,
-    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, PostRegister, RunHistory, Postdetail,
+    UpdateMenuSelection, UpdateTargetCalorie, FoodAddList, 
+    PostRegister, PostDetail, PostEdit,
+    RunHistory, 
     BattleRegister, BattleDetail, MyBattle, MyBattleDetail
 } from '../screens';
 import MainTab from "./MainTab";
-import PostDetail from "../screens/PostStack_screens/PostDetail";
-import PostEdit from "../screens/PostStack_screens/PostEdit";
 
 
 

@@ -32,14 +32,53 @@ const Battle = ({ navigation, route }) => {
         return unsubscribe;
     }, [navigation, getBattleListFromServer]);
 
-    const renderItem = ({ item }) => (
-        <BattleComponent
-            title={item.title}
-            content={item.content}
-            userId={item.userId}
-            navigation={navigation}
-        />
-    );
+    const getStatus = (battle) => {
+        const currentDate = new Date();
+        const startDate = new Date(battle.startDate);
+        const endDate = new Date(battle.endDate);
+
+        if (currentDate < startDate) {
+            return '모집중';
+        } else if (currentDate >= startDate && currentDate <= endDate) {
+            return '진행중';
+        } else {
+            return '완료';
+        }
+    };
+
+    const renderItem = ({ item }) => {
+        const status = getStatus(item);
+        let backgroundColor = '#fff'; // 기본 배경색
+        let textColor = '#333'; // 기본 텍스트 색상
+
+        switch (status) {
+            case '모집중':
+                backgroundColor = '#39D02C'; // 초록색
+                break;
+            case '진행중':
+                backgroundColor = '#007bff'; // 파란색
+                textColor = '#fff'; // 흰색 텍스트
+                break;
+            case '완료':
+                backgroundColor = '#666'; // 회색
+                textColor = '#fff'; // 흰색 텍스트
+                break;
+            default:
+                break;
+        }
+
+        return (
+            <BattleComponent
+                title={item.title}
+                content={item.content}
+                userId={item.userId}
+                navigation={navigation}
+                backgroundColor={backgroundColor} // 배경색 전달
+                textColor={textColor} // 텍스트 색상 전달
+                status={status}
+            />
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -61,14 +100,15 @@ const Battle = ({ navigation, route }) => {
     );
 };
 
-const BattleComponent = ({ title, content, userId, navigation }) => (
+const BattleComponent = ({ title, content, userId, navigation, backgroundColor, textColor, status }) => (
     <TouchableOpacity onPress={() => navigation.navigate('BattleDetail')}>
-        <View style={styles.battleContainer}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.user}>{userId}</Text>
-            <Text numberOfLines={2} ellipsizeMode="tail" style={styles.content}>
+        <View style={[styles.battleContainer, { backgroundColor }]}>
+            <Text style={[styles.title, { color: textColor }]}>{title}</Text>
+            <Text style={[styles.user, { color: textColor }]}>{userId}</Text>
+            <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.content, { color: textColor }]}>
                 {content}
             </Text>
+            <Text style={[styles.user, { color: textColor }]}>{status}</Text>
         </View>
     </TouchableOpacity>
 );
