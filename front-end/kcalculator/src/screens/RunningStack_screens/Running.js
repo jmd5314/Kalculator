@@ -203,35 +203,37 @@ const Running = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        region={mapRegion}
-        onRegionChangeComplete={setMapRegion}
-        moveOnMarkerPress={false} // 마커를 눌러도 지도가 자동으로 이동하지 않음
-      >
-        {location && <Marker coordinate={location} />}
-        {routeCoordinates.length > 1 && <Polyline coordinates={routeCoordinates} strokeColor="#00F" strokeWidth={3} />}
-      </MapView>
-      <Text style={styles.timerText}>Time: {formatTime(elapsedTime)}</Text>
-      <Text style={styles.distanceText}>Distance: {distance.toFixed(2)} km</Text>
-      <View style={{flexDirection: 'row', marginBottom: 10}}>
-        <TouchableOpacity style={styles.button} onPress={startStopToggle}>
-          <Text style={styles.buttonText}>{isRunning ? 'Stop' : 'Start'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.historyButton}
-          onPress={() => navigation.navigate('RunHistory')}>
+      <SafeAreaView style={styles.container}>
+        <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            region={mapRegion}
+            onRegionChangeComplete={setMapRegion}
+            moveOnMarkerPress={false}
+        >
+          {location && <Marker coordinate={location} />}
+          {routeCoordinates.length > 1 && <Polyline coordinates={routeCoordinates} strokeColor="#00F" strokeWidth={3} />}
+        </MapView>
+        <View style={styles.infoPanel}>
+          <Text style={styles.timerText}>시간: {formatTime(elapsedTime)}</Text>
+          <Text style={styles.distanceText}>거리: {distance.toFixed(2)} km</Text>
+        </View>
+        <View style={styles.floatingMenu}>
+          <TouchableOpacity style={styles.fabButton} onPress={startStopToggle}>
+            <Text style={styles.fabText}>{isRunning ? 'Stop' : 'Start'}</Text>
+          </TouchableOpacity>
+          <View style={styles.buttonSpacer}></View>
+          <TouchableOpacity style={styles.fabButton} onPress={handleSave}>
+            <Text style={styles.fabText}>Save</Text>
+          </TouchableOpacity>
+          <View style={styles.buttonSpacer}></View>
+          <TouchableOpacity style={styles.fabButton} onPress={() => navigation.navigate('RunHistory')}>
             <MaterialIcons name="history" size={25} color="white" />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -241,36 +243,42 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  stepsText: {
-    fontSize: 20,
-    marginLeft: 10,
+  infoPanel: {
+    position: 'absolute',
+    top: 50,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    padding: 10,
   },
   timerText: {
     fontSize: 18,
-    marginBottom: 8,
-    marginLeft: 10,
+    color: 'white',
   },
   distanceText: {
     fontSize: 18,
-    marginBottom: 16,
-    marginLeft: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 16,
-    marginRight: 10,
-  },
-  historyButton: {
-    alignItems: 'center',
-    backgroundColor: 'green',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 16,
-  },
-  buttonText: {
     color: 'white',
+    marginTop: 5,
+  },
+  floatingMenu: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 25,
+    margin: 20,
+  },
+  fabButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 30,
+  },
+  fabText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  buttonSpacer: {
+    width: 10,
   },
 });
 
