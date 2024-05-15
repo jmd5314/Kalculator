@@ -23,7 +23,7 @@ public class BattleGroupsController {
     private final UsersService usersService;
     // 배틀 그룹 생성
     @PostMapping("/save")
-    public ResponseEntity<String> save(BattleGroupsRequestDto requestDto, Authentication authentication){
+    public ResponseEntity<String> save(@RequestBody BattleGroupsRequestDto requestDto, Authentication authentication){
         String userId = authentication.getName();
         Users leader = usersService.findByUserId(userId);
         BattleGroups group = BattleGroups.builder()
@@ -37,7 +37,6 @@ public class BattleGroupsController {
                 .leaderId(userId)
                 .build();
         GroupMembership membership = GroupMembership.builder()
-                .battlePoints(0.0)
                 .role(Role.LEADER)
                 .startWeight(leader.getProfiles().getWeight())
                 .build();
@@ -72,7 +71,6 @@ public class BattleGroupsController {
             return ResponseEntity.badRequest().body("이미 가입된 유저입니다.");
         }
         GroupMembership membership = GroupMembership.builder()
-                .battlePoints(0.0)
                 .role(Role.MEMBER)
                 .startWeight(user.getProfiles().getWeight())
                 .build();

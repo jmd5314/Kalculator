@@ -21,14 +21,12 @@ public class GroupMembership {
     private Users users;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Double battlePoints;
 
     // 가입시 초기 몸무게
     private Double startWeight;
     @Builder
-    public GroupMembership(Role role,Double battlePoints,Double startWeight){
+    public GroupMembership(Role role,Double startWeight){
         this.role = role;
-        this.battlePoints = battlePoints;
         this.startWeight = startWeight;
     }
     //==연관관계 편의 메서드==//

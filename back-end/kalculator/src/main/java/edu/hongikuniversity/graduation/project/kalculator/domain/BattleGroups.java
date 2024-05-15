@@ -21,9 +21,11 @@ public class BattleGroups {
     private String leaderId;
     private String title;
     private String content;
+    @Enumerated(EnumType.STRING)
     private BattlePurpose battlePurpose;
     private LocalDate startDate;
     private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
     private BattleStatus status;
     private Integer numberOfMembers;
 
