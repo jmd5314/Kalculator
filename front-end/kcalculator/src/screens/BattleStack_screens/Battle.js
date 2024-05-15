@@ -13,7 +13,7 @@ const Battle = ({ navigation, route }) => {
     const getBattleListFromServer = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await axios.get(`${backendUrl}/api/`, {
+            const response = await axios.get(`${backendUrl}/api/battleGroups/list`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
