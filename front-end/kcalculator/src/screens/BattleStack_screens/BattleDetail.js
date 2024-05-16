@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, SafeAreaView } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import config from '../config';
@@ -94,33 +94,39 @@ const BattleDetail = ({ route, navigation }) => {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.container}>
-                <Text style={styles.title}>{battle.title}</Text>
-                <View style={styles.contentContainer}>
-                    <Text style={styles.content}>{battle.content}</Text>
+        <SafeAreaView style={styles.safeContainer}>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <View style={styles.container}>
+                    <Text style={styles.title}>{battle.title}</Text>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.content}>{battle.content}</Text>
+                    </View>
+                    <View style={styles.infoContainer}>
+                        <Text style={styles.user}>리더: {battle.leaderId}</Text>
+                        <Text style={styles.purpose}>목표: {getPurposeText(battle.battlePurpose)}</Text>
+                        <Text style={styles.dates}>기간: {battle.startDate} ~ {battle.endDate}</Text>
+                        <Text style={styles.members}>모집 인원: {battle.currentMembers} / {battle.numberOfMembers}</Text>
+                        <Text style={styles.status}>상태: {getStatusText(battle.status)}</Text>
+                    </View>
+                    <TouchableOpacity style={styles.joinButton} onPress={handleJoinBattle}>
+                        <Text style={styles.joinButtonText}>가입하기</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.user}>리더: {battle.leaderId}</Text>
-                    <Text style={styles.purpose}>목표: {getPurposeText(battle.battlePurpose)}</Text>
-                    <Text style={styles.dates}>기간: {battle.startDate} ~ {battle.endDate}</Text>
-                    <Text style={styles.members}>모집 인원: {battle.currentMembers} / {battle.numberOfMembers}</Text>
-                    <Text style={styles.status}>상태: {getStatusText(battle.status)}</Text>
-                </View>
-                <TouchableOpacity style={styles.joinButton} onPress={handleJoinBattle}>
-                    <Text style={styles.joinButtonText}>가입하기</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    safeContainer: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+    },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
     },
     loadingText: {
         fontSize: 18,
@@ -130,10 +136,11 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         padding: 16,
+        backgroundColor: '#ffffff',
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         borderRadius: 16,
         padding: 16,
         margin: 16,
@@ -151,7 +158,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
     },
     contentContainer: {
-        minHeight: 300,
+        minHeight: 275,
         marginBottom: 20,
         paddingHorizontal: 16,
     },
@@ -196,7 +203,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 16,
     },
     joinButtonText: {
         color: '#fff',
