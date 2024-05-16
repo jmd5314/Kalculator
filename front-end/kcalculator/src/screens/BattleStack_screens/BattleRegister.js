@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 import config from '../config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 const backendUrl = config.backendUrl;
 
@@ -82,77 +83,78 @@ const BattleRegister = ({ navigation }) => {
     };
 
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-            <ScrollView contentContainerStyle={styles.innerContainer}>
-                <Text style={styles.titleText}>배틀 등록</Text>
-                <TextInput
-                    placeholder="제목"
-                    onChangeText={setTitle}
-                    value={title}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="내용"
-                    onChangeText={setContent}
-                    value={content}
-                    style={[styles.input, styles.multilineInput]}
-                    multiline
-                    textAlignVertical="top"
-                />
-                <DropDownPicker
-                    open={open}
-                    value={battlePurpose}
-                    items={[
-                        { label: '다이어트', value: 'DIET' },
-                        { label: '증량', value: 'WEIGHT_GAIN' },
-                        { label: '달리기', value: 'RUNNING' }
-                    ]}
-                    setOpen={setOpen}
-                    setValue={setBattlePurpose}
-                    placeholder="목표를 선택하세요"
-                    zIndex={3000}
-                    zIndexInverse={1000}
-                    style={styles.picker}
-                    dropDownContainerStyle={{
-                        zIndex: 3000,
-                    }}
-                />
-                <TextInput
-                    placeholder="모집 인원"
-                    onChangeText={setNumberOfMembers}
-                    value={numberOfMembers}
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <View style={styles.dateContainer}>
-                    <TouchableOpacity onPress={() => setStartDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
-                        <Icon name="calendar" size={24} color="#39D02C" />
-                    </TouchableOpacity>
+        <KeyboardAwareFlatList
+            contentContainerStyle={styles.innerContainer}
+            data={[{ key: 'form' }]}
+            renderItem={() => (
+                <View style={styles.container}>
+                    <Text style={styles.titleText}>배틀 등록</Text>
                     <TextInput
-                        placeholder="시작날짜 (YYYY-MM-DD)"
-                        onChangeText={setStartDate}
-                        value={startDate}
-                        style={styles.dateInput}
+                        placeholder="제목"
+                        onChangeText={setTitle}
+                        value={title}
+                        style={styles.input}
                     />
-                    <Text style={styles.dateSeparator}>~</Text>
-                    <TouchableOpacity onPress={() => setEndDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
-                        <Icon name="calendar" size={24} color="#39D02C" />
-                    </TouchableOpacity>
                     <TextInput
-                        placeholder="종료날짜 (YYYY-MM-DD)"
-                        onChangeText={setEndDate}
-                        value={endDate}
-                        style={styles.dateInput}
+                        placeholder="내용"
+                        onChangeText={setContent}
+                        value={content}
+                        style={[styles.input, styles.multilineInput]}
+                        multiline
+                        textAlignVertical="top"
                     />
+                    <DropDownPicker
+                        open={open}
+                        value={battlePurpose}
+                        items={[
+                            { label: '다이어트', value: 'DIET' },
+                            { label: '증량', value: 'WEIGHT_GAIN' },
+                            { label: '달리기', value: 'RUNNING' }
+                        ]}
+                        setOpen={setOpen}
+                        setValue={setBattlePurpose}
+                        placeholder="목표를 선택하세요"
+                        zIndex={3000}
+                        zIndexInverse={1000}
+                        style={styles.picker}
+                        dropDownContainerStyle={{
+                            zIndex: 3000,
+                        }}
+                    />
+                    <TextInput
+                        placeholder="모집 인원"
+                        onChangeText={setNumberOfMembers}
+                        value={numberOfMembers}
+                        style={styles.input}
+                        keyboardType="numeric"
+                    />
+                    <View style={styles.dateContainer}>
+                        <TouchableOpacity onPress={() => setStartDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
+                            <Icon name="calendar" size={24} color="#39D02C" />
+                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="시작날짜 (YYYY-MM-DD)"
+                            onChangeText={setStartDate}
+                            value={startDate}
+                            style={styles.dateInput}
+                        />
+                        <Text style={styles.dateSeparator}>~</Text>
+                        <TouchableOpacity onPress={() => setEndDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
+                            <Icon name="calendar" size={24} color="#39D02C" />
+                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="종료날짜 (YYYY-MM-DD)"
+                            onChangeText={setEndDate}
+                            value={endDate}
+                            style={styles.dateInput}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.registerButton} onPress={onClickBattleRegister}>
+                        <Text style={styles.registerButtonText}>배틀 등록</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.registerButton} onPress={onClickBattleRegister}>
-                    <Text style={styles.registerButtonText}>배틀 등록</Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </KeyboardAvoidingView>
+            )}
+        />
     );
 };
 

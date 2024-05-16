@@ -32,58 +32,26 @@ const Battle = ({ navigation, route }) => {
         return unsubscribe;
     }, [navigation, getBattleListFromServer]);
 
-    const getStatus = (battle) => {
-        const currentDate = new Date();
-        const startDate = new Date(battle.startDate);
-        const endDate = new Date(battle.endDate);
-
-        if (currentDate < startDate) {
-            return '모집중';
-        } else if (currentDate >= startDate && currentDate <= endDate) {
-            return '진행중';
-        } else {
-            return '완료';
-        }
-    };
-
-    const renderItem = ({ item }) => {
-        const status = getStatus(item);
-        let backgroundColor = '#fff'; // 기본 배경색
-        let textColor = '#333'; // 기본 텍스트 색상
-
-        switch (status) {
-            case '모집중':
-                backgroundColor = '#39D02C'; // 초록색
-                break;
-            case '진행중':
-                backgroundColor = '#007bff'; // 파란색
-                textColor = '#fff'; // 흰색 텍스트
-                break;
-            case '완료':
-                backgroundColor = '#666'; // 회색
-                textColor = '#fff'; // 흰색 텍스트
-                break;
-            default:
-                break;
-        }
-
-        return (
-            <BattleComponent
-                title={item.title}
-                content={item.content}
-                userId={item.userId}
-                navigation={navigation}
-                backgroundColor={backgroundColor} // 배경색 전달
-                textColor={textColor} // 텍스트 색상 전달
-                status={status}
-            />
-        );
-    };
+    const renderItem = ({ item }) => (
+        <BattleComponent
+            groupId={item.groupId}
+            title={item.title}
+            content={item.content}
+            leaderId={item.leaderId}
+            battlePurpose={item.battlePurpose}
+            startDate={item.startDate}
+            endDate={item.endDate}
+            currentMembers={item.currentMembers}
+            numberOfMembers={item.numberOfMembers}
+            status={item.status} // 상태 추가
+            navigation={navigation}
+        />
+    );
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { marginRight: 250 }]}>Battle</Text>
+                <Text style={[styles.header, { marginRight: 230 }]}>그룹 배틀</Text>
                 <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate('MyBattle')}>
                     <Icon name="group" size={20} color="#555" style={styles.header} />
                 </TouchableOpacity>
@@ -100,18 +68,45 @@ const Battle = ({ navigation, route }) => {
     );
 };
 
-const BattleComponent = ({ title, content, userId, navigation, backgroundColor, textColor, status }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('BattleDetail')}>
-        <View style={[styles.battleContainer, { backgroundColor }]}>
-            <Text style={[styles.title, { color: textColor }]}>{title}</Text>
-            <Text style={[styles.user, { color: textColor }]}>{userId}</Text>
-            <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.content, { color: textColor }]}>
-                {content}
-            </Text>
-            <Text style={[styles.user, { color: textColor }]}>{status}</Text>
-        </View>
-    </TouchableOpacity>
-);
+const BattleComponent = ({ groupId, title, content, leaderId, battlePurpose, startDate, endDate, currentMembers, numberOfMembers, status, navigation }) => {
+    // 상태 변환
+    const getStatusText = (status) => {
+        switch (status) {
+            case 'RECRUITING':
+                return '모집중';
+            case 'PROGRESS':
+                return '진행중';
+            default:
+                return '';
+        }
+    };
+
+    // 목표 변환
+    const getPurposeText = (battlePurpose) => {
+        switch (battlePurpose) {
+            case 'DIET':
+                return '다이어트';
+            case 'WEIGHT_GAIN':
+                return '증량';
+            case 'RUNNING':
+                return '달리기';
+            default:
+                return '';
+        }
+    };
+
+    return (
+        <TouchableOpacity onPress={() => navigation.navigate('BattleDetail', { groupId })}>
+            <View style={styles.battleContainer}>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.purpose}>목표: {getPurposeText(battlePurpose)}</Text>
+                <Text style={styles.dates}>기간: {startDate} ~ {endDate}</Text>
+                <Text style={styles.members}>모집 인원: {currentMembers} / {numberOfMembers}</Text>
+                <Text style={styles.status}>배틀 {getStatusText(status)}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -126,6 +121,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 8,
+        backgroundColor: '#f9f9f9',
     },
     header: {
         fontSize: 24,
@@ -137,9 +133,31 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 8,
+        color: '#333',
     },
-    user: {
+    leader: {
         fontSize: 16,
+        marginBottom: 4,
+        color: '#666',
+    },
+    purpose: {
+        fontSize: 16,
+        marginBottom: 4,
+        color: '#666',
+    },
+    dates: {
+        fontSize: 16,
+        marginBottom: 4,
+        color: '#666',
+    },
+    members: {
+        fontSize: 16,
+        marginBottom: 4,
+        color: '#666',
+    },
+    status: {
+        fontSize: 18,
+        marginTop: 4,
         color: '#666',
     },
     addButton: {
