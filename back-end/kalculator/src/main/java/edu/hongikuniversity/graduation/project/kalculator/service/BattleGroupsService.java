@@ -39,6 +39,9 @@ public class BattleGroupsService {
     public List<BattleGroups> findRecruitingGroups(){
         return battleGroupsRepository.findByStatus(BattleStatus.RECRUITING);
     }
+    public List<BattleGroups> findProgressingGroups() {
+        return battleGroupsRepository.findByStatus(BattleStatus.PROGRESS);
+    }
     public List<BattleGroups> findAll() {
         return battleGroupsRepository.findAll();
     }
@@ -46,4 +49,5 @@ public class BattleGroupsService {
     public BattleGroups findById(Long groupId) {
         return battleGroupsRepository.findById(groupId).orElseThrow(()->new IllegalArgumentException("해당 그룹을 찾을 수 없습니다."));
     }
+
 }
