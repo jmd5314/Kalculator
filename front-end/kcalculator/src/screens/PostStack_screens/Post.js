@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from '../config';
-import {decode as atob} from 'base-64';
+import { decode as atob } from 'base-64';
 
 const backendUrl = config.backendUrl;
 
@@ -48,7 +48,7 @@ const Post = ({ navigation, route }) => {
             });
             if (response.status === 200) {
                 Alert.alert('삭제 완료', '게시글이 성공적으로 삭제되었습니다.');
-                getListFromServer();  // 삭제 후 목록 새로고침
+                getListFromServer(); // 삭제 후 목록 새로고침
             } else {
                 throw new Error('서버로부터 예상치 못한 응답을 받았습니다.');
             }
@@ -57,6 +57,7 @@ const Post = ({ navigation, route }) => {
             Alert.alert('삭제 실패', `게시글 삭제에 실패했습니다: ${error.message}`);
         }
     };
+
     const renderItem = ({ item }) => (
         <PostComponent
             title={item.title}
@@ -75,9 +76,6 @@ const Post = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={styles.header}>게시판</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('PostRegister')}>
-                    <Icon name="plus" size={20} color="#555" style={styles.header} />
-                </TouchableOpacity>
             </View>
             {posts && (
                 <FlatList
@@ -86,6 +84,9 @@ const Post = ({ navigation, route }) => {
                     keyExtractor={(item, index) => index.toString()}
                 />
             )}
+            <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('PostRegister')}>
+                <Icon name="plus" size={20} color="#fff" />
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -120,12 +121,13 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
+        position: 'relative',
     },
     header: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
-        marginTop: 15,
+        marginBottom: 30,
+        marginTop: 40,
     },
     postContainer: {
         padding: 16,
@@ -161,6 +163,25 @@ const styles = StyleSheet.create({
         right: 20,
         top: 10,
         flexDirection: 'row',
+    },
+    addButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        backgroundColor: '#39D02C',
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 60,
+        height: 60,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        elevation: 6,
     },
 });
 
