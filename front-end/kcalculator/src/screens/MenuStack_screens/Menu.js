@@ -51,7 +51,7 @@ const Header = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 const IconWrapper = styled.TouchableOpacity`
@@ -110,10 +110,7 @@ const Menu = ({ navigation, route }) => {
             <Header>
                 <TitleText>식단</TitleText>
                 <View style={{ flexDirection: 'row' }}>
-                    <IconWrapper onPress={() => navigation.navigate('Profile')}>
-                        <Icon name="account-circle" size={30} color="#FFFFFF" />
-                    </IconWrapper>
-                    <IconWrapper onPress={() => navigation.navigate('ChatBot')} style={{ marginLeft: 20 }}>
+                    <IconWrapper onPress={() => navigation.navigate('ChatBot')} style={{ marginRight:10 }}>
                         <Icon name="chat" size={30} color="#FFFFFF" />
                     </IconWrapper>
                 </View>
