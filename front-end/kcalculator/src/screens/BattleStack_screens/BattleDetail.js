@@ -97,12 +97,16 @@ const BattleDetail = ({ route, navigation }) => {
         <SafeAreaView style={styles.safeContainer}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.container}>
+                    <Text style={styles.groupName}>{battle.groupName}</Text>
+                    <View style={styles.separator} />
                     <Text style={styles.title}>{battle.title}</Text>
+                    <View style={styles.separator} />
                     <View style={styles.contentContainer}>
                         <Text style={styles.content}>{battle.content}</Text>
                     </View>
+                    <View style={styles.separator} />
                     <View style={styles.infoContainer}>
-                        <Text style={styles.user}>리더: {battle.leaderId}</Text>
+                        <Text style={styles.user}>리더: {battle.leaderNickname} ({battle.leaderId})</Text>
                         <Text style={styles.purpose}>목표: {getPurposeText(battle.battlePurpose)}</Text>
                         <Text style={styles.dates}>기간: {battle.startDate} ~ {battle.endDate}</Text>
                         <Text style={styles.members}>모집 인원: {battle.currentMembers} / {battle.numberOfMembers}</Text>
@@ -150,15 +154,27 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
-    title: {
+    groupName: {
         fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 12,
+        marginBottom: 5,
         color: '#333',
         marginHorizontal: 16,
     },
+    title: {
+        fontSize: 18, // 폰트 크기 낮춤
+        marginBottom: 5,
+        color: '#333',
+        marginHorizontal: 16,
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#ccc',
+        marginVertical: 10,
+        marginHorizontal: 16,
+    },
     contentContainer: {
-        minHeight: 275,
+        minHeight: 200,
         marginBottom: 20,
         paddingHorizontal: 16,
     },

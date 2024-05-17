@@ -35,6 +35,7 @@ const Battle = ({ navigation, route }) => {
     const renderItem = ({ item }) => (
         <BattleComponent
             groupId={item.groupId}
+            groupName={item.groupName} // 그룹 이름 추가
             title={item.title}
             content={item.content}
             leaderId={item.leaderId}
@@ -43,7 +44,7 @@ const Battle = ({ navigation, route }) => {
             endDate={item.endDate}
             currentMembers={item.currentMembers}
             numberOfMembers={item.numberOfMembers}
-            status={item.status} // 상태 추가
+            status={item.status}
             navigation={navigation}
         />
     );
@@ -51,7 +52,7 @@ const Battle = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { marginRight: 230 }]}>그룹 배틀</Text>
+                <Text style={[styles.header, { marginRight: 280 }]}>배틀</Text>
                 <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate('MyBattle')}>
                     <Icon name="group" size={20} color="#555" style={styles.header} />
                 </TouchableOpacity>
@@ -68,7 +69,7 @@ const Battle = ({ navigation, route }) => {
     );
 };
 
-const BattleComponent = ({ groupId, title, content, leaderId, battlePurpose, startDate, endDate, currentMembers, numberOfMembers, status, navigation }) => {
+const BattleComponent = ({ groupId, groupName, title, content, leaderId, battlePurpose, startDate, endDate, currentMembers, numberOfMembers, status, navigation }) => {
     // 상태 변환
     const getStatusText = (status) => {
         switch (status) {
@@ -98,6 +99,7 @@ const BattleComponent = ({ groupId, title, content, leaderId, battlePurpose, sta
     return (
         <TouchableOpacity onPress={() => navigation.navigate('BattleDetail', { groupId })}>
             <View style={styles.battleContainer}>
+                <Text style={styles.groupName}>{groupName}</Text>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.purpose}>목표: {getPurposeText(battlePurpose)}</Text>
                 <Text style={styles.dates}>기간: {startDate} ~ {endDate}</Text>
@@ -126,13 +128,18 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
-        marginTop: 15,
+        marginBottom: 20,
+        marginTop: 40,
     },
-    title: {
-        fontSize: 20,
+    groupName: {  // 그룹 이름 스타일 추가
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 8,
+        color: '#333',
+    },
+    title: {
+        fontSize: 18,
+        marginBottom: 4,
         color: '#333',
     },
     leader: {

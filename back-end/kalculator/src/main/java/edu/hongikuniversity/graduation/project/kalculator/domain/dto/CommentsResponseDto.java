@@ -10,11 +10,13 @@ import java.time.LocalDate;
 public class CommentsResponseDto {
     private Long commentId;
     private String userId;
+    private String nickname;
     private String content;
     private LocalDate creationDate;
     public CommentsResponseDto(Comments entity){
         this.commentId = entity.getCommentId();
         this.userId = entity.getUsers().getUserId();
+        this.nickname = entity.getUsers().getProfiles().getNickname();
         this.content = entity.getContent();
         this.creationDate = entity.getCreationDate();
     }

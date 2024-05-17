@@ -10,6 +10,7 @@ import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 const backendUrl = config.backendUrl;
 
 const BattleRegister = ({ navigation }) => {
+    const [groupName, setGroupName] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [battlePurpose, setBattlePurpose] = useState(null);
@@ -19,7 +20,7 @@ const BattleRegister = ({ navigation }) => {
     const [open, setOpen] = useState(false);
 
     const onClickBattleRegister = async () => {
-        if (!title || !content || !battlePurpose || !startDate || !endDate || !numberOfMembers) {
+        if (!groupName || !title || !content || !battlePurpose || !startDate || !endDate || !numberOfMembers) {
             alert("모든 필드를 채워주세요.");
             return;
         }
@@ -44,6 +45,7 @@ const BattleRegister = ({ navigation }) => {
         }
 
         const battleToServer = {
+            groupName,
             title,
             content,
             battlePurpose,
@@ -85,10 +87,17 @@ const BattleRegister = ({ navigation }) => {
     return (
         <KeyboardAwareFlatList
             contentContainerStyle={styles.innerContainer}
+            style={styles.flatList}
             data={[{ key: 'form' }]}
             renderItem={() => (
                 <View style={styles.container}>
                     <Text style={styles.titleText}>배틀 등록</Text>
+                    <TextInput
+                        placeholder="그룹 이름"
+                        onChangeText={setGroupName}
+                        value={groupName}
+                        style={styles.input}
+                    />
                     <TextInput
                         placeholder="제목"
                         onChangeText={setTitle}
@@ -163,9 +172,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    flatList: {
+        backgroundColor: '#fff',
+    },
     innerContainer: {
         flexGrow: 1,
         padding: 16,
+        paddingTop:0,
         justifyContent: 'center',
     },
     titleText: {
@@ -190,13 +203,13 @@ const styles = StyleSheet.create({
     },
     picker: {
         width: '100%',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     dateContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     dateInput: {
         flex: 1,

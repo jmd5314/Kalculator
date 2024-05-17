@@ -1,9 +1,8 @@
 package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsSaveRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsUpdateRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.PostsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class PostsController {
     private final UsersService usersService;
     private final PostsService postsService;
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody PostsSaveRequestDto requestDto, Authentication authentication
+    public ResponseEntity<?> save(@RequestBody PostsRequestDto requestDto, Authentication authentication
     ){
         if(requestDto.getContent()==null||requestDto.getContent().isEmpty()){
             return ResponseEntity.badRequest().body("내용이 비어 있습니다.");
@@ -61,7 +60,7 @@ public class PostsController {
         return ResponseEntity.ok().body("해당 게시물이 성공적으로 삭제되었습니다.");
     }
     @PutMapping("/update/{postId}")
-    public ResponseEntity<?> update(@PathVariable Long postId, @RequestBody PostsUpdateRequestDto requestDto){
+    public ResponseEntity<?> update(@PathVariable Long postId, @RequestBody PostsRequestDto requestDto){
         return ResponseEntity.ok(postsService.updatePosts(postId, requestDto).getPostId());
     }
 }

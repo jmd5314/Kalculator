@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import config from '../config';
@@ -31,36 +31,24 @@ const PostDetail = ({ navigation, route }) => {
         setUserId(decodedUserId);
 
         const postResponse = await axios.get(`${backendUrl}/api/posts/confirm`, {
-          params: {
-            postId: postId
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          params: { postId: postId },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const post = postResponse.data;
         setCertainPost(post);
 
         const likeStatusResponse = await axios.get(`${backendUrl}/api/hearts/confirm`, {
-          params: {
-            postId: postId
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          params: { postId: postId },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const hasLiked = likeStatusResponse.data;
         setToggleFavoriteState(hasLiked);
 
         const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
-          params: {
-            postId: postId
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          params: { postId: postId },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const comments = commentsResponse.data;
@@ -73,20 +61,15 @@ const PostDetail = ({ navigation, route }) => {
 
     fetchData();
 
-  }, []);
+  }, [postId]);
 
   const addFavorite = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-
-      const postToServer = {
-        postId: postId,
-      }
+      const postToServer = { postId: postId };
 
       await axios.post(`${backendUrl}/api/hearts/insert`, postToServer, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setToggleFavoriteState(true);
@@ -101,9 +84,7 @@ const PostDetail = ({ navigation, route }) => {
       const token = await AsyncStorage.getItem('token');
 
       await axios.delete(`${backendUrl}/api/hearts/delete/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setToggleFavoriteState(false);
@@ -116,10 +97,8 @@ const PostDetail = ({ navigation, route }) => {
   const toggleFavorite = () => {
     if (toggleFavoriteState === false) {
       addFavorite();
-      setToggleFavoriteState(true);
     } else {
       deleteFavorite();
-      setToggleFavoriteState(false);
     }
   }
 
@@ -130,25 +109,15 @@ const PostDetail = ({ navigation, route }) => {
   const addComment = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-
-      const postToServer = {
-        postId: postId,
-        content: comment,
-      }
+      const postToServer = { postId: postId, content: comment };
 
       await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const commentsResponse = await axios.get(`${backendUrl}/api/comments/list`, {
-        params: {
-          postId: postId
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        params: { postId: postId },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const comments = commentsResponse.data;
@@ -179,9 +148,7 @@ const PostDetail = ({ navigation, route }) => {
       const token = await AsyncStorage.getItem('token');
 
       await axios.delete(`${backendUrl}/api/comments/delete/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const updatedComments = certainComments.filter(comment => comment.commentId !== commentId);
@@ -195,16 +162,10 @@ const PostDetail = ({ navigation, route }) => {
   const handleUpdateComment = async (commentId) => {
     try {
       const token = await AsyncStorage.getItem('token');
-
-      const updatedComment = {
-        commentId: commentId,
-        content: editingComment,
-      }
+      const updatedComment = { commentId: commentId, content: editingComment };
 
       await axios.put(`${backendUrl}/api/comments/update/${commentId}`, updatedComment, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const updatedComments = certainComments.map(comment => {
@@ -294,10 +255,10 @@ const PostDetail = ({ navigation, route }) => {
                                       ) : (
                                           <>
                                             <View style={styles.commentHeader}>
-                                              <Text style={styles.commentUsername}>{item.userId}</Text>
-                                              <Text style={styles.commentDate}>{item.creationDate}</Text>
+                                              <Text style={styles.commentUsername}>{item.nickname} ({item.userId})</Text>
                                             </View>
                                             <Text style={styles.commentContent}>{item.content}</Text>
+                                            <Text style={styles.commentDate}>{item.creationDate}</Text>
                                             {item.userId === userId && (
                                                 <View style={styles.commentActionButtons}>
                                                   <TouchableOpacity onPress={() => handleEditComment(item.commentId)}>
@@ -384,6 +345,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 5,
   },
+  commentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   commentUsername: {
     fontWeight: 'bold',
     marginBottom: 5,
@@ -395,6 +360,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   commentDate: {
+    marginTop: 5,
     color: '#777',
     fontSize: 12,
   },

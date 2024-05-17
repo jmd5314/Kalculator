@@ -28,15 +28,17 @@ public class BattleGroupsController {
         String userId = authentication.getName();
         Users leader = usersService.findByUserId(userId);
         BattleGroups group = BattleGroups.builder()
+                .groupName(requestDto.getGroupName())
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .battlePurpose(BattlePurpose.valueOf(requestDto.getBattlePurpose().toUpperCase()))
                 .startDate(requestDto.getStartDate())
                 .endDate(requestDto.getEndDate())
-                 // 시작 날짜가 오늘이라면 배틀 상태를 진행중으로, 아니라면 모집중으로 설정
+                // 시작 날짜가 오늘이라면 배틀 상태를 진행중으로, 아니라면 모집중으로 설정
                 .status(requestDto.getStartDate() == LocalDate.now() ? BattleStatus.PROGRESS : BattleStatus.RECRUITING)
                 .numberOfMembers(requestDto.getNumberOfMembers())
                 .leaderId(userId)
+                .leaderNickname(leader.getProfiles().getNickname())
                 .build();
         GroupMembership membership = GroupMembership.builder()
                 .role(Role.LEADER)

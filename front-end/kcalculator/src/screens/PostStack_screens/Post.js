@@ -69,6 +69,7 @@ const Post = ({ navigation, route }) => {
             navigation={navigation}
             isCurrentUser={item.userId === currentUserId}
             onDelete={() => handleDelete(item.postId)}
+            nickname={item.nickname} // 여기 추가
         />
     );
 
@@ -91,11 +92,11 @@ const Post = ({ navigation, route }) => {
     );
 };
 
-const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount, navigation, isCurrentUser, onDelete }) => (
+const PostComponent = ({ title, content, userId, postId, favoriteCount, commentCount, navigation, isCurrentUser, onDelete, nickname }) => (
     <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { postId })}>
         <View style={styles.postContainer}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.user}>{userId}</Text>
+            <Text style={styles.user}>{nickname} ({userId})</Text>
             <View style={styles.iconContainer}>
                 <Icon name="thumbs-o-up" size={20} color="#555" />
                 <Text>{favoriteCount}</Text>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     user: {
-        fontSize: 16,
+        fontSize: 14,
     },
     iconContainer: {
         flexDirection: 'row',

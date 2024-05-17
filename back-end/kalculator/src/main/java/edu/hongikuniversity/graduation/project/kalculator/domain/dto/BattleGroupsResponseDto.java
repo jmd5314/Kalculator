@@ -11,6 +11,8 @@ import java.time.LocalDate;
 public class BattleGroupsResponseDto {
     Long groupId;
     String leaderId;
+    String leaderNickname;
+    String groupName;
     String title;
     String content;
     BattlePurpose battlePurpose;
@@ -21,7 +23,9 @@ public class BattleGroupsResponseDto {
     Integer numberOfMembers;
     public BattleGroupsResponseDto(BattleGroups entity){
         this.groupId = entity.getGroupId();
+        this.groupName = entity.getGroupName();
         this.leaderId = entity.getLeaderId();
+        this.leaderNickname = entity.getLeaderNickname();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.battlePurpose = entity.getBattlePurpose();

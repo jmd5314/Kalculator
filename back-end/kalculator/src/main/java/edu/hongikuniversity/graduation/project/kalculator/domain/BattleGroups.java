@@ -19,6 +19,8 @@ public class BattleGroups {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupId;
     private String leaderId;
+    private String leaderNickname;
+    private String groupName;
     private String title;
     private String content;
     @Enumerated(EnumType.STRING)
@@ -32,8 +34,10 @@ public class BattleGroups {
     @OneToMany(mappedBy = "group")
     private Set<GroupMembership> memberships = new HashSet<>();
     @Builder
-    public BattleGroups(String leaderId,String title,String content,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
+    public BattleGroups(String leaderId,String leaderNickname,String groupName,String title,String content,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
         this.leaderId = leaderId;
+        this.leaderNickname = leaderNickname;
+        this.groupName = groupName;
         this.title = title;
         this.content = content;
         this.battlePurpose = battlePurpose;

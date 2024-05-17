@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 public class BattleGroupsRequestDto {
+    private String groupName;
     private String title;
     private String content;
     private String battlePurpose;

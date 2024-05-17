@@ -3,8 +3,7 @@ package edu.hongikuniversity.graduation.project.kalculator.service;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Comments;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Hearts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Posts;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsSaveRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsUpdateRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.PostsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.repository.CommentsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.HeartsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.repository.PostsRepository;
@@ -49,7 +48,7 @@ public class PostsService {
         postsRepository.delete(posts);
     }
     @Transactional
-    public Posts updatePosts(Long postId, PostsUpdateRequestDto requestDto) {
+    public Posts updatePosts(Long postId, PostsRequestDto requestDto) {
         Posts posts = postsRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
         posts.update(requestDto.getTitle(), requestDto.getContent());
         return postsRepository.save(posts);

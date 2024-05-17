@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class PostsResponseDto {
     private Long postId;
     private String userId;
+    private String nickname;
     private String title;
     private String content;
     private LocalDate creationDate;
@@ -17,6 +18,7 @@ public class PostsResponseDto {
     public PostsResponseDto(Posts entity){
         this.postId = entity.getPostId();
         this.userId = entity.getUsers().getUserId();
+        this.nickname = entity.getUsers().getProfiles().getNickname();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.creationDate = entity.getCreationDate();
