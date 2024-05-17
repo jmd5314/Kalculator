@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -115,10 +119,6 @@ public class Profiles {
     public void setUsers(Users users) {
         this.users = users;
         users.setProfiles(this);
-    }
-    // 체중 업데이트
-    public  void updateWeight(Double weight){
-        this.weight = weight;
     }
     // 다이어트 모드 업데이트
     public void setDietMode(DietMode dietMode) {

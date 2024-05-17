@@ -61,16 +61,6 @@ public class ProfilesController {
         ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
         return responseDto;
     }
-    //체중 업데이트
-    @PutMapping("/home/updateWeight")
-    public Long updateWeight(Authentication authentication, @RequestBody UpdateWeightDto updateWeightDto){
-        String userId = authentication.getName();
-        Users users = usersService.findByUserId(userId);
-        Profiles profiles = users.getProfiles();
-        profiles.updateWeight(updateWeightDto.getWeight());
-        profilesService.save(profiles);
-        return profiles.getProfileId();
-    }
     @PutMapping("/update")
     public Long updateProfiles(@RequestBody ProfilesUpdateRequestDto requestDto, Authentication authentication){
         String userId = authentication.getName();
