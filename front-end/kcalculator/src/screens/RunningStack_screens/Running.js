@@ -164,7 +164,6 @@ const Running = ({ navigation }) => {
       return;
     }
     const runData = {
-      date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD 포맷
       time: parseFloat((elapsedTime / 3600000).toFixed(2)), // 밀리초를 시간 단위로 변환
       distance: parseFloat(distance.toFixed(2)),
     };
@@ -251,6 +250,7 @@ const Running = ({ navigation }) => {
       </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

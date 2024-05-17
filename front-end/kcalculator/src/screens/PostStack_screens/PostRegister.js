@@ -15,17 +15,14 @@ const PostRegister = ({navigation}) => {
             if (!item.title || !item.content) {
                 return;
             }
-    
+
             const token = await AsyncStorage.getItem('token');
-    
-            const currentTime = new Date();
-    
+
             const data = {
                 title: item.title,
                 content: item.content,
-                creationDate: currentTime,
             };
-    
+
             console.log(data)
             const response = await axios.post(`${backendUrl}/api/posts/save`, data, {
                 headers: {
@@ -59,8 +56,8 @@ const PostRegister = ({navigation}) => {
             const response = await postListToServer(postToServer);
             if(response)
             {
-            alert("게시글이 등록되었습니다.")
-            navigation.navigate('Post')
+                alert("게시글이 등록되었습니다.")
+                navigation.navigate('Post')
             }
         } catch (error) {
             console.error(error);
@@ -85,7 +82,7 @@ const PostRegister = ({navigation}) => {
                 textAlignVertical="top" // 이 부분을 추가
             />
             <TouchableOpacity style={ styles.registerButton }
-                onPress={() => {onClickPostRegister(); }}>
+                              onPress={() => {onClickPostRegister(); }}>
                 <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>게시글 등록</Text>
             </TouchableOpacity>
         </View>

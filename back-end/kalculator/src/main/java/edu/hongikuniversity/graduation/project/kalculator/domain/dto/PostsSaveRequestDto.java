@@ -8,5 +8,4 @@ import java.time.LocalDate;
 public class PostsSaveRequestDto {
     private String title;
     private String content;
-    private LocalDate creationDate;
 }

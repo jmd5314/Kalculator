@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,7 +32,7 @@ public class PostsController {
         String userId = authentication.getName();
         Users users = usersService.findByUserId(userId);
         Posts posts = Posts.builder().title(requestDto.getTitle()).content(requestDto.getContent())
-                .creationDate(requestDto.getCreationDate()).build();
+                .creationDate(LocalDate.now()).build();
         posts.setUsers(users);
         return ResponseEntity.ok(postsService.save(posts));
     }

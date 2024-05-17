@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class CommentsService {
         Posts posts = postsRepository.findById(requestDto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
         Comments comments = Comments.builder().content(requestDto.getContent())
-                .creationDate(requestDto.getCreationDate()).users(users).posts(posts).build();
+                .creationDate(LocalDate.now()).users(users).posts(posts).build();
         return commentsRepository.save(comments).getCommentId();
     }
 

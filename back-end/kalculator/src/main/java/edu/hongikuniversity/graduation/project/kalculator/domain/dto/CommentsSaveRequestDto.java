@@ -8,5 +8,4 @@ import java.time.LocalDate;
 public class CommentsSaveRequestDto {
     private Long postId;
     private String content;
-    private LocalDate creationDate;
 }

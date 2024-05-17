@@ -26,7 +26,7 @@ public class RunningRecordsController {
         String userId = authentication.getName();
         Users user = usersService.findByUserId(userId);
         RunningRecords runningRecords = RunningRecords.builder()
-                .date(requestDto.getDate())
+                .date(LocalDate.now())
                 .time(requestDto.getTime())
                 .distance(requestDto.getDistance())
                 .build();

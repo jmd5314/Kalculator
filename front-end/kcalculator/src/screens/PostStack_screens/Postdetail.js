@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import config from '../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {decode as atob} from 'base-64';
-import { FlatList } from 'react-native';
+import { decode as atob } from 'base-64';
 
 const backendUrl = config.backendUrl;
 
@@ -17,8 +16,8 @@ const PostDetail = ({ navigation, route }) => {
   const [toggleCommentState, setToggleCommentState] = useState(false);
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState(null);
-  const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글의 ID 저장
-  const [editingComment, setEditingComment] = useState(""); // 수정 중인 댓글의 내용 저장
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingComment, setEditingComment] = useState("");
 
   const iconColor = toggleFavoriteState ? '#FF0000' : '#555';
 
@@ -135,7 +134,6 @@ const PostDetail = ({ navigation, route }) => {
       const postToServer = {
         postId: postId,
         content: comment,
-        creationDate: new Date().toISOString()
       }
 
       await axios.post(`${backendUrl}/api/comments/save`, postToServer, {
@@ -173,7 +171,7 @@ const PostDetail = ({ navigation, route }) => {
   }
 
   const handleEditComment = (commentId) => {
-    setEditingCommentId(commentId); // 수정할 댓글의 ID 저장
+    setEditingCommentId(commentId);
   }
 
   const handleDeleteComment = async (commentId) => {
@@ -216,7 +214,7 @@ const PostDetail = ({ navigation, route }) => {
         return comment;
       });
       setCertainComments(updatedComments);
-      setEditingCommentId(null); // 수정 완료 후 수정 중인 댓글 ID 초기화
+      setEditingCommentId(null);
 
     } catch (error) {
       if (error.response && error.response.data) {
@@ -282,7 +280,6 @@ const PostDetail = ({ navigation, route }) => {
                                 renderItem={({ item, index }) => (
                                     <View style={[styles.commentItem, index === certainComments.length - 1 && styles.lastCommentItem]}>
                                       {editingCommentId === item.commentId ? (
-                                          // 수정 폼 렌더링
                                           <View>
                                             <TextInput
                                                 value={editingComment}
@@ -295,7 +292,6 @@ const PostDetail = ({ navigation, route }) => {
                                             </TouchableOpacity>
                                           </View>
                                       ) : (
-                                          // 댓글 렌더링
                                           <>
                                             <View style={styles.commentHeader}>
                                               <Text style={styles.commentUsername}>{item.userId}</Text>
@@ -325,7 +321,7 @@ const PostDetail = ({ navigation, route }) => {
               </>
           )}
           keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={{ paddingBottom: 20 }}// 하단 여백 설정
+          contentContainerStyle={{ paddingBottom: 20 }}
       />
   );
 };
@@ -333,11 +329,11 @@ const PostDetail = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f8',  // 밝은 회색조 배경
-    padding: 16,  // 전체적인 패딩 추가
+    backgroundColor: '#f4f4f8',
+    padding: 16,
   },
   input: {
-    backgroundColor: '#ffffff',  // 흰색 배경
+    backgroundColor: '#ffffff',
     borderWidth: 0,
     borderRadius: 10,
     padding: 16,
@@ -349,10 +345,10 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     marginVertical: 10,
-    marginHorizontal: 5,  // 좌우 여백 조정
+    marginHorizontal: 5,
   },
   multilineInput: {
-    minHeight: 150,  // 내용 입력 공간 확장
+    minHeight: 150,
   },
   iconContainer: {
     flexDirection: 'row',
@@ -386,7 +382,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     marginBottom: 10,
-    marginHorizontal: 5,  // 좌우 여백 조정
+    marginHorizontal: 5,
   },
   commentUsername: {
     fontWeight: 'bold',
@@ -404,7 +400,7 @@ const styles = StyleSheet.create({
   },
   commentButtonText: {
     color: 'white',
-    backgroundColor: '#39D02C',  // 버튼 색상 강조
+    backgroundColor: '#39D02C',
     borderRadius: 8,
     padding: 10,
     fontSize: 16,
@@ -414,7 +410,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   lastCommentItem: {
-    marginBottom: 100,  // 스크롤 가능 영역 확장
+    marginBottom: 100,
+  },
+  commentUpdateButtonText: {
+    color: 'white',
+    backgroundColor: '#39D02C',
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 
