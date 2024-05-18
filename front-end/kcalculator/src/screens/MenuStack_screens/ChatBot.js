@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 import config from '../config';
 
@@ -13,7 +13,7 @@ const ChatBot = () => {
   useEffect(() => {
     const fetchDietData = async () => {
       try {
-        const response = await axios.get('https://your-backend.com/api/diet');
+        const response = await axios.get();
         setDietData(response.data);
       } catch (error) {
         console.error('Error fetching diet data:', error);
@@ -24,33 +24,36 @@ const ChatBot = () => {
   }, []);
 
   const handleUserInput = async () => {
-    setChatHistory([...chatHistory, { type: 'user', text: userInput }]);
-    
+    const newChatHistory = [...chatHistory, { type: 'user', text: userInput }];
+    setChatHistory(newChatHistory);
+
     try {
-      // OpenAI API로 사용자 입력을 전송하여 응답을 받아옴
-      const response = await axios.post('https://api.openai.com/v1/completions', {
-        model: 'text-davinci-003', // 사용할 GPT 모델
-        prompt: userInput, // 사용자 입력을 GPT 모델에 전달
-        max_tokens: 50 // 생성할 토큰의 최대 개수
+      // 사용자의 입력과 백엔드에서 가져온 식단 정보를 함께 전달
+      const prompt = `User input: ${userInput}\nDiet data: ${JSON.stringify(dietData)}\nBased on this information, provide a personalized diet recommendation.`;
+      
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: 'gpt-3.5-turbo', // 최신 GPT 모델
+        messages: [{ role: 'user', content: prompt }], // 사용자 입력을 GPT 모델에 전달
+        max_tokens: 150 // 생성할 토큰의 최대 개수
       }, {
         headers: {
-          'Authorization': 'Bearer YOUR_API_KEY' // OpenAI API 키
+          'Authorization': `Bearer `, // OpenAI API 키
+          'Content-Type': 'application/json'
         }
       });
 
-      // GPT 모델의 응답을 기록에 추가
-      setChatHistory([...chatHistory, { type: 'bot', text: response.data.choices[0].text }]);
+      const botMessage = response.data.choices[0].message.content;
+      setChatHistory([...newChatHistory, { type: 'bot', text: botMessage }]);
     } catch (error) {
-      console.error('Error fetching response from GPT:', error);
+      console.error('Error fetching response from GPT:', error.response ? error.response.data : error.message);
     }
 
-    // 사용자 입력 초기화
     setUserInput('');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 40, marginLeft:10 }}>채팅</Text>
+      <Text style={{ fontSize: 40, marginLeft: 10 }}>채팅</Text>
       <ScrollView contentContainerStyle={styles.chatContainer}>
         {chatHistory.map((chat, index) => (
           <View key={index} style={[styles.messageContainer, { alignSelf: chat.type === 'user' ? 'flex-end' : 'flex-start' }]}>
@@ -71,14 +74,14 @@ const ChatBot = () => {
           placeholder="메시지를 입력하세요"
         />
         <TouchableOpacity
-                style={{
-                    backgroundColor: '#39D02C',
-                    padding: 10,
-                    borderRadius: 5,
-                }}
-                onPress={handleUserInput}
-            >
-                <Text style={{ color: '#fff', fontSize: 16 }}>전송</Text>
+          style={{
+            backgroundColor: '#39D02C',
+            padding: 10,
+            borderRadius: 5,
+          }}
+          onPress={handleUserInput}
+        >
+          <Text style={{ color: '#fff', fontSize: 16 }}>전송</Text>
         </TouchableOpacity>
       </View>
     </View>
