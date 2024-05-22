@@ -85,8 +85,8 @@ const MenuSearch = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 20, marginLeft: 10, marginTop: 20, flexDirection: 'row' }}>
-                <Text style={{ fontSize: 25, marginRight: 180, fontWeight: "bold" }}>음식 검색</Text>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerText}>음식 검색</Text>
                 <TouchableOpacity
                     style={[
                         styles.buttonContainer,
@@ -97,7 +97,7 @@ const MenuSearch = ({ navigation }) => {
                     <Text style={styles.buttonText}>{`${selectedItemList.length}`}</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: 'row', marginBottom: 10, marginLeft: 10 }}>
+            <View style={styles.searchContainer}>
                 <TextInput
                     style={styles.input}
                     placeholder="검색어를 입력하세요"
@@ -105,8 +105,8 @@ const MenuSearch = ({ navigation }) => {
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={handleSearch}
                 />
-                <TouchableOpacity style={{ marginLeft: 5 }} onPress={handleSearch}>
-                    <MaterialIcons name="search" size={50} />
+                <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+                    <MaterialIcons name="search" size={28} color="#333" />
                 </TouchableOpacity>
             </View>
             <FlatList
@@ -114,7 +114,7 @@ const MenuSearch = ({ navigation }) => {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleItemSelected(item)}>
-                        <View style={[styles.resultItem, { marginLeft: 10 }]}>
+                        <View style={styles.resultItem}>
                             <Text>{item.title}</Text>
                         </View>
                     </TouchableOpacity>
@@ -122,30 +122,28 @@ const MenuSearch = ({ navigation }) => {
             />
             {selectedItem && (
                 <View style={styles.itemDetailsContainer}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                        <Text style={{ marginRight: 100 }}>칼로리: {selectedItem.calories} kcal</Text>
-                        <TouchableOpacity onPress={() => setSelectedItemQuantity(Math.max(0, selectedItemQuantity - 1))}>
-                            <Text style={{ marginHorizontal: 5 }}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={{ marginHorizontal: 5 }}>{selectedItemQuantity}</Text>
-                        <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity + 1)}>
-                            <Text style={{ marginHorizontal: 5 }}>+</Text>
-                        </TouchableOpacity>
+                    <View style={styles.itemDetailsHeader}>
+                        <Text style={styles.itemDetailsText}>칼로리: {selectedItem.calories} kcal</Text>
+                        <View style={styles.quantityContainer}>
+                            <TouchableOpacity onPress={() => setSelectedItemQuantity(Math.max(0, selectedItemQuantity - 1))}>
+                                <Text style={styles.quantityText}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.quantityText}>{selectedItemQuantity}</Text>
+                            <TouchableOpacity onPress={() => setSelectedItemQuantity(selectedItemQuantity + 1)}>
+                                <Text style={styles.quantityText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <Text>탄수화물: {selectedItem.carbs} g</Text>
                     <Text>지방: {selectedItem.fat} g</Text>
                     <Text>단백질: {selectedItem.protein} g</Text>
                     <Text>1회제공량: {selectedItem.servingSize} g</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                    <View style={styles.itemDetailsFooter}>
                         <TouchableOpacity onPress={() => setSelectedItem(null)}>
-                            <Text style={{ marginTop: 10 }}>닫기</Text>
+                            <Text style={styles.closeButtonText}>닫기</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                handleInputCertainItemToArray();
-                            }}
-                        >
-                            <Text style={{ marginTop: 10, marginLeft: 200 }}>추가하기</Text>
+                        <TouchableOpacity onPress={handleInputCertainItemToArray}>
+                            <Text style={styles.addButtonText}>추가하기</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -160,23 +158,55 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#FFFFFF',
     },
-    input: {
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    headerText: {
+        fontSize: 25,
+        fontWeight: "bold",
+        marginLeft: 10,
+    },
+    buttonContainer: {
+        width: 50,
         height: 50,
-        width: '85%',
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
+        paddingHorizontal: 10,
+    },
+    input: {
+        flex: 1,
+        height: 50,
         borderColor: '#CCCCCC',
         borderWidth: 1,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         borderRadius: 25,
         fontSize: 16,
         color: '#333',
     },
+    searchButton: {
+        marginLeft: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     resultItem: {
         paddingVertical: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#CCCCCC',
         backgroundColor: '#FFFFFF',
-        marginTop: 2,
     },
     itemDetailsContainer: {
         padding: 20,
@@ -190,17 +220,35 @@ const styles = StyleSheet.create({
         shadowColor: '#000000',
         shadowOffset: { height: 2, width: 2 },
     },
-    buttonContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+    itemDetailsHeader: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: 10,
+        justifyContent: 'space-between',
+        marginBottom: 10,
     },
-    buttonText: {
-        color: '#ffffff',
-        fontWeight: 'bold',
+    itemDetailsText: {
+        fontSize: 16,
+    },
+    quantityContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    quantityText: {
+        fontSize: 16,
+        marginHorizontal: 10,
+    },
+    itemDetailsFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    closeButtonText: {
+        color: '#e74c3c',
+        fontSize: 16,
+    },
+    addButtonText: {
+        color: '#2ecc71',
+        fontSize: 16,
     },
 });
 

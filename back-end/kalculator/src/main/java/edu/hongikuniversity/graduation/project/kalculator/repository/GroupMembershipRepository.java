@@ -13,4 +13,5 @@ public interface GroupMembershipRepository extends JpaRepository<GroupMembership
 
     List<GroupMembership> findByUsers(Users user);
 
+    List<GroupMembership> findByGroup(BattleGroups group);
 }

@@ -27,6 +27,7 @@ public class Profiles {
     private Gender gender;
     private Double height;
     private Double weight;
+    private Double currentWeight;
     @Enumerated(EnumType.STRING)
     private ActivityLevel activityLevel;
     @Enumerated(EnumType.STRING)
@@ -101,6 +102,7 @@ public class Profiles {
         this.gender = gender;
         this.height = height;
         this.weight = weight;
+        this.currentWeight = weight;
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
@@ -128,5 +130,9 @@ public class Profiles {
         this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
         this.recommendedProteins = calculateRecommendedProteins(dietMode);
         this.recommendedFats = calculateRecommendedFats(dietMode);
+    }
+    // 현재 체중 업데이트
+    public void updateCurrentWeight(Double weight) {
+        this.currentWeight = weight;
     }
 }

@@ -29,4 +29,9 @@ public class GroupMembershipService {
         List<GroupMembership> membershipList = groupMembershipRepository.findByUsers(user);
         return membershipList;
     }
+
+    public List<GroupMembership> findByGroup(BattleGroups group) {
+        List<GroupMembership> membershipList = groupMembershipRepository.findByGroup(group);
+        return membershipList;
+    }
 }

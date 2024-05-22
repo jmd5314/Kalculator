@@ -35,26 +35,26 @@ const Battle = ({ navigation, route }) => {
     const renderItem = ({ item }) => (
         <BattleComponent
             groupId={item.groupId}
-            groupName={item.groupName} // 그룹 이름 추가
+            groupName={item.groupName}
             title={item.title}
             content={item.content}
             leaderId={item.leaderId}
             battlePurpose={item.battlePurpose}
+            target={item.target}
             startDate={item.startDate}
             endDate={item.endDate}
             currentMembers={item.currentMembers}
             numberOfMembers={item.numberOfMembers}
-            status={item.status}
             navigation={navigation}
         />
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { marginRight: 280 }]}>배틀</Text>
-                <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate('MyBattle')}>
-                    <Icon name="group" size={20} color="#555" style={styles.header} />
+            <View style={styles.headerContainer}>
+                <Text style={styles.header}>배틀</Text>
+                <TouchableOpacity style={styles.myBattleButton} onPress={() => navigation.navigate('MyBattle')}>
+                    <Icon name="group" size={24} color="#555" />
                 </TouchableOpacity>
             </View>
             <FlatList
@@ -69,19 +69,7 @@ const Battle = ({ navigation, route }) => {
     );
 };
 
-const BattleComponent = ({ groupId, groupName, title, content, leaderId, battlePurpose, startDate, endDate, currentMembers, numberOfMembers, status, navigation }) => {
-    // 상태 변환
-    const getStatusText = (status) => {
-        switch (status) {
-            case 'RECRUITING':
-                return '모집중';
-            case 'PROGRESS':
-                return '진행중';
-            default:
-                return '';
-        }
-    };
-
+const BattleComponent = ({ groupId, groupName, title, content, leaderId, battlePurpose, target, startDate, endDate, currentMembers, numberOfMembers, navigation }) => {
     // 목표 변환
     const getPurposeText = (battlePurpose) => {
         switch (battlePurpose) {
@@ -96,15 +84,29 @@ const BattleComponent = ({ groupId, groupName, title, content, leaderId, battleP
         }
     };
 
+    // 목표 단위 설정
+    const getTargetUnit = (battlePurpose) => {
+        switch (battlePurpose) {
+            case 'DIET':
+            case 'WEIGHT_GAIN':
+                return 'kg';
+            case 'RUNNING':
+                return 'km';
+            default:
+                return '';
+        }
+    };
+
     return (
         <TouchableOpacity onPress={() => navigation.navigate('BattleDetail', { groupId })}>
             <View style={styles.battleContainer}>
                 <Text style={styles.groupName}>{groupName}</Text>
                 <Text style={styles.title}>{title}</Text>
-                <Text style={styles.purpose}>목표: {getPurposeText(battlePurpose)}</Text>
+                <Text style={styles.purpose}>
+                    목표: {getPurposeText(battlePurpose)} {target} {getTargetUnit(battlePurpose)}
+                </Text>
                 <Text style={styles.dates}>기간: {startDate} ~ {endDate}</Text>
                 <Text style={styles.members}>모집 인원: {currentMembers} / {numberOfMembers}</Text>
-                <Text style={styles.status}>배틀 {getStatusText(status)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -117,6 +119,20 @@ const styles = StyleSheet.create({
         position: 'relative',
         padding: 16,
     },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginTop: 40,
+    },
+    header: {
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    myBattleButton: {
+        marginRight: 16,
+    },
     battleContainer: {
         padding: 16,
         marginBottom: 16,
@@ -125,13 +141,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#f9f9f9',
     },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        marginTop: 40,
-    },
-    groupName: {  // 그룹 이름 스타일 추가
+    groupName: {
         fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 8,
@@ -160,11 +170,6 @@ const styles = StyleSheet.create({
     members: {
         fontSize: 16,
         marginBottom: 4,
-        color: '#666',
-    },
-    status: {
-        fontSize: 18,
-        marginTop: 4,
         color: '#666',
     },
     addButton: {

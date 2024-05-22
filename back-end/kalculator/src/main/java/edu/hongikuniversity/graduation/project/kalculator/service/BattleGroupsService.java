@@ -28,16 +28,11 @@ public class BattleGroupsService {
         List<BattleGroups> allGroups = battleGroupsRepository.findAll();
         LocalDate today = LocalDate.now();
         for (BattleGroups group : allGroups) {
-            if (group.getStatus() == BattleStatus.RECRUITING && !group.getStartDate().isAfter(today)) {
-                group.setStatus(BattleStatus.PROGRESS);
-            } else if (group.getStatus() == BattleStatus.PROGRESS && !group.getEndDate().isAfter(today)) {
+            if (group.getStatus() == BattleStatus.PROGRESS && !group.getEndDate().isAfter(today)) {
                 group.setStatus(BattleStatus.COMPLETED);
             }
         }
         battleGroupsRepository.saveAll(allGroups);
-    }
-    public List<BattleGroups> findRecruitingGroups(){
-        return battleGroupsRepository.findByStatus(BattleStatus.RECRUITING);
     }
     public List<BattleGroups> findProgressingGroups() {
         return battleGroupsRepository.findByStatus(BattleStatus.PROGRESS);

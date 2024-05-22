@@ -2,9 +2,8 @@ package edu.hongikuniversity.graduation.project.kalculator.controller;
 import edu.hongikuniversity.graduation.project.kalculator.domain.*;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.BattleGroupsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.BattleGroupsResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.service.BattleGroupsService;
-import edu.hongikuniversity.graduation.project.kalculator.service.GroupMembershipService;
-import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.GroupMembershipResponseDto;
+import edu.hongikuniversity.graduation.project.kalculator.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,6 +21,12 @@ public class BattleGroupsController {
     private final BattleGroupsService battleGroupsService;
     private final GroupMembershipService groupMembershipService;
     private final UsersService usersService;
+    private final RunningRecordsService runningRecordsService;
+    @GetMapping("/today")
+    @ResponseBody
+    public LocalDate today(){
+        return LocalDate.now();
+    }
     // 배틀 그룹 생성
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody BattleGroupsRequestDto requestDto, Authentication authentication){
@@ -31,18 +36,20 @@ public class BattleGroupsController {
                 .groupName(requestDto.getGroupName())
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
+                .target(requestDto.getTarget())
                 .battlePurpose(BattlePurpose.valueOf(requestDto.getBattlePurpose().toUpperCase()))
-                .startDate(requestDto.getStartDate())
+                .startDate(LocalDate.now())
                 .endDate(requestDto.getEndDate())
-                // 시작 날짜가 오늘이라면 배틀 상태를 진행중으로, 아니라면 모집중으로 설정
-                .status(requestDto.getStartDate() == LocalDate.now() ? BattleStatus.PROGRESS : BattleStatus.RECRUITING)
+                .status(BattleStatus.PROGRESS)
                 .numberOfMembers(requestDto.getNumberOfMembers())
                 .leaderId(userId)
                 .leaderNickname(leader.getProfiles().getNickname())
                 .build();
+
         GroupMembership membership = GroupMembership.builder()
                 .role(Role.LEADER)
-                .startWeight(leader.getProfiles().getWeight())
+                .startWeight(leader.getProfiles().getCurrentWeight())
+                .score(0.0)
                 .build();
         membership.setUsers(leader);
         membership.setGroup(group);
@@ -50,31 +57,12 @@ public class BattleGroupsController {
         groupMembershipService.save(membership);
         return ResponseEntity.ok("그룹을 성공적으로 생성하였습니다.");
     }
-    // 모집중, 진행중인 그룹 조회
+    // 진행중인 그룹 조회
     @GetMapping("/list")
     @ResponseBody
     public List<BattleGroupsResponseDto> list (){
         List<BattleGroupsResponseDto> groupsResponseDtoList = new ArrayList<>();
-        List<BattleGroups> recruitingGroups = battleGroupsService.findRecruitingGroups();
-        List<BattleGroups> progressingGroups = battleGroupsService.findProgressingGroups();
-        List<BattleGroups> groupsList = new ArrayList<>();
-
-        groupsList.addAll(recruitingGroups);
-        groupsList.addAll(progressingGroups);
-
-        groupsList.sort((group1,group2)->{
-            // 모집중 그룹을 상단에, 진행중 그룹을 하단에 배치
-            if (group1.getStatus().equals(BattleStatus.RECRUITING) && group2.getStatus().equals(BattleStatus.PROGRESS)) {
-                return -1;
-            } else if (group1.getStatus().equals(BattleStatus.PROGRESS) && group2.getStatus().equals(BattleStatus.RECRUITING)) {
-                return 1;
-            } else {
-                // 같은 상태 내에서는 groupId 기준 내림차순 정렬
-                return Long.compare(group2.getGroupId(), group1.getGroupId());
-            }
-
-        });
-
+        List<BattleGroups> groupsList = battleGroupsService.findProgressingGroups();
         for(BattleGroups group : groupsList) {
             groupsResponseDtoList.add(new BattleGroupsResponseDto(group));
         }
@@ -103,7 +91,8 @@ public class BattleGroupsController {
         }
         GroupMembership membership = GroupMembership.builder()
                 .role(Role.MEMBER)
-                .startWeight(user.getProfiles().getWeight())
+                .startWeight(user.getProfiles().getCurrentWeight())
+                .score(0.0)
                 .build();
         membership.setGroup(group);
         membership.setUsers(user);
@@ -122,5 +111,46 @@ public class BattleGroupsController {
                 .map(BattleGroupsResponseDto::new)
                 .collect(Collectors.toList());
         return myGroupList;
+    }
+    @GetMapping("/myGroups/{groupId}")
+    @ResponseBody
+    public List<GroupMembershipResponseDto> rank(@PathVariable Long groupId){
+        BattleGroups group = battleGroupsService.findById(groupId);
+        LocalDate startDate = group.getStartDate();
+        BattlePurpose purpose = group.getBattlePurpose();
+        BattleStatus status = group.getStatus();
+
+        // 그룹에 속한 회원 정보 리스트
+        List<GroupMembership> groupMembershipList = groupMembershipService.findByGroup(group);
+        List<GroupMembershipResponseDto> responseDtoList = new ArrayList<>();
+
+        for(GroupMembership membership : groupMembershipList){
+            Users user = membership.getUsers();
+            Double prevScore = membership.getScore();
+            Double currentScore = prevScore;
+            // 진행중인 경우
+            if(status.equals(BattleStatus.PROGRESS)) {
+                // 달리기 그룹인 경우
+                if(purpose.equals(BattlePurpose.RUNNING)){
+                    List<RunningRecords> runningRecordsList = runningRecordsService.findByUsersAndDateBetween(user, startDate, LocalDate.now());
+                    currentScore = runningRecordsList.stream().mapToDouble(RunningRecords::getDistance).sum();
+                }
+                // 다이어트 인 경우
+                else if(purpose.equals(BattlePurpose.DIET)){
+                    currentScore = membership.getStartWeight() - user.getProfiles().getCurrentWeight();
+                }
+                // 증량인 경우
+                else if(purpose.equals(BattlePurpose.WEIGHT_GAIN)){
+                    currentScore = user.getProfiles().getCurrentWeight() - membership.getStartWeight();
+                }
+
+                if(!prevScore.equals(currentScore)) {
+                    membership.updateScore(currentScore);
+                }
+            }
+            responseDtoList.add(new GroupMembershipResponseDto(membership));
+        }
+
+        return responseDtoList;
     }
 }

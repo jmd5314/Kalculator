@@ -24,10 +24,12 @@ public class GroupMembership {
 
     // 가입시 초기 몸무게
     private Double startWeight;
+    private Double score;
     @Builder
-    public GroupMembership(Role role,Double startWeight){
+    public GroupMembership(Role role,Double startWeight,Double score){
         this.role = role;
         this.startWeight = startWeight;
+        this.score = score;
     }
     //==연관관계 편의 메서드==//
     public void setUsers(Users users){
@@ -37,5 +39,8 @@ public class GroupMembership {
     public void setGroup(BattleGroups group){
         this.group = group;
         group.getMemberships().add(this);
+    }
+    public void updateScore(Double score){
+        this.score = score;
     }
 }

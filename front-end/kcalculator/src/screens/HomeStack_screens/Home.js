@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import { ProgressChart } from 'react-native-chart-kit';
@@ -85,26 +85,33 @@ const Home = ({ navigation }) => {
         }
         const weightData = { weight };
 
-        fetch(`${backendUrl}/api/profiles/home/updateWeight`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(weightData),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('네트워크 응답이 정상이 아닙니다');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('몸무게가 성공적으로 전송되었습니다:', data);
-            })
-            .catch(error => {
-                console.error('몸무게 전송 중 오류 발생:', error);
+        try {
+            const response = await fetch(`${backendUrl}/api/profiles/update/currentWeight`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(weightData),
             });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || '네트워크 응답이 정상이 아닙니다');
+            }
+
+            const data = await response.text();
+            Alert.alert('성공', '몸무게가 성공적으로 저장되었습니다.');
+
+            // 입력 필드 초기화
+            setWeight('');
+
+            // 최신 데이터 다시 가져오기
+            fetchDataFromBackend();
+        } catch (error) {
+            console.error('몸무게 전송 중 오류 발생:', error);
+            Alert.alert('오류', error.message || '몸무게 전송 중 오류가 발생했습니다.');
+        }
     };
 
     const chartConfig = {
@@ -152,8 +159,9 @@ const Home = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     onChangeText={setWeight}
-                    placeholder="현재 체중 (kg)"
+                    placeholder="오늘의 체중 (kg)"
                     keyboardType="numeric"
+                    value={weight} // 입력 필드 초기화
                 />
                 <TouchableOpacity style={styles.submitButton} onPress={sendWeightToServer}>
                     <Text style={styles.submitText}>입력</Text>
@@ -222,6 +230,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#f9f9f9',
         marginHorizontal: 20,
+        marginTop:-20,
         marginBottom: 20,
     },
     input: {

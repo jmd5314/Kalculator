@@ -28,9 +28,7 @@ public class Users {
     @OneToMany(mappedBy = "users")
     private List<RunningRecords> runningRecords = new ArrayList<>();
     @OneToMany(mappedBy = "users")
-    private Set<GroupMembership> memberships = new HashSet<>();
-    @OneToMany(mappedBy = "users")
-    private List<WeightLog> weightLogs = new ArrayList<>();
+    private List<GroupMembership> memberships = new ArrayList<>();
 
     private String userId;
     private String name;

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 import config from '../config';
@@ -14,33 +13,45 @@ const BattleRegister = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [battlePurpose, setBattlePurpose] = useState(null);
-    const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [numberOfMembers, setNumberOfMembers] = useState('');
+    const [target, setTarget] = useState('');
     const [open, setOpen] = useState(false);
+    const [today, setToday] = useState('');
+
+    useEffect(() => {
+        const fetchTodayDate = async () => {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                const response = await axios.get(`${backendUrl}/api/battleGroups/today`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setToday(response.data); // 서버에서 오늘 날짜 받아오기
+            } catch (error) {
+                console.error('Error fetching today\'s date:', error);
+            }
+        };
+        fetchTodayDate();
+    }, []);
 
     const onClickBattleRegister = async () => {
-        if (!groupName || !title || !content || !battlePurpose || !startDate || !endDate || !numberOfMembers) {
+        if (!groupName || !title || !content || !battlePurpose || !endDate || !numberOfMembers || !target) {
             alert("모든 필드를 채워주세요.");
             return;
         }
 
-        if (!isValidDate(startDate) || !isValidDate(endDate)) {
+        if (!isValidDate(endDate)) {
             alert("유효한 날짜를 입력하세요. 형식: YYYY-MM-DD");
             return;
         }
 
-        const start = new Date(startDate);
         const end = new Date(endDate);
-        const today = new Date();
+        const todayDate = new Date(today);
 
-        if (start < today) {
-            alert("시작 날짜는 오늘 이후여야 합니다.");
-            return;
-        }
-
-        if (end <= start) {
-            alert("종료 날짜는 시작 날짜 이후여야 합니다.");
+        if (end <= todayDate) {
+            alert("종료 날짜는 오늘 이후여야 합니다.");
             return;
         }
 
@@ -49,7 +60,8 @@ const BattleRegister = ({ navigation }) => {
             title,
             content,
             battlePurpose,
-            startDate,
+            target,
+            startDate: today, // 시작 날짜는 서버에서 받아온 오늘 날짜로 설정
             endDate,
             numberOfMembers: parseInt(numberOfMembers),
         };
@@ -82,6 +94,13 @@ const BattleRegister = ({ navigation }) => {
         const date = new Date(dateString);
         if (Number.isNaN(date.getTime())) return false;
         return dateString === date.toISOString().split('T')[0];
+    };
+
+    const getTargetPlaceholder = () => {
+        if (battlePurpose === 'DIET') return '감량할 kg';
+        if (battlePurpose === 'WEIGHT_GAIN') return '증량할 kg';
+        if (battlePurpose === 'RUNNING') return '목표 km';
+        return '목표';
     };
 
     return (
@@ -131,33 +150,25 @@ const BattleRegister = ({ navigation }) => {
                         }}
                     />
                     <TextInput
+                        placeholder={getTargetPlaceholder()}
+                        onChangeText={setTarget}
+                        value={target}
+                        style={styles.input}
+                        keyboardType="numeric"
+                    />
+                    <TextInput
                         placeholder="모집 인원"
                         onChangeText={setNumberOfMembers}
                         value={numberOfMembers}
                         style={styles.input}
                         keyboardType="numeric"
                     />
-                    <View style={styles.dateContainer}>
-                        <TouchableOpacity onPress={() => setStartDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
-                            <Icon name="calendar" size={24} color="#39D02C" />
-                        </TouchableOpacity>
-                        <TextInput
-                            placeholder="시작날짜 (YYYY-MM-DD)"
-                            onChangeText={setStartDate}
-                            value={startDate}
-                            style={styles.dateInput}
-                        />
-                        <Text style={styles.dateSeparator}>~</Text>
-                        <TouchableOpacity onPress={() => setEndDate(current => current === '' ? 'YYYY-MM-DD' : '')}>
-                            <Icon name="calendar" size={24} color="#39D02C" />
-                        </TouchableOpacity>
-                        <TextInput
-                            placeholder="종료날짜 (YYYY-MM-DD)"
-                            onChangeText={setEndDate}
-                            value={endDate}
-                            style={styles.dateInput}
-                        />
-                    </View>
+                    <TextInput
+                        placeholder="종료날짜 (YYYY-MM-DD)"
+                        onChangeText={setEndDate}
+                        value={endDate}
+                        style={styles.input}
+                    />
                     <TouchableOpacity style={styles.registerButton} onPress={onClickBattleRegister}>
                         <Text style={styles.registerButtonText}>배틀 등록</Text>
                     </TouchableOpacity>
@@ -178,7 +189,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         flexGrow: 1,
         padding: 16,
-        paddingTop:0,
+        paddingTop: 0,
         justifyContent: 'center',
     },
     titleText: {
@@ -219,11 +230,6 @@ const styles = StyleSheet.create({
         padding: 12,
         fontSize: 16,
         marginHorizontal: 8,
-    },
-    dateSeparator: {
-        marginHorizontal: 8,
-        fontSize: 18,
-        color: '#333',
     },
     registerButton: {
         height: 50,

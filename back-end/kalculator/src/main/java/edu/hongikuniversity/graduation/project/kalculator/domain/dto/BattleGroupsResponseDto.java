@@ -9,18 +9,19 @@ import java.time.LocalDate;
 
 @Getter
 public class BattleGroupsResponseDto {
-    Long groupId;
-    String leaderId;
-    String leaderNickname;
-    String groupName;
-    String title;
-    String content;
-    BattlePurpose battlePurpose;
-    BattleStatus status;
-    LocalDate startDate;
-    LocalDate endDate;
-    Integer currentMembers;
-    Integer numberOfMembers;
+    private Long groupId;
+    private String leaderId;
+    private String leaderNickname;
+    private String groupName;
+    private String title;
+    private String content;
+    private BattlePurpose battlePurpose;
+    private BattleStatus status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Integer currentMembers;
+    private Integer numberOfMembers;
+    private Double target;
     public BattleGroupsResponseDto(BattleGroups entity){
         this.groupId = entity.getGroupId();
         this.groupName = entity.getGroupName();
@@ -34,5 +35,6 @@ public class BattleGroupsResponseDto {
         this.endDate = entity.getEndDate();
         this.currentMembers = entity.getMemberships().size();
         this.numberOfMembers = entity.getNumberOfMembers();
+        this.target = entity.getTarget();
     }
 }

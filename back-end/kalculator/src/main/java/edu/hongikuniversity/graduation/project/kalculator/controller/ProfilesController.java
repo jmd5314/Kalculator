@@ -6,6 +6,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.dto.*;
 import edu.hongikuniversity.graduation.project.kalculator.service.ProfilesService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,6 +83,14 @@ public class ProfilesController {
         Profiles profiles = profilesService.findById(profileId);
         Integer recommendedCalories =  profiles.getRecommendedCalories();
         return recommendedCalories;
+    }
+    @PutMapping("/update/currentWeight")
+    public ResponseEntity<String> updateCurrentWeight(@RequestBody UpdateWeightDto updateWeightDto, Authentication authentication){
+        Users users = usersService.findByUserId(authentication.getName());
+        Profiles profiles = users.getProfiles();
+        profiles.updateCurrentWeight(updateWeightDto.getWeight());;
+        profilesService.save(profiles);
+        return ResponseEntity.ok("몸무게를 성공적으로 저장하였습니다.");
     }
 }
 

@@ -12,7 +12,7 @@ public class BattleGroupsRequestDto {
     private String title;
     private String content;
     private String battlePurpose;
-    private LocalDate startDate;
     private LocalDate endDate;
     private Integer numberOfMembers;
+    private Double target;
 }

@@ -17,6 +17,7 @@ public class ProfilesResponseDto {
     private Gender gender;
     private Double height;
     private Double weight;
+    private Double currentWeight;
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;
@@ -28,6 +29,7 @@ public class ProfilesResponseDto {
         this.gender = entity.getGender();
         this.height = entity.getHeight();
         this.weight = entity.getWeight();
+        this.currentWeight = entity.getCurrentWeight();
         this.activityLevel = entity.getActivityLevel();
         this.dietMode = entity.getDietMode();
         this.purposeOfUse = entity.getPurposeOfUse();

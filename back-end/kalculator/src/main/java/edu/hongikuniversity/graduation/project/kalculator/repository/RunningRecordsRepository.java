@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface RunningRecordsRepository extends JpaRepository<RunningRecords, Long> {
     List<RunningRecords> findByUsersAndDate(Users user, LocalDate date);
+    List<RunningRecords> findByUsersAndDateBetween(Users user, LocalDate startDate, LocalDate endDate);
 
 }

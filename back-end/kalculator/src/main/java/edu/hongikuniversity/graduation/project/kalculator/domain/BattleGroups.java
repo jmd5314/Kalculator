@@ -23,6 +23,7 @@ public class BattleGroups {
     private String groupName;
     private String title;
     private String content;
+    private Double target;
     @Enumerated(EnumType.STRING)
     private BattlePurpose battlePurpose;
     private LocalDate startDate;
@@ -32,14 +33,15 @@ public class BattleGroups {
     private Integer numberOfMembers;
 
     @OneToMany(mappedBy = "group")
-    private Set<GroupMembership> memberships = new HashSet<>();
+    private List<GroupMembership> memberships = new ArrayList<>();
     @Builder
-    public BattleGroups(String leaderId,String leaderNickname,String groupName,String title,String content,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
+    public BattleGroups(String leaderId,String leaderNickname,String groupName,String title,String content,Double target,BattlePurpose battlePurpose,LocalDate startDate,LocalDate endDate,BattleStatus status,Integer numberOfMembers){
         this.leaderId = leaderId;
         this.leaderNickname = leaderNickname;
         this.groupName = groupName;
         this.title = title;
         this.content = content;
+        this.target = target;
         this.battlePurpose = battlePurpose;
         this.startDate = startDate;
         this.endDate = endDate;

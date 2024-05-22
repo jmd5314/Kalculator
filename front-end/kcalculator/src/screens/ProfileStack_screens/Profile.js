@@ -71,7 +71,7 @@ const BtnContainer = styled.View`
 
 const Profile = ({ navigation }) => {
     const [nickname, setNickname] = useState('');
-    const [weight, setWeight] = useState('');
+    const [currentWeight, setCurrentWeight] = useState('');
     const [targetWeight, setTargetWeight] = useState('');
     const [age, setAge] = useState('');
     const [height, setHeight] = useState('');
@@ -91,7 +91,7 @@ const Profile = ({ navigation }) => {
                 });
                 const { data } = response;
                 setNickname(data.nickname);
-                setWeight(data.weight);
+                setCurrentWeight(data.currentWeight);
                 setTargetWeight(data.targetWeight);
                 setAge(data.age);
                 setHeight(data.height);
@@ -127,10 +127,10 @@ const Profile = ({ navigation }) => {
                         <ProfileText>닉네임: {nickname}</ProfileText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileText>현재 체중: {weight}kg</ProfileText>
+                        <ProfileText>현재 체중: {currentWeight}kg</ProfileText>
                     </ProfileItem>
                     <ProfileItem>
-                        <ProfileText>목표 체중까지: {weight - targetWeight}kg</ProfileText>
+                        <ProfileText>목표 체중까지: {currentWeight - targetWeight}kg</ProfileText>
                     </ProfileItem>
                     <ProfileItem>
                         <ProfileText>나이: {age}</ProfileText>
