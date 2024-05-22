@@ -1,45 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from '../config';
 
 const backendUrl = config.backendUrl;
 
 const ChatBot = () => {
-  const [dietData, setDietData] = useState(null);
-  const [userInput, setUserInput] = useState('');
+  const [profileData, setProfileData] = useState(null);
+  const [calorieData, setCalorieData] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
 
   useEffect(() => {
-    const fetchDietData = async () => {
+    const fetchProfileData = async () => {
       try {
-        const response = await axios.get();
-        setDietData(response.data);
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.get(`${backendUrl}/api/profiles/home`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProfileData(response.data);
       } catch (error) {
-        console.error('Error fetching diet data:', error);
+        console.error('Error fetching profile data:', error);
       }
     };
 
-    fetchDietData();
+    const fetchCalorieData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.get(`${backendUrl}/api/foodRecords/total`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCalorieData(response.data);
+      } catch (error) {
+        console.error('Error fetching calorie data:', error);
+      }
+    };
+
+    fetchProfileData();
+    fetchCalorieData();
   }, []);
 
-  const handleUserInput = async () => {
-    const newChatHistory = [...chatHistory, { type: 'user', text: userInput }];
+  const handleButtonPress = async (mealType) => {
+    const newChatHistory = [...chatHistory, { type: 'user', text: `${mealType}을 추천해줘` }];
     setChatHistory(newChatHistory);
 
     try {
-      // 사용자의 입력과 백엔드에서 가져온 식단 정보를 함께 전달
-      const prompt = `User input: ${userInput}\nDiet data: ${JSON.stringify(dietData)}\nBased on this information, provide a personalized diet recommendation.`;
-      
+      const { recommendedCalories, recommendedCarbs, recommendedProtein, recommendedFat, purposeOfUse } = profileData;
+      const { totalCalories,totalCarbohydrates, totalProteins, totalFats } = calorieData;
+
+      const prompt = `
+        내 권장 칼로리는 ${recommendedCalories}이고, 내 권장 탄수화물은 ${recommendedCarbs}g이고,
+        권장 단백질은 ${recommendedProtein}g이고, 권장 지방은 ${recommendedFat}g이야.
+        내 목표는 ${purposeOfUse}이고, 현재 난 탄수화물 ${totalCarbohydrates}g, 단백질 ${totalProteins}g, 지방 ${totalFats}g 을 먹어서 
+        ${totalCalories}kcal 을 먹었어
+        내 정보를 토대로 ${mealType}식단을 짜줘
+        답변 형식은
+        "오늘 ${recommendedCalories} 중 ${totalCalories}kcal 만큼 드셨군요!
+        [ ]
+        를 추천드립니다!" 로 해줘  [ ]에는 음식들이 들어가면 되고 답변은 전부 한국어여야 해
+      `;
+
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: 'gpt-3.5-turbo', // 최신 GPT 모델
-        messages: [{ role: 'user', content: prompt }], // 사용자 입력을 GPT 모델에 전달
-        max_tokens: 150 // 생성할 토큰의 최대 개수
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 150,
       }, {
         headers: {
-          'Authorization': `Bearer `, // OpenAI API 키
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer`,
+          'Content-Type': 'application/json',
+        },
       });
 
       const botMessage = response.data.choices[0].message.content;
@@ -47,85 +80,86 @@ const ChatBot = () => {
     } catch (error) {
       console.error('Error fetching response from GPT:', error.response ? error.response.data : error.message);
     }
-
-    setUserInput('');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 40, marginLeft: 10 }}>채팅</Text>
-      <ScrollView contentContainerStyle={styles.chatContainer}>
-        {chatHistory.map((chat, index) => (
-          <View key={index} style={[styles.messageContainer, { alignSelf: chat.type === 'user' ? 'flex-end' : 'flex-start' }]}>
-            <View style={[styles.messageBubble, { backgroundColor: chat.type === 'user' ? '#dbe7f5' : '#f1f0f0' }]}>
-              <Text style={[styles.chatText, { color: chat.type === 'user' ? '#000' : '#333' }]}>
-                {chat.text}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.chatContainer}>
+          {chatHistory.map((chat, index) => (
+              <View key={index} style={[styles.messageContainer, { alignSelf: chat.type === 'user' ? 'flex-end' : 'flex-start' }]}>
+                <View style={[styles.messageBubble, { backgroundColor: chat.type === 'user' ? '#dbe7f5' : '#f1f0f0' }]}>
+                  <Text style={[styles.chatText, { color: chat.type === 'user' ? '#000' : '#333' }]}>
+                    {chat.text}
+                  </Text>
+                </View>
+              </View>
+          ))}
+        </ScrollView>
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={userInput}
-          onChangeText={setUserInput}
-          placeholder="메시지를 입력하세요"
-        />
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#39D02C',
-            padding: 10,
-            borderRadius: 5,
-          }}
-          onPress={handleUserInput}
-        >
-          <Text style={{ color: '#fff', fontSize: 16 }}>전송</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('아침')}>
+            <Text style={styles.buttonText}>아침을 추천해줘</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('점심')}>
+            <Text style={styles.buttonText}>점심을 추천해줘</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('저녁')}>
+            <Text style={styles.buttonText}>저녁을 추천해줘</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
+    paddingTop: 40,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#333',
   },
   chatContainer: {
     flexGrow: 1,
-    padding: 10,
+    padding: 20,
   },
   messageContainer: {
-    marginBottom: 10,
+    marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
   messageBubble: {
-    borderRadius: 10,
-    padding: 10,
-    maxWidth: '70%',
+    borderRadius: 15,
+    padding: 15,
+    maxWidth: '80%',
   },
   chatText: {
     fontSize: 16,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  buttonContainer: {
+    flexDirection: 'column',
+    padding: 20,
     borderTopWidth: 1,
-    borderColor: '#ccc',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
   },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginRight: 10,
+  button: {
+    backgroundColor: '#39D02C',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
