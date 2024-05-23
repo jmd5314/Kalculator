@@ -5,6 +5,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.MealType;
 import edu.hongikuniversity.graduation.project.kalculator.domain.Users;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.FoodsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.dto.FoodsSaveRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.dto.MealStatusResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.service.FoodRecordsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.FoodsService;
 import edu.hongikuniversity.graduation.project.kalculator.service.UsersService;
@@ -85,5 +86,29 @@ public class FoodRecordsController {
             Calories += foods.getCalories()*foods.getQuantity();
         }
         return Calories;
+    }
+    @GetMapping("/status")
+    @ResponseBody
+    public MealStatusResponseDto getMealStatus(Authentication authentication) {
+        String userId = authentication.getName();
+        List<FoodRecords> foodRecordsList = usersService.findByUserId(userId).getFoodRecords();
+        LocalDate today = LocalDate.now();
+
+        boolean breakfast = foodRecordsList.stream()
+                .filter(record -> record.getDate().equals(today) && record.getUsers().getUserId().equals(userId))
+                .flatMap(record -> record.getFoods().stream())
+                .anyMatch(food -> food.getMealType() == MealType.BREAKFAST);
+
+        boolean lunch = foodRecordsList.stream()
+                .filter(record -> record.getDate().equals(today) && record.getUsers().getUserId().equals(userId))
+                .flatMap(record -> record.getFoods().stream())
+                .anyMatch(food -> food.getMealType() == MealType.LUNCH);
+
+        boolean dinner = foodRecordsList.stream()
+                .filter(record -> record.getDate().equals(today) && record.getUsers().getUserId().equals(userId))
+                .flatMap(record -> record.getFoods().stream())
+                .anyMatch(food -> food.getMealType() == MealType.DINNER);
+
+        return new MealStatusResponseDto(breakfast, lunch, dinner);
     }
 }

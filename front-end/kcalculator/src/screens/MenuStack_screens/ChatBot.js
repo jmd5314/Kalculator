@@ -10,12 +10,13 @@ const ChatBot = () => {
   const [profileData, setProfileData] = useState(null);
   const [calorieData, setCalorieData] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
+  const [mealStatus, setMealStatus] = useState({ breakfast: false, lunch: false, dinner: false });
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get(`${backendUrl}/api/profiles/home`, {
+        const response = await axios.get(`${backendUrl}/api/profiles/confirm`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -40,17 +41,44 @@ const ChatBot = () => {
       }
     };
 
+    const fetchMealStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.get(`${backendUrl}/api/foodRecords/status`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMealStatus(response.data);
+      } catch (error) {
+        console.error('Error fetching meal status:', error);
+      }
+    };
+
     fetchProfileData();
     fetchCalorieData();
+    fetchMealStatus();
   }, []);
 
   const handleButtonPress = async (mealType) => {
+    const mealKeyMap = {
+      '아침': 'breakfast',
+      '점심': 'lunch',
+      '저녁': 'dinner',
+    };
+
+    if (mealStatus[mealKeyMap[mealType]]) {
+      const newChatHistory = [...chatHistory, { type: 'bot', text: `${mealType}은 이미 저장되었습니다` }];
+      setChatHistory(newChatHistory);
+      return;
+    }
+
     const newChatHistory = [...chatHistory, { type: 'user', text: `${mealType}을 추천해줘` }];
     setChatHistory(newChatHistory);
 
     try {
       const { recommendedCalories, recommendedCarbs, recommendedProtein, recommendedFat, purposeOfUse } = profileData;
-      const { totalCalories,totalCarbohydrates, totalProteins, totalFats } = calorieData;
+      const { totalCalories, totalCarbohydrates, totalProteins, totalFats } = calorieData;
 
       const prompt = `
         내 권장 칼로리는 ${recommendedCalories}이고, 내 권장 탄수화물은 ${recommendedCarbs}g이고,
@@ -59,15 +87,21 @@ const ChatBot = () => {
         ${totalCalories}kcal 을 먹었어
         내 정보를 토대로 ${mealType}식단을 짜줘
         답변 형식은
-        "오늘 ${recommendedCalories} 중 ${totalCalories}kcal 만큼 드셨군요!
-        [ ]
-        를 추천드립니다!" 로 해줘  [ ]에는 음식들이 들어가면 되고 답변은 전부 한국어여야 해
+        "오늘 ${recommendedCalories}kcal 중 ${totalCalories}kcal 만큼 드셨군요!
+        당신의 프로필 정보를 반영해서 음식을 추천해드릴께요
+        1. 음식 g (kcal)
+        2. 음식 g (kcal)
+        .
+        .
+        .
+        탄수화물 : g 단백질 : g 지방 : g
+        총 칼로리 : kcal"의 형식으로 해주고 한국어로 답변해줘
       `;
 
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 150,
+        max_tokens: 300,
       }, {
         headers: {
           Authorization: `Bearer`,
@@ -114,7 +148,7 @@ const ChatBot = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#FFFFFF',
     paddingTop: 40,
   },
   title: {
