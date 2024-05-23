@@ -146,6 +146,7 @@ public class BattleGroupsController {
 
                 if(!prevScore.equals(currentScore)) {
                     membership.updateScore(currentScore);
+                    groupMembershipService.save(membership);
                 }
             }
             responseDtoList.add(new GroupMembershipResponseDto(membership));

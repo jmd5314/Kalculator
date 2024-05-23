@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ProgressBarAndroid } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import * as Progress from 'react-native-progress';
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from '../config';
@@ -59,10 +60,9 @@ const MyBattleDetail = ({ route }) => {
                         </View>
                         <View style={styles.progressContainer}>
                             <Text style={styles.progressText}>목표 달성률: {getProgress(item.score, target).toFixed(2)}%</Text>
-                            <ProgressBarAndroid
-                                styleAttr="Horizontal"
-                                indeterminate={false}
+                            <Progress.Bar
                                 progress={getProgress(item.score, target) / 100}
+                                width={null}
                                 color="#39D02C"
                             />
                         </View>

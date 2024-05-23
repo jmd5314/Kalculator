@@ -18,7 +18,7 @@ const InputField = styled.TextInput`
 const WhiteButton = styled(TouchableOpacity)`
     background-color: #39D02C;
     height: 60px;
-    width: 285px;
+    width: 260px;
     border-radius: 10px;
      align-items: center; /* 수직 정렬 */
       justify-content: center; /* 수평 정렬 */
@@ -94,7 +94,7 @@ const Signup = ({ navigation }) => {
 
   return (
   <Container>
-     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 70, marginLeft: 30,marginTop:-10}}>
+     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 40, marginLeft: 30,marginTop:-10}}>
        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>회원가입</Text>
      </View>
 

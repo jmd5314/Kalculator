@@ -57,12 +57,12 @@ const RunHistory = ({ navigation }) => {
                     <View style={styles.item}>
                       <Text style={styles.detail}>시간: {item.time.toFixed(2)} 시간</Text>
                       <Text style={styles.detail}>거리: {item.distance.toFixed(2)} km</Text>
-                      <Text style={styles.detail}>칼로리: {item.caloriesBurned} kcal</Text>
+                      <Text style={styles.detail}>칼로리: {item.caloriesBurned.toFixed(2)} kcal</Text>
                     </View>
                 )}
             />
         )}
-        <Text style={styles.totalCalories}>오늘 소모한 총 칼로리: {totalCalories} kcal</Text>
+        <Text style={styles.totalCalories}>오늘 소모한 총 칼로리: {totalCalories.toFixed(2)} kcal</Text>
       </View>
   );
 };

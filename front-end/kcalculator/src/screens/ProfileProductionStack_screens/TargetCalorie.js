@@ -1,98 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import config from '../config';
-import calculator from '../Images/calculator.png';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const backendUrl = config.backendUrl;
 
-const WhiteButton = styled(TouchableOpacity)`
+const GreenButton = styled(TouchableOpacity)`
   background-color: #39D02C;
   height: 60px;
-  width: 260px;
+  width: 100%;
   border-radius: 10px;
-  align-items: center; /* 수직 정렬 */
-  justify-content: center; /* 수평 정렬 */
-  margin-left: 25px;
-  `;
-
-const ButtonText = styled.Text`
-    font-size: 25px;
-    color: #ffffff;
-  `;
-
-const YellowButton = styled(TouchableOpacity)`
-  background-color: #f1f104;
-  width: 260px;
-  height: 200px;
-  border-radius: 10px;
-  align-items: center; /* 수직 정렬 */
-  margin-left: 25px;
+  align-items: center; 
+  justify-content: center;
+  margin-bottom: 40px;
 `;
 
+const ButtonText = styled.Text`
+  font-size: 20px;
+  color: #ffffff;
+`;
+
+const InfoBox = styled.View`
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+`;
 
 const Container = styled.SafeAreaView`
   background-color: #ffffff;
-  padding: 40px;
+  padding: 20px;
   flex: 1;
-
 `;
 
+const SectionTitle = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 40px;
+`;
 
-function Calculate({ navigation, route }) {
-    const [daily, setDaily] = useState(0);
-    const { profileId } = route.params;
+const InfoText = styled.Text`
+  font-size: 18px;
+  margin-bottom: 10px;
+`;
+
+const TipBox = styled.View`
+  background-color: #f9f9f9;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+const TipText = styled.Text`
+  font-size: 16px;
+  text-align: center;
+  margin: 5px 0;
+`;
+
+const TipTextBold = styled(TipText)`
+  font-weight: bold;
+`;
+
+function Calculate({ navigation }) {
+    const [profileData, setProfileData] = useState({
+        recommendedCalories: 0,
+        recommendedCarbohydrates: 0,
+        recommendedProteins: 0,
+        recommendedFats: 0,
+    });
 
     useEffect(() => {
-        // 권장 칼로리를 불러오기 위한 함수 정의
-        const fetchRecommendedCalories = async () => {
+        const fetchProfileData = async () => {
             try {
-                // 백엔드 API에 GET 요청 보내기
-                const response = await fetch(`${backendUrl}/api/profiles/save/${profileId}/targetCalories`);
-
-                // JSON 형태로 응답 파싱
-                const data = await response.text();
-                // 권장 칼로리를 상태에 업데이트
-                setDaily(parseFloat(data))
+                const token = await AsyncStorage.getItem('token');
+                const response = await fetch(`${backendUrl}/api/profiles/home`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const data = await response.json();
+                setProfileData(data);
             } catch (error) {
-                console.error('권장 칼로리를 불러오는 동안 오류 발생:', error);
+                console.error('프로필 정보를 불러오는 동안 오류 발생:', error);
             }
         };
 
-        // 컴포넌트가 마운트될 때 API 호출 함수 실행
-        fetchRecommendedCalories();
-    }, [profileId]); // profileId가 변경될 때마다 useEffect 실행
+        fetchProfileData();
+    }, []);
 
     return (
         <Container>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, marginTop: 30 }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
+                <View>
+                    <SectionTitle>권장 섭취량 정보</SectionTitle>
+                    <InfoText>회원님의 목적에 맞게 프로필이 생성되었어요. 아래는 회원님의 권장 섭취량입니다:</InfoText>
+                    <InfoBox>
+                        <InfoText>일일 권장 칼로리: {profileData.recommendedCalories} kcal</InfoText>
+                        <InfoText>일일 권장 탄수화물: {profileData.recommendedCarbohydrates} g</InfoText>
+                        <InfoText>일일 권장 단백질: {profileData.recommendedProteins} g</InfoText>
+                        <InfoText>일일 권장 지방: {profileData.recommendedFats} g</InfoText>
+                    </InfoBox>
+                </View>
 
-        <Text style={{fontSize: 20, marginBottom:10,marginLeft:25}}>권장 칼로리를 계산해드렸어요!</Text>
-            </View>
+                <TipBox>
+                    <TipTextBold>꿀팁!</TipTextBold>
+                    <TipText>일반적으로 권장 섭취량보다 하루 500kcal 정도 적게 먹으면 감량 효과를 기대할 수 있어요!</TipText>
+                </TipBox>
 
-      <Text style={{fontSize: 20, marginBottom:10,marginLeft:25}}>일일 권장 섭취량은</Text>
-      <Text style={{fontSize: 20, marginBottom:10,marginLeft:25, textDecorationLine: 'underline'}}>{daily} kcal에요.</Text>
-
-            <View style={{marginTop: 30}}>
-             <YellowButton>
-
-            <Text style={{fontSize:17,marginBottom:10, marginTop:30}}>꿀팁!</Text>
-                 <Text style={{fontSize:17,marginBottom:10}}>일반적으로 권장 섭취량보다 </Text>
-                <Text style={{fontSize:17,marginBottom:10}}>하루 500kcal 정도 적게 먹으면</Text>
-            <Text style={{fontSize:17}}>감량 효과를 기대할 수 있어요!</Text>
-
-             </YellowButton>
-
-            </View>
-
-
-        <View style={{ marginTop: 160 }}>
-              <WhiteButton
-         onPress={() => navigation.navigate('MainTab',{profileId})}>
-                <ButtonText>프로필생성완료</ButtonText>
-              </WhiteButton>
-            </View>
+                <GreenButton onPress={() => navigation.navigate('MainTab')}>
+                    <ButtonText>프로필 생성 완료</ButtonText>
+                </GreenButton>
+            </ScrollView>
         </Container>
     );
 }

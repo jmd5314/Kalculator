@@ -40,7 +40,6 @@ const Battle = ({ navigation, route }) => {
             content={item.content}
             leaderId={item.leaderId}
             battlePurpose={item.battlePurpose}
-            target={item.target}
             startDate={item.startDate}
             endDate={item.endDate}
             currentMembers={item.currentMembers}
@@ -69,7 +68,7 @@ const Battle = ({ navigation, route }) => {
     );
 };
 
-const BattleComponent = ({ groupId, groupName, title, content, leaderId, battlePurpose, target, startDate, endDate, currentMembers, numberOfMembers, navigation }) => {
+const BattleComponent = ({ groupId, groupName, title, content, leaderId, battlePurpose, startDate, endDate, currentMembers, numberOfMembers, navigation }) => {
     // 목표 변환
     const getPurposeText = (battlePurpose) => {
         switch (battlePurpose) {
@@ -84,27 +83,12 @@ const BattleComponent = ({ groupId, groupName, title, content, leaderId, battleP
         }
     };
 
-    // 목표 단위 설정
-    const getTargetUnit = (battlePurpose) => {
-        switch (battlePurpose) {
-            case 'DIET':
-            case 'WEIGHT_GAIN':
-                return 'kg';
-            case 'RUNNING':
-                return 'km';
-            default:
-                return '';
-        }
-    };
-
     return (
         <TouchableOpacity onPress={() => navigation.navigate('BattleDetail', { groupId })}>
             <View style={styles.battleContainer}>
                 <Text style={styles.groupName}>{groupName}</Text>
                 <Text style={styles.title}>{title}</Text>
-                <Text style={styles.purpose}>
-                    목표: {getPurposeText(battlePurpose)} {target} {getTargetUnit(battlePurpose)}
-                </Text>
+                <Text style={styles.purpose}>목표: {getPurposeText(battlePurpose)}</Text>
                 <Text style={styles.dates}>기간: {startDate} ~ {endDate}</Text>
                 <Text style={styles.members}>모집 인원: {currentMembers} / {numberOfMembers}</Text>
             </View>
