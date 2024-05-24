@@ -25,7 +25,7 @@ const StyledText = styled.Text`
 const styles = StyleSheet.create({
     card: {
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: '#fff',
         padding: 16,
         marginBottom: 16,
         width: 300,

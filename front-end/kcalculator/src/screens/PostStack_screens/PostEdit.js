@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#f0f4f7', // 밝은 회색조 배경으로 변경
+        backgroundColor: '#ffffff',
     },
     titleText: {
         fontSize: 26,

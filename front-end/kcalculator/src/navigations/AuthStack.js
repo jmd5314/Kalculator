@@ -19,7 +19,7 @@ const AuthStack = () => {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Signup" component={Signup} options={{ title:'' }}/>
             <Stack.Screen name="ProfileProduction" component={ProfileProduction} options={{headerShown:false}} />
-            <Stack.Screen name="MenuSelection" component={MenuSelection} options={{ title:'' }} />
+            <Stack.Screen name="MenuSelection" component={MenuSelection} options={{headerShown:false}} />
             <Stack.Screen name="TargetCalorie" component={TargetCalorie} options={{headerShown:false }} />
             <Stack.Screen name="Profile" component={Profile} options={{ title:'' }}/>
             <Stack.Screen name="UserDelete" component={UserDelete} options={{ title:'' }}/>
