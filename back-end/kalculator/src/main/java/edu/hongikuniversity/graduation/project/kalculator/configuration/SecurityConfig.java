@@ -29,8 +29,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/api/users/join", "/api/users/login").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/profiles/save/{profileId}/targetCalories").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/profiles/update/{profileId}/targetCalories").permitAll()
+                                .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/swagger-config").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/profiles/save/{profileId}/targetCalories").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/profiles/update/{profileId}/targetCalories").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
