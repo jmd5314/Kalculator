@@ -20,7 +20,7 @@
 
 **etc** : Swagger
 
-**Tool** : IntelliJ, VS code, Adroid Studio, Git, GitHub
+**Tool** : IntelliJ, VS code, Adroid Studio, Postman, Git, GitHub
 
 ---
 
