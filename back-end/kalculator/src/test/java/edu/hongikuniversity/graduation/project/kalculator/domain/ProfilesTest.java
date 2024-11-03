@@ -1,4 +1,8 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.ActivityLevel;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.DietMode;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profiles;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.PurposeOfUse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
