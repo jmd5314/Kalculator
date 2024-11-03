@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comments;
-import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.response.CommentsResponseDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.response.CommentResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentsUpdateRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.service.CommentsService;
@@ -34,13 +34,13 @@ public class CommentsController {
     }
     @GetMapping("/list")
     @ResponseBody
-    public List<CommentsResponseDto> commentsList(@RequestParam Long postId){
-        List<CommentsResponseDto> responseDtoList = new ArrayList<>();
+    public List<CommentResponseDto> commentsList(@RequestParam Long postId){
+        List<CommentResponseDto> responseDtoList = new ArrayList<>();
         List<Comments> commentsList = commentsService.findByPostId(postId);
         // 댓글 수정을 하면 순서가 바뀌기 때문에 댓글 순서대로 리스트 정렬 후 Dto 에 추가
         Collections.sort(commentsList, Comparator.comparingLong(Comments::getCommentId));
         for(Comments comments:commentsList){
-            responseDtoList.add(new CommentsResponseDto(comments));
+            responseDtoList.add(new CommentResponseDto(comments));
         }
         return responseDtoList;
     }

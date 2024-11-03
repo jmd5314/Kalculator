@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.battle.controller.dto.response;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattleGroups;
+import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattleGroup;
 import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattlePurpose;
 import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattleStatus;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class BattleGroupsResponseDto {
     private Integer currentMembers;
     private Integer numberOfMembers;
     private Double target;
-    public BattleGroupsResponseDto(BattleGroups entity){
+    public BattleGroupsResponseDto(BattleGroup entity){
         this.groupId = entity.getGroupId();
         this.groupName = entity.getGroupName();
         this.leaderId = entity.getLeaderId();

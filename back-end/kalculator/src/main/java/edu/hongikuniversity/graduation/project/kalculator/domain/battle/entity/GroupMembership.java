@@ -14,7 +14,7 @@ public class GroupMembership {
     private Long membershipId;
     @ManyToOne
     @JoinColumn(name = "groupId")
-    private BattleGroups group;
+    private BattleGroup group;
     @ManyToOne
     @JoinColumn(name = "userId")
     private Users users;
@@ -35,7 +35,7 @@ public class GroupMembership {
         this.users = users;
         users.getMemberships().add(this);
     }
-    public void setGroup(BattleGroups group){
+    public void setGroup(BattleGroup group){
         this.group = group;
         group.getMemberships().add(this);
     }

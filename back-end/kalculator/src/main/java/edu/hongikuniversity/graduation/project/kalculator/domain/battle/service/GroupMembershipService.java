@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.battle.service;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattleGroups;
+import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.BattleGroup;
 import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.GroupMembership;
 import edu.hongikuniversity.graduation.project.kalculator.domain.battle.repository.GroupMembershipRepository;
 import jakarta.transaction.Transactional;
@@ -19,7 +19,7 @@ public class GroupMembershipService {
     public Long save(GroupMembership groupMembership){
         return groupMembershipRepository.save(groupMembership).getMembershipId();
     }
-    public boolean isMemberAlready(Users user, BattleGroups group){
+    public boolean isMemberAlready(Users user, BattleGroup group){
         Optional<GroupMembership> membership = groupMembershipRepository.findByUsersAndGroup(user, group);
         return membership.isPresent();
     }
@@ -29,7 +29,7 @@ public class GroupMembershipService {
         return membershipList;
     }
 
-    public List<GroupMembership> findByGroup(BattleGroups group) {
+    public List<GroupMembership> findByGroup(BattleGroup group) {
         List<GroupMembership> membershipList = groupMembershipRepository.findByGroup(group);
         return membershipList;
     }
