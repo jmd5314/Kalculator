@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.post.service;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comments;
+import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
 import edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity.Hearts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.request.PostsRequestDto;
@@ -40,9 +40,9 @@ public class PostsService {
         for(Hearts hearts:heartsList){
             heartsRepository.delete(hearts);
         }
-        List<Comments> commentsList = commentsRepository.findByPosts(posts);
+        List<Comment> commentsList = commentsRepository.findByPosts(posts);
         // 해당 게시물의 모든 댓글 제거
-        for(Comments comments:commentsList){
+        for(Comment comments:commentsList){
             commentsRepository.delete(comments);
         }
         postsRepository.delete(posts);

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comments {
+public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     private String content;
@@ -23,7 +23,7 @@ public class Comments {
     @JoinColumn(name="postId")
     private Posts posts;
     @Builder
-    public Comments(String content,Users users,Posts posts,LocalDate creationDate){
+    public Comment(String content, Users users, Posts posts, LocalDate creationDate){
         this.users = users;
         this.posts = posts;
         this.content = content;

@@ -1,15 +1,16 @@
 package edu.hongikuniversity.graduation.project.kalculator.global.error;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public enum ErrorCode {
-    USERID_DUPLICATED(HttpStatus.CONFLICT,""),
-    USER_EMAIL_DUPLICATED(HttpStatus.CONFLICT,""),
-    USERID_NOT_FOUND(HttpStatus.NOT_FOUND,""),
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "");
-    private HttpStatus httpStatus;
-    private String message;
+    USERNAME_DUPLICATED(HttpStatus.CONFLICT, "Username : '%s' 가 이미 존재합니다."),
+    EMAIL_DUPLICATED(HttpStatus.CONFLICT, "Email : '%s 가 이미 존재합니다."),
+    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND,"토큰이 존재 하지 않습니다"),
+    TOKEN_NOT_VALID(HttpStatus.FORBIDDEN, "토큰이 유효하지 않습니다"),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다"),;
+    private final HttpStatus httpStatus;
+    private final String messageTemplate;
 }

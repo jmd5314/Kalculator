@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.post.entity;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comments;
+import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
 import edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity.Hearts;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class Posts {
     @JoinColumn(name = "userId")
     private Users users;
     @OneToMany(mappedBy = "posts")
-    private List<Comments> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
     @OneToMany(mappedBy = "posts")
     private List<Hearts> hearts = new ArrayList<>();
     @Builder
