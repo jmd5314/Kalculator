@@ -2,7 +2,7 @@ package edu.hongikuniversity.graduation.project.kalculator.domain.profile.contro
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.ActivityLevel;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.DietMode;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profiles;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.PurposeOfUse;
 import lombok.Getter;
 
@@ -23,7 +23,7 @@ public class ProfileResponseDto {
     private ActivityLevel activityLevel;
     private PurposeOfUse purposeOfUse;
     private DietMode dietMode;
-    public ProfilesResponseDto(Profiles entity){
+    public ProfilesResponseDto(Profile entity){
         this.profileId = entity.getProfileId();
         this.nickname = entity.getNickname();
         this.targetWeight = entity.getTargetWeight();

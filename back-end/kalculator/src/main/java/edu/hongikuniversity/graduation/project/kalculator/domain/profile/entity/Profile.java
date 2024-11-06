@@ -1,5 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.Gender;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Profiles {
+public class Profile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
     private String nickname;
@@ -31,7 +33,7 @@ public class Profiles {
     private DietMode dietMode;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private Users users;
+    private User user;
     private Double calculateBMR(Double weight,Double height,Integer age,Gender gender) {
         double bmr = 0.0;
         if(gender==Gender.MALE){
@@ -87,9 +89,9 @@ public class Profiles {
         return 0;
     }
     @Builder
-    public Profiles (String nickname,Double targetWeight,Integer age,Gender gender,Double height,
-                     Double weight,ActivityLevel activityLevel,PurposeOfUse purposeOfUse,
-                     DietMode dietMode
+    private Profile(String nickname, Double targetWeight, Integer age, Gender gender, Double height,
+                   Double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
+                   DietMode dietMode
     ){
         this.nickname = nickname;
         this.targetWeight = targetWeight;
@@ -103,7 +105,7 @@ public class Profiles {
         this.dietMode = dietMode;
     }
     //==프로필 수정 메서드==//
-    public void updateProfiles(Profiles profiles){
+    public void updateProfiles(Profile profiles){
         this.targetWeight = profiles.getTargetWeight();
         this.age = profiles.getAge();
         this.gender = profiles.getGender();
@@ -113,8 +115,8 @@ public class Profiles {
         this.purposeOfUse = profiles.getPurposeOfUse();
     }
     //==연관 관계 편의 메서드==//
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUsers(User user) {
+        this.user = user;
         users.setProfiles(this);
     }
     // 다이어트 모드 업데이트

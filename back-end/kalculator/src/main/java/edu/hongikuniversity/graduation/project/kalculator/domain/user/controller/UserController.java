@@ -1,40 +1,27 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.user.controller;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.response.LoginResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UsersAccountRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UsersJoinRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.UsersService;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UserSignUpRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.response.UserIdResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.UserService;
+import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
-    private final UsersService usersService;
-    //회원가입
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UsersJoinRequestDto requestDto){
-        usersService.join(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
-        return ResponseEntity.ok().body("회원가입이 성공 했습니다.");
+
+    private final UserService userService;
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<ApiResponse<UserIdResponse>> signUp(@Valid @RequestBody UserSignUpRequest request) {
+        return ResponseEntity.ok().body(ApiResponse.success(userService.signUp(request)));
     }
-    //로그인
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody UsersAccountRequestDto requestDto){
-        String token = usersService.login(requestDto.getUserId(), requestDto.getPassword());
-        boolean profileCreated;
-        if(usersService.findByUserId(requestDto.getUserId()).getProfiles()!=null)
-            profileCreated = true;
-        else
-            profileCreated = false;
-        LoginResponseDto responseDto = new LoginResponseDto(token, profileCreated);
-        return ResponseEntity.ok().body(responseDto);
-    }
-    //회원탈퇴
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody UsersAccountRequestDto requestDto){
-        usersService.delete(requestDto.getUserId(),requestDto.getPassword());
-        return ResponseEntity.ok().body(("회원탈퇴가 완료되었습니다."));
-    }
+
 }

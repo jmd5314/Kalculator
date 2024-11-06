@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.response;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comments;
+import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ public class CommentResponseDto {
     private String nickname;
     private String content;
     private LocalDate creationDate;
-    public CommentResponseDto(Comments entity){
+    public CommentResponseDto(Comment entity){
         this.commentId = entity.getCommentId();
         this.userId = entity.getUsers().getUserId();
         this.nickname = entity.getUsers().getProfiles().getNickname();

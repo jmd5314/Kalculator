@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.ActivityLevel;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profiles;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.PurposeOfUse;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +30,8 @@ public class ProfilesUpdateRequestDto {
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
     }
-    public Profiles toEntity(){
-        return Profiles.builder()
+    public Profile toEntity(){
+        return Profile.builder()
                 .nickname(nickname)
                 .targetWeight(targetWeight)
                 .age(age)
