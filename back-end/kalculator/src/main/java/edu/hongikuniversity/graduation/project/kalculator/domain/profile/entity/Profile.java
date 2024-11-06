@@ -1,98 +1,60 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.Gender;
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Profile {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long profileId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nickname;
-    private Double targetWeight;
-    private Integer recommendedCalories;
-    private Integer recommendedCarbohydrates;
-    private Integer recommendedProteins;
-    private Integer recommendedFats;
-    private Integer age;
+
+    private double targetWeight;
+
+    private int age;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private Double height;
-    private Double weight;
-    private Double currentWeight;
+
+    private double height;
+
+    private double weight;
+
+    private double currentWeight;
+
     @Enumerated(EnumType.STRING)
     private ActivityLevel activityLevel;
+
     @Enumerated(EnumType.STRING)
     private PurposeOfUse purposeOfUse;
+
     @Enumerated(EnumType.STRING)
     private DietMode dietMode;
+
+    private int recommendedCalories;
+
+    private int recommendedCarbohydrates;
+
+    private int recommendedProteins;
+
+    private int recommendedFats;
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
-    private Double calculateBMR(Double weight,Double height,Integer age,Gender gender) {
-        double bmr = 0.0;
-        if(gender==Gender.MALE){
-            bmr = (9.99*weight)+(6.25*height) - (4.95*age)+5;
-        }
-        else{
-            bmr = (9.99*weight)+(6.25*height) - (4.95*age)-161;
-        }
-        return bmr;
-    }
-    private Double calculateRMR(Double bmr,ActivityLevel activityLevel){
-        double rmr = 0.0;
-        if(activityLevel==ActivityLevel.LOW_ACTIVITY)
-            rmr = bmr*1.5;
-        else if(activityLevel==ActivityLevel.GENERAL_ACTIVITY)
-            rmr = bmr*1.7;
-        else
-            rmr = bmr*1.9;
-        return rmr;
-    }
-    private Integer calculateRecommendedCalories(Double rmr, PurposeOfUse purposeOfUse) {
-        Integer calorieOffset = (purposeOfUse == PurposeOfUse.DIET) ? -500 : 500;
-        return  (int) (Math.floor(rmr / 100) * 100) + calorieOffset;
-    }
 
-    private Integer calculateRecommendedCarbohydrates(DietMode dietMode) {
-        if(dietMode == DietMode.GENERAL)
-            return (int)(recommendedCalories*0.5)/4;
-        else if(dietMode == DietMode.FITNESS)
-            return (int)(recommendedCalories*0.4)/4;
-        else if(dietMode == DietMode.KETOGENIC)
-            return (int)(recommendedCalories*0.08)/4;
-        return 0;
-    }
-
-    private Integer calculateRecommendedProteins(DietMode dietMode) {
-        if(dietMode == DietMode.GENERAL)
-            return (int)(recommendedCalories*0.3)/4;
-        else if(dietMode == DietMode.FITNESS)
-            return (int)(recommendedCalories*0.4)/4;
-        else if(dietMode == DietMode.KETOGENIC)
-            return (int)(recommendedCalories*0.22)/4;
-        return 0;
-    }
-
-    private Integer calculateRecommendedFats(DietMode dietMode) {
-        if(dietMode == DietMode.GENERAL)
-            return (int)(recommendedCalories*0.2)/9;
-        else if(dietMode == DietMode.FITNESS)
-            return (int)(recommendedCalories*0.2)/9;
-        else if (dietMode == DietMode.KETOGENIC)
-            return (int)(recommendedCalories*0.7)/9;
-        return 0;
-    }
     @Builder
-    private Profile(String nickname, Double targetWeight, Integer age, Gender gender, Double height,
-                   Double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
-                   DietMode dietMode
-    ){
+    private Profile(String nickname, double targetWeight, int age, Gender gender, double height,
+                    double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
+                    DietMode dietMode, User user) {
         this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
@@ -103,33 +65,60 @@ public class Profile {
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
-    }
-    //==프로필 수정 메서드==//
-    public void updateProfiles(Profile profiles){
-        this.targetWeight = profiles.getTargetWeight();
-        this.age = profiles.getAge();
-        this.gender = profiles.getGender();
-        this.height = profiles.getHeight();
-        this.weight = profiles.getWeight();
-        this.activityLevel = profiles.getActivityLevel();
-        this.purposeOfUse = profiles.getPurposeOfUse();
-    }
-    //==연관 관계 편의 메서드==//
-    public void setUsers(User user) {
         this.user = user;
-        users.setProfiles(this);
+        calculateAndSetNutritionalValues();
+        user.assignProfile(this);
     }
-    // 다이어트 모드 업데이트
-    public void setDietMode(DietMode dietMode) {
-        this.dietMode = dietMode;
-        this.recommendedCalories = calculateRecommendedCalories(calculateRMR(calculateBMR(this.weight,this.height,this.age,this.gender),
-                this.activityLevel),this.purposeOfUse);
-        this.recommendedCarbohydrates = calculateRecommendedCarbohydrates(dietMode);
-        this.recommendedProteins = calculateRecommendedProteins(dietMode);
-        this.recommendedFats = calculateRecommendedFats(dietMode);
+
+    private double calculateBMR() {
+        return gender == Gender.MALE
+                ? (9.99 * weight) + (6.25 * height) - (4.95 * age) + 5
+                : (9.99 * weight) + (6.25 * height) - (4.95 * age) - 161;
     }
-    // 현재 체중 업데이트
-    public void updateCurrentWeight(Double weight) {
+
+    private double calculateRMR(double bmr) {
+        double activityMultiplier = switch (activityLevel) {
+            case LOW_ACTIVITY -> 1.5;
+            case GENERAL_ACTIVITY -> 1.7;
+            case HIGH_ACTIVITY -> 1.9;
+        };
+        return bmr * activityMultiplier;
+    }
+
+    private int calculateRecommendedCalories(double rmr) {
+        int offset = (purposeOfUse == PurposeOfUse.DIET) ? -500 : 500;
+        return ((int) Math.floor(rmr / 100) * 100) + offset;
+    }
+
+    private void calculateAndSetNutritionalValues() {
+        double bmr = calculateBMR();
+        double rmr = calculateRMR(bmr);
+        this.recommendedCalories = calculateRecommendedCalories(rmr);
+
+        double[] macronutrientRatios = switch (dietMode) {
+            case GENERAL -> new double[]{0.5, 0.3, 0.2};
+            case FITNESS -> new double[]{0.4, 0.4, 0.2};
+            case KETOGENIC -> new double[]{0.08, 0.22, 0.7};
+        };
+
+        this.recommendedCarbohydrates = (int) (recommendedCalories * macronutrientRatios[0] / 4);
+        this.recommendedProteins = (int) (recommendedCalories * macronutrientRatios[1] / 4);
+        this.recommendedFats = (int) (recommendedCalories * macronutrientRatios[2] / 9);
+    }
+
+
+    public void updateProfile(Profile profile) {
+        this.targetWeight = profile.getTargetWeight();
+        this.age = profile.getAge();
+        this.gender = profile.getGender();
+        this.height = profile.getHeight();
+        this.weight = profile.getWeight();
+        this.activityLevel = profile.getActivityLevel();
+        this.purposeOfUse = profile.getPurposeOfUse();
+    }
+
+
+    public void updateCurrentWeight(double weight) {
         this.currentWeight = weight;
     }
 }

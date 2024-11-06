@@ -67,7 +67,7 @@ public class User {
         this.role = role;
     }
 
-    public void setProfiles(Profile profile) {
+    public void assignProfile(Profile profile) {
         this.profile = profile;
     }
 
@@ -78,4 +78,5 @@ public class User {
     public boolean checkProfileCreated() {
         return this.profile != null;
     }
+
 }

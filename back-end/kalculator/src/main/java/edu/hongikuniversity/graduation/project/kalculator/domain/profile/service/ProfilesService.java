@@ -1,9 +1,15 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.service;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileCreateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfilesUpdateRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.repository.ProfilesRepository;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfilesUpdateRequestDto;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.repository.UserRepository;
+import edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +19,29 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfilesService {
     private final ProfilesRepository profilesRepository;
+    private final UserRepository userRepository;
 
- //프로필 생성
+    //프로필 생성
     @Transactional
-    public Long save(Profile profiles){
-        return profilesRepository.save(profiles).getProfileId();
+    public ProfileIdResponse save(ProfileCreateRequest request) {
+        User user = getCurrentUser();
+
+        Profile profile = Profile.builder()
+                .nickname(request.nickname())
+                .targetWeight(request.targetWeight())
+                .age(request.age())
+                .gender(request.gender())
+                .height(request.height())
+                .weight(request.weight())
+                .activityLevel(request.activityLevel())
+                .purposeOfUse(request.purposeOfUse())
+                .dietMode(request.dietMode())
+                .user(user)
+                .build();
+
+        return ProfileIdResponse.from(profilesRepository.save(profile));
     }
+
     //프로필 수정
     @Transactional
     public Long update(Long id, ProfilesUpdateRequestDto requestDto){
@@ -29,6 +52,11 @@ public class ProfilesService {
 
     public Profile findById(Long id) {
         return profilesRepository.findById(id).orElseThrow(()->new IllegalArgumentException(id+"의 프로필이 존재하지 않습니다"));
+    }
+
+    private User getCurrentUser(){
+        return userRepository.findByUsername(SecurityUtil.getCurrentUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("해당 사용자가 존재하지 않습니다"));
     }
 }
 
