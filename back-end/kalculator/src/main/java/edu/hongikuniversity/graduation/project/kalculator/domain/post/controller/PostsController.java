@@ -1,5 +1,5 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.post.controller;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.request.PostsRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response.PostsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostsService;
@@ -29,7 +29,7 @@ public class PostsController {
         }
         String userId = authentication.getName();
         Users users = usersService.findByUserId(userId);
-        Posts posts = Posts.builder().title(requestDto.getTitle()).content(requestDto.getContent())
+        Post posts = Post.builder().title(requestDto.getTitle()).content(requestDto.getContent())
                 .creationDate(LocalDate.now()).build();
         posts.setUsers(users);
         return ResponseEntity.ok(postsService.save(posts));
@@ -37,7 +37,7 @@ public class PostsController {
     @GetMapping("confirm")
     @ResponseBody
     public PostsResponseDto confirm(@RequestParam Long postId){
-        Posts posts = postsService.findById(postId);
+        Post posts = postsService.findById(postId);
         PostsResponseDto responseDto = new PostsResponseDto(posts);
         return responseDto;
     }
@@ -45,10 +45,10 @@ public class PostsController {
     @ResponseBody
     public List<PostsResponseDto> postsList(){
         List<PostsResponseDto> responseDtoList = new ArrayList<>();
-        List<Posts> postsList = postsService.findAll();
+        List<Post> postsList = postsService.findAll();
         // 가장 최신의 게시물이 최상단에 뜨도록 내림차순 정렬
-        Collections.sort(postsList, Comparator.comparingLong(Posts::getPostId).reversed());
-        for(Posts posts:postsList){
+        Collections.sort(postsList, Comparator.comparingLong(Post::getPostId).reversed());
+        for(Post posts:postsList){
             responseDtoList.add(new PostsResponseDto(posts));
         }
         return responseDtoList;

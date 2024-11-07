@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ public class PostsResponseDto {
     private LocalDate creationDate;
     private Integer likeCount;
     private Integer commentCount;
-    public PostsResponseDto(Posts entity){
+    public PostsResponseDto(Post entity){
         this.postId = entity.getPostId();
         this.userId = entity.getUsers().getUserId();
         this.nickname = entity.getUsers().getProfiles().getNickname();

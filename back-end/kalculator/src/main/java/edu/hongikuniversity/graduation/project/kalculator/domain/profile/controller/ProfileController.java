@@ -1,99 +1,55 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.DietModeRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfilesSaveRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfilesUpdateRequestDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.UpdateWeightDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfilesResponseDto;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.DietMode;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
+
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileCreateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.service.ProfilesService;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.UsersService;
+import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/v1/profile")
 public class ProfileController {
     private final ProfilesService profilesService;
-    private final UsersService usersService;
 
-    //프로필 생성
-    @PostMapping("/save")
-    public Long save(@RequestBody ProfilesSaveRequestDto requestDto, Authentication authentication){
-        String userId = authentication.getName();
-        Users users = usersService.findByUserId(userId);
-        Profile profiles = requestDto.toEntity();
-        profiles.setUsers(users);
-        return profilesService.save(profiles);
+    /**
+     * 프로필 생성
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<ProfileIdResponse>> save(@RequestBody ProfileCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(profilesService.save(request)));
     }
-    //다이어트 모드 선택
-    @PostMapping("/save/{profileId}/selectMode")
-    public Long saveDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
-        DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
-        Profile profiles = profilesService.findById(profileId);
-        profiles.setDietMode(dietMode);
-        profilesService.save(profiles);
-        return profiles.getProfileId();
+
+    /**
+     * 프로필 확인
+     */
+    @GetMapping
+    public ResponseEntity<ApiResponse<ProfileDetailsResponse>> confirm() {
+        return ResponseEntity.ok().body(ApiResponse.success(profilesService.confirm()));
     }
-    //권장 칼로리
-    @GetMapping("/save/{profileId}/targetCalories")
-    public Integer getRecommendedCalories(@PathVariable Long profileId) {
-        Profile profiles = profilesService.findById(profileId);
-        Integer recommendedCalories =  profiles.getRecommendedCalories();
-        return recommendedCalories;
+
+    /**
+     * 프로필 업데이트
+     */
+    @PutMapping
+    public ResponseEntity<ApiResponse<ProfileIdResponse>> update(@RequestBody ProfileUpdateRequest request) {
+        return ResponseEntity.ok().body(ApiResponse.success(profilesService.update(request)));
     }
-    //프로필 확인
-    @GetMapping("/confirm")
-    @ResponseBody
-    public ProfilesResponseDto confirmProfiles(Authentication authentication) {
-        String userId = authentication.getName();
-        Users users = usersService.findByUserId(userId);
-        Profile profiles = users.getProfiles();
-        ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
-        return responseDto;
+
+    /**
+     * 프로필 현재 몸무게 업데이트
+     */
+    @PatchMapping
+    public ResponseEntity<ApiResponse<ProfileCurrentWeightResponse>> updateCurrentWeight(@RequestBody ProfileUpdateWeightRequest request) {
+        return ResponseEntity.ok().body(ApiResponse.success(profilesService.updateCurrentWeight(request)));
     }
-    //홈
-    @GetMapping("/home")
-    @ResponseBody
-    public ProfilesResponseDto Home(Authentication authentication) {
-        String userId = authentication.getName();
-        Users users = usersService.findByUserId(userId);
-        Profile profiles = users.getProfiles();
-        ProfilesResponseDto responseDto = new ProfilesResponseDto(profiles);
-        return responseDto;
-    }
-    @PutMapping("/update")
-    public Long updateProfiles(@RequestBody ProfilesUpdateRequestDto requestDto, Authentication authentication){
-        String userId = authentication.getName();
-        Long profileId = usersService.findByUserId(userId).getProfiles().getProfileId();
-        Profile profiles = profilesService.findById(profileId);
-        profiles.updateProfiles(requestDto.toEntity());
-        return profilesService.save(profiles);
-    }
-    @PutMapping("/update/{profileId}/selectMode")
-    public Long updateDietMode(@PathVariable Long profileId,@RequestBody DietModeRequestDto requestDto) {
-        DietMode dietMode = DietMode.valueOf(requestDto.getDietMode().toUpperCase());
-        Profile profiles = profilesService.findById(profileId);
-        profiles.setDietMode(dietMode);
-        profilesService.save(profiles);
-        return profiles.getProfileId();
-    }
-    @GetMapping("/update/{profileId}/targetCalories")
-    public Integer getUpdateRecommendedCalories(@PathVariable Long profileId) {
-        Profile profiles = profilesService.findById(profileId);
-        Integer recommendedCalories =  profiles.getRecommendedCalories();
-        return recommendedCalories;
-    }
-    @PutMapping("/update/currentWeight")
-    public ResponseEntity<String> updateCurrentWeight(@RequestBody UpdateWeightDto updateWeightDto, Authentication authentication){
-        Users users = usersService.findByUserId(authentication.getName());
-        Profile profiles = users.getProfiles();
-        profiles.updateCurrentWeight(updateWeightDto.getWeight());;
-        profilesService.save(profiles);
-        return ResponseEntity.ok("몸무게를 성공적으로 저장하였습니다.");
-    }
+
 }
 

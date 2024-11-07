@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Posts {
+public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
     private String title;
@@ -28,7 +28,7 @@ public class Posts {
     @OneToMany(mappedBy = "posts")
     private List<Hearts> hearts = new ArrayList<>();
     @Builder
-    public Posts(String title,String content,LocalDate creationDate){
+    public Post(String title, String content, LocalDate creationDate){
         this.title = title;
         this.content = content;
         this.creationDate = creationDate;

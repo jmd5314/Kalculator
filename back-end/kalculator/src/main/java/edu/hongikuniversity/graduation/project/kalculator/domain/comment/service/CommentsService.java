@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.comment.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.repository.CommentsRepository;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.repository.PostsRepository;
@@ -23,7 +23,7 @@ public class CommentsService {
     public Long save(CommentsSaveRequestDto requestDto,String userId){
         Users users = usersRepository.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Posts posts = postsRepository.findById(requestDto.getPostId())
+        Post posts = postsRepository.findById(requestDto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
         Comment comments = Comment.builder().content(requestDto.getContent())
                 .creationDate(LocalDate.now()).users(users).posts(posts).build();
@@ -31,7 +31,7 @@ public class CommentsService {
     }
 
     public List<Comment> findByPostId(Long postId) {
-        Posts posts = postsRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
+        Post posts = postsRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물을 찾을 수 없습니다."));
         List<Comment> comments = commentsRepository.findByPosts(posts);
         return comments;
     }
