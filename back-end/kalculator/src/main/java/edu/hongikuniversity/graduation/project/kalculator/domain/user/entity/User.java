@@ -87,4 +87,8 @@ public class User {
         return this.profile != null;
     }
 
+    public void addHeart(Heart heart) {
+        this.hearts.add(heart);
+    }
+
 }

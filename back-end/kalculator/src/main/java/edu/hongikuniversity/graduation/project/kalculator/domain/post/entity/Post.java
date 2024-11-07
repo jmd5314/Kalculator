@@ -36,13 +36,15 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<Heart> heart = new ArrayList<>();
+    private List<Heart> hearts = new ArrayList<>();
 
     @Builder
-    private Post(String title, String content, LocalDate createdAt) {
+    private Post(String title, String content, LocalDate createdAt, User user) {
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.user = user;
+        user.addPost(this);
     }
 
     //==연관 관계 편의 메서드==//
@@ -58,5 +60,9 @@ public class Post {
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
+    }
+
+    public void addHeart(Heart heart) {
+        this.hearts.add(heart);
     }
 }
