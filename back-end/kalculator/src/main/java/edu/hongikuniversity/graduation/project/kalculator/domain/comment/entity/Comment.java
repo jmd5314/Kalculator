@@ -37,7 +37,12 @@ public class Comment {
         this.post = post;
         this.content = content;
         this.createdAt = LocalDateTime.now();
+        user.addComment(this);
+        post.addComment(this);
     }
 
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

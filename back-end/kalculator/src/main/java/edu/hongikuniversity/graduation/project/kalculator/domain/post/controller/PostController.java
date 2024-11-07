@@ -5,7 +5,6 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response.PostBriefResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response.PostDetailsResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response.PostIdResponse;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.controller.dto.response.PostsResponseDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostService;
 import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
 import jakarta.validation.Valid;

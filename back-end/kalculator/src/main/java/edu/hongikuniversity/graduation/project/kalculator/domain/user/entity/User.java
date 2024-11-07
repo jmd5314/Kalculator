@@ -71,6 +71,14 @@ public class User {
         this.profile = profile;
     }
 
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+    public void addPost(Post post){
+        this.posts.add(post);
+    }
+
     public void passwordEncode(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(this.password);
     }
