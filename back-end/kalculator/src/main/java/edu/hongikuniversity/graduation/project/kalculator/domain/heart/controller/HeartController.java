@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.heart.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.heart.service.HeartsService;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostsService;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/hearts")
 public class HeartController {
     private final HeartsService heartsService;
-    private final PostsService postsService;
+    private final PostService postsService;
     @PostMapping("/insert")
     public ResponseEntity<?> insert(@RequestBody HeartsRequestDto requestDto, Authentication authentication) {
         Long postId = requestDto.getPostId();

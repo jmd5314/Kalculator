@@ -5,7 +5,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Gender;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.PurposeOfUse;
 
-public record ProfileUpdateRequest(
+public record ProfileRequest(
         String nickname,
         double targetWeight,
         int age,
@@ -14,5 +14,7 @@ public record ProfileUpdateRequest(
         double weight,
         ActivityLevel activityLevel,
         PurposeOfUse purposeOfUse,
-        DietMode dietMode) {
+        DietMode dietMode
+) {
+
 }

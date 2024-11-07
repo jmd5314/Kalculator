@@ -1,36 +1,43 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String content;
-    private LocalDate creationDate;
+
+    private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="postId")
-    private Post posts;
+    @JoinColumn(name = "post_id")
+    private Post post;
+
     @Builder
-    public Comment(String content, Users users, Post posts, LocalDate creationDate){
-        this.users = users;
-        this.posts = posts;
+    private Comment(String content, User user, Post post) {
+        this.user = user;
+        this.post = post;
         this.content = content;
-        this.creationDate = creationDate;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+
 }

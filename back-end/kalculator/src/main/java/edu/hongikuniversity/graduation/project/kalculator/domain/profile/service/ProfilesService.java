@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileCreateRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
@@ -27,7 +27,7 @@ public class ProfilesService {
 
     //프로필 생성
     @Transactional
-    public ProfileIdResponse save(ProfileCreateRequest request) {
+    public ProfileIdResponse save(ProfileRequest request) {
         User user = getCurrentUser();
 
         Profile profile = Profile.builder()
@@ -55,7 +55,7 @@ public class ProfilesService {
 
     //프로필 수정
     @Transactional
-    public ProfileIdResponse update(ProfileUpdateRequest request) {
+    public ProfileIdResponse update(ProfileRequest request) {
         Profile profile = findByUser();
         profile.updateProfile(
                 request.nickname(),

@@ -5,7 +5,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.comment.control
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentsSaveRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentsUpdateRequestDto;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.service.CommentsService;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostsService;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,8 @@ import java.util.List;
 @RequestMapping("/api/comments")
 public class CommentsController {
     private final CommentsService commentsService;
-    private final PostsService postsService;
+    private final PostService postsService;
+
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody CommentsSaveRequestDto requestDto, Authentication authentication){
         // 내용이 비어있는 경우 에러처리

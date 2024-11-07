@@ -1,7 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileCreateRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
@@ -23,7 +23,7 @@ public class ProfileController {
      * 프로필 생성
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<ProfileIdResponse>> save(@RequestBody ProfileCreateRequest request) {
+    public ResponseEntity<ApiResponse<ProfileIdResponse>> save(@RequestBody ProfileRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(profilesService.save(request)));
     }
 
@@ -39,7 +39,7 @@ public class ProfileController {
      * 프로필 업데이트
      */
     @PutMapping
-    public ResponseEntity<ApiResponse<ProfileIdResponse>> update(@RequestBody ProfileUpdateRequest request) {
+    public ResponseEntity<ApiResponse<ProfileIdResponse>> update(@RequestBody ProfileRequest request) {
         return ResponseEntity.ok().body(ApiResponse.success(profilesService.update(request)));
     }
 
