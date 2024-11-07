@@ -3,7 +3,7 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity.G
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
 import edu.hongikuniversity.graduation.project.kalculator.domain.food.entity.FoodRecord;
 import edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity.Heart;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
 import edu.hongikuniversity.graduation.project.kalculator.domain.running.entity.RunningRecord;
 import jakarta.persistence.*;
@@ -46,7 +46,7 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "users")
-    private List<Posts> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "users")
     private List<Heart> hearts = new ArrayList<>();

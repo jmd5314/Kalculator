@@ -1,6 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,9 +21,9 @@ public class Comment {
     private Users users;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="postId")
-    private Posts posts;
+    private Post posts;
     @Builder
-    public Comment(String content, Users users, Posts posts, LocalDate creationDate){
+    public Comment(String content, Users users, Post posts, LocalDate creationDate){
         this.users = users;
         this.posts = posts;
         this.content = content;

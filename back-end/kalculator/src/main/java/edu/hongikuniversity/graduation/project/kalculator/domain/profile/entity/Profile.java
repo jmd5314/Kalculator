@@ -106,15 +106,25 @@ public class Profile {
         this.recommendedFats = (int) (recommendedCalories * macronutrientRatios[2] / 9);
     }
 
+    public double getWeightDifference() {
+        return this.currentWeight - this.targetWeight;
+    }
 
-    public void updateProfile(Profile profile) {
-        this.targetWeight = profile.getTargetWeight();
-        this.age = profile.getAge();
-        this.gender = profile.getGender();
-        this.height = profile.getHeight();
-        this.weight = profile.getWeight();
-        this.activityLevel = profile.getActivityLevel();
-        this.purposeOfUse = profile.getPurposeOfUse();
+
+    public void updateProfile(String nickname, double targetWeight, int age, Gender gender, double height,
+                              double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
+                              DietMode dietMode) {
+        this.nickname = nickname;
+        this.targetWeight = targetWeight;
+        this.age = age;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.currentWeight = weight;
+        this.activityLevel = activityLevel;
+        this.purposeOfUse = purposeOfUse;
+        this.dietMode = dietMode;
+        calculateAndSetNutritionalValues();
     }
 
 

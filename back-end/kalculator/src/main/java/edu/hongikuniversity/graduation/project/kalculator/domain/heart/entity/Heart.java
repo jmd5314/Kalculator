@@ -1,27 +1,30 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Posts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Heart {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
-    private Posts posts;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Builder
-    public Hearts(Users users, Posts posts) {
-        this.users = users;
-        this.posts = posts;
+    private Heart(User user, Post post) {
+        this.user = user;
+        this.post = post;
     }
 }
