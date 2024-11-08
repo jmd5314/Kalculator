@@ -14,10 +14,12 @@ import lombok.NoArgsConstructor;
 public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long heartId;
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
@@ -26,5 +28,7 @@ public class Heart {
     private Heart(User user, Post post) {
         this.user = user;
         this.post = post;
+        user.addHeart(this);
+        post.addHeart(this);
     }
 }

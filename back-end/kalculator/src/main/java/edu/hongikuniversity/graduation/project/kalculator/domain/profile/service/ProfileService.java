@@ -1,7 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.service;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileCreateRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
@@ -10,24 +9,22 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.exception.ProfileNotFoundException;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.repository.ProfileRepository;
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.repository.UserRepository;
-import edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil.getCurrentUser;
 
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ProfilesService {
+public class ProfileService {
     private final ProfileRepository profileRepository;
-    private final UserRepository userRepository;
 
     //프로필 생성
     @Transactional
-    public ProfileIdResponse save(ProfileCreateRequest request) {
+    public ProfileIdResponse create(ProfileRequest request) {
         User user = getCurrentUser();
 
         Profile profile = Profile.builder()
@@ -55,7 +52,7 @@ public class ProfilesService {
 
     //프로필 수정
     @Transactional
-    public ProfileIdResponse update(ProfileUpdateRequest request) {
+    public ProfileIdResponse update(ProfileRequest request) {
         Profile profile = findByUser();
         profile.updateProfile(
                 request.nickname(),
@@ -79,10 +76,6 @@ public class ProfilesService {
         return ProfileCurrentWeightResponse.from(profile);
     }
 
-    private User getCurrentUser(){
-        return userRepository.findByUsername(SecurityUtil.getCurrentUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("해당 사용자가 존재하지 않습니다"));
-    }
 
     private Profile findByUser(){
         return profileRepository.findByUser(getCurrentUser())

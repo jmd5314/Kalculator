@@ -1,54 +1,49 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.heart.service;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity.Hearts;
+import edu.hongikuniversity.graduation.project.kalculator.domain.heart.controller.dto.request.HeartInsertRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.heart.controller.dto.response.HeartIdResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.heart.entity.Heart;
+import edu.hongikuniversity.graduation.project.kalculator.domain.heart.exception.HeartExistException;
+import edu.hongikuniversity.graduation.project.kalculator.domain.heart.repository.HeartRepository;
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
-import edu.hongikuniversity.graduation.project.kalculator.domain.heart.repository.HeartsRepository;
-import edu.hongikuniversity.graduation.project.kalculator.domain.post.repository.PostsRepository;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.repository.UsersRepository;
-import jakarta.transaction.Transactional;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.exception.PostNotFoundException;
+import edu.hongikuniversity.graduation.project.kalculator.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import static edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil.getCurrentUser;
+import static edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil.getCurrentUserId;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class HeartService {
+    private final HeartRepository heartRepository;
+    private final PostRepository postRepository;
 
-    private final HeartsRepository heartsRepository;
-    private final UsersRepository usersRepository;
-    private final PostsRepository postsRepository;
     @Transactional
-    public void insert (Long postId,String userId){
-        Users users = usersRepository.findByUserId(userId)
-                .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Post posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다"));
-        // 이미 좋아요 되어있으면 오류 반환
-        if(heartsRepository.findByUsersAndPosts(users,posts).isPresent()){
-            throw new IllegalArgumentException("좋아요 중복 에러");
-        }
-        Hearts hearts = Hearts.builder()
-                .users(users)
-                .posts(posts).build();
-        heartsRepository.save(hearts);
+    public HeartIdResponse insert(HeartInsertRequest request) {
+        heartRepository.findByUserIdAndPostId(getCurrentUserId(), request.postId())
+                .ifPresent(heart -> {
+                    throw new HeartExistException(heart.getId());
+                });
+
+        Post post = postRepository.findById(request.postId())
+                .orElseThrow(() -> new PostNotFoundException(request.postId()));
+
+        Heart heart = Heart.builder()
+                .user(getCurrentUser())
+                .post(post)
+                .build();
+
+        return HeartIdResponse.from(heartRepository.save(heart));
     }
+
     @Transactional
-    public void delete(Long postId,String userId){
-        Users users = usersRepository.findByUserId(userId)
-                .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Post posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다."));
-        Hearts hearts = heartsRepository.findByUsersAndPosts(users, posts)
-                .orElseThrow(() -> new IllegalArgumentException("해당 좋아요를 찾을 수 없습니다."));
-        heartsRepository.delete(hearts);
+    public void delete(Long postId) {
+        heartRepository.deleteByUserIdAndPostId(getCurrentUserId(), postId);
     }
-    public boolean confirm(Long postId,String userId){
-        Users users = usersRepository.findByUserId(userId)
-                .orElseThrow(()->new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
-        Post posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾울 수 없습니다."));
-        if(heartsRepository.findByUsersAndPosts(users,posts).isPresent())
-            return true;
-        else
-            return false;
-    }
+
+
 }
