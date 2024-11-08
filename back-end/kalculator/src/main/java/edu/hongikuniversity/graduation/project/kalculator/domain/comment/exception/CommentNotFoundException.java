@@ -5,7 +5,6 @@ import edu.hongikuniversity.graduation.project.kalculator.global.error.ErrorCode
 
 public class CommentNotFoundException extends AppException {
     public CommentNotFoundException(Long id) {
-
         super(ErrorCode.COMMENT_NOT_FOUND,id);
     }
 }

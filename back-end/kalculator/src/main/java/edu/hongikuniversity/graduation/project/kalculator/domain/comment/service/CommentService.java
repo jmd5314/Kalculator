@@ -2,7 +2,6 @@ package edu.hongikuniversity.graduation.project.kalculator.domain.comment.servic
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentCreateRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.request.CommentUpdateRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.response.CommentDetailsResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.controller.dto.response.CommentIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.entity.Comment;
 import edu.hongikuniversity.graduation.project.kalculator.domain.comment.exception.CommentNotAuthorizationException;
@@ -15,8 +14,6 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.Use
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil.getCurrentUser;
 
@@ -46,7 +43,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(request.id())
                 .orElseThrow(() -> new CommentNotFoundException(request.id()));
 
-        validateUser(comment, getCurrentUser());
+        validateUser(comment);
 
         comment.updateContent(request.content());
         return CommentIdResponse.from(comment);
@@ -57,14 +54,14 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException(id));
 
-        validateUser(comment, getCurrentUser());
+        validateUser(comment);
 
         commentRepository.deleteById(id);
     }
 
-    private void validateUser(Comment comment, User user) {
-        if (!comment.getUser().equals(user)) {
-            throw new CommentNotAuthorizationException();
+    private void validateUser(Comment comment) {
+        if (!comment.getUser().equals(getCurrentUser())) {
+            throw new CommentNotAuthorizationException(comment.getId());
         }
     }
 }

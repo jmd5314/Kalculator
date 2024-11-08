@@ -27,6 +27,10 @@ public class Post {
 
     private LocalDate createdAt;
 
+    private Long likeCount;
+
+    private Long commentCount;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -43,14 +47,10 @@ public class Post {
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.likeCount = 0L;
+        this.commentCount = 0L;
         this.user = user;
         user.addPost(this);
-    }
-
-    //==연관 관계 편의 메서드==//
-    public void setUsers(User user) {
-        this.user = user;
-        user.getPosts().add(this);
     }
 
     public void update(String title, String content) {
@@ -60,9 +60,28 @@ public class Post {
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
+        increaseCommentCount();
     }
 
     public void addHeart(Heart heart) {
         this.hearts.add(heart);
+        increaseLikeCount();
     }
+
+    public void increaseLikeCount(){
+        this.likeCount++;
+    }
+
+    public void increaseCommentCount(){
+        this.commentCount++;
+    }
+
+    public void decreaseLikeCount(){
+        this.likeCount--;
+    }
+
+    public void decreaseCommentCount(){
+        this.commentCount--;
+    }
+
 }

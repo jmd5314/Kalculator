@@ -1,8 +1,9 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.post.repository;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.post.entity.Post;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostRepository extends JpaRepository<Post, Long>, CustomPostRepository {
+import java.util.List;
 
+public interface CustomPostRepository {
+    List<Post> findPosts(Long page, Long size);
 }

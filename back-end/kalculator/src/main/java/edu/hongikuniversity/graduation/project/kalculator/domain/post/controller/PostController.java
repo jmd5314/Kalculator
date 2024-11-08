@@ -9,6 +9,8 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.post.service.Po
 import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +34,11 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<PostBriefResponse>>> confirmList() {
-        return ResponseEntity.ok().body(ApiResponse.success(postService.findAll()));
-
+    public ResponseEntity<ApiResponse<List<PostBriefResponse>>> getList(@RequestParam Long page,
+                                                                        @RequestParam Long size) {
+        return ResponseEntity.ok().body(ApiResponse.success(postService.getList(page, size)));
     }
+
 
     @PutMapping
     public ResponseEntity<ApiResponse<PostIdResponse>> update(@RequestBody PostUpdateRequest request) {
