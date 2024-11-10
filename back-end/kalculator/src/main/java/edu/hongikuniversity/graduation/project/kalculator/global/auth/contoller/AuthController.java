@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class AuthController {
         String accessToken = jwtService.createAccessToken(loginResponse.username());
         String refreshToken = jwtService.createRefreshToken(loginResponse.username());
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        return ResponseEntity.ok().body(ApiResponse.success(loginResponse));
+        return ResponseEntity.ok().body(success(loginResponse));
     }
 
     @GetMapping("/reissue")
@@ -45,6 +47,6 @@ public class AuthController {
         jwtService.validateUsername(username);
         String reIssuedRefreshToken = jwtService.createRefreshToken(username);
         jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(username), reIssuedRefreshToken);
-        return ResponseEntity.ok().body(ApiResponse.success("토큰이 재발급 되었습니다."));
+        return ResponseEntity.ok().body(success("토큰이 재발급 되었습니다."));
     }
 }

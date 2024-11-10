@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/heart")
@@ -17,7 +19,7 @@ public class HeartController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<HeartIdResponse>> insert(@RequestBody HeartInsertRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(heartService.insert(request)));
+        return ResponseEntity.status(HttpStatus.OK).body(success(heartService.insert(request)));
     }
 
     @DeleteMapping("/{postId}")

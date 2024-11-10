@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/post")
@@ -25,24 +27,24 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostIdResponse>> create(@RequestBody @Valid PostCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(postService.create(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(postService.create(request)));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<PostDetailsResponse>> confirm(@RequestParam Long id) {
-        return ResponseEntity.ok().body(ApiResponse.success(postService.findById(id)));
+        return ResponseEntity.ok().body(success(postService.findById(id)));
     }
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<PostBriefResponse>>> getList(@RequestParam Long page,
                                                                         @RequestParam Long size) {
-        return ResponseEntity.ok().body(ApiResponse.success(postService.getList(page, size)));
+        return ResponseEntity.ok().body(success(postService.getList(page, size)));
     }
 
 
     @PutMapping
     public ResponseEntity<ApiResponse<PostIdResponse>> update(@RequestBody PostUpdateRequest request) {
-        return ResponseEntity.ok().body(ApiResponse.success(postService.update(request)));
+        return ResponseEntity.ok().body(success(postService.update(request)));
     }
 
     @DeleteMapping("/{id}")

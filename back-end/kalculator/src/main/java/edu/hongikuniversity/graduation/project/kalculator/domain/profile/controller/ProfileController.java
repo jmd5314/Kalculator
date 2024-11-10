@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
@@ -24,7 +26,7 @@ public class ProfileController {
     @PostMapping
     public ResponseEntity<ApiResponse<ProfileIdResponse>> save(@RequestBody ProfileRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(profileService.create(request)));
+                .body(success(profileService.create(request)));
     }
 
     /**
@@ -32,7 +34,7 @@ public class ProfileController {
      */
     @GetMapping
     public ResponseEntity<ApiResponse<ProfileDetailsResponse>> confirm() {
-        return ResponseEntity.ok().body(ApiResponse.success(profileService.confirm()));
+        return ResponseEntity.ok().body(success(profileService.confirm()));
     }
 
     /**
@@ -40,7 +42,7 @@ public class ProfileController {
      */
     @PutMapping
     public ResponseEntity<ApiResponse<ProfileIdResponse>> update(@RequestBody ProfileRequest request) {
-        return ResponseEntity.ok().body(ApiResponse.success(profileService.update(request)));
+        return ResponseEntity.ok().body(success(profileService.update(request)));
     }
 
     /**
@@ -48,7 +50,7 @@ public class ProfileController {
      */
     @PatchMapping
     public ResponseEntity<ApiResponse<ProfileCurrentWeightResponse>> updateCurrentWeight(@RequestBody ProfileUpdateWeightRequest request) {
-        return ResponseEntity.ok().body(ApiResponse.success(profileService.updateCurrentWeight(request)));
+        return ResponseEntity.ok().body(success(profileService.updateCurrentWeight(request)));
     }
 
 }

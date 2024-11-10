@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -21,7 +23,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserIdResponse>> signUp(@Valid @RequestBody UserSignUpRequest request) {
-        return ResponseEntity.ok().body(ApiResponse.success(userService.signUp(request)));
+        return ResponseEntity.ok().body(success(userService.signUp(request)));
     }
 
 }
