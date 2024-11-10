@@ -58,5 +58,6 @@ public class FoodRecord {
         this.fats = fats;
         this.quantity = quantity;
         this.user = user;
+        user.addFoodRecord(this);
     }
 }

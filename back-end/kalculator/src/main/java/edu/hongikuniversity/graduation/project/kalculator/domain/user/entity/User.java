@@ -94,4 +94,8 @@ public class User {
     public void addFoodRecord(FoodRecord foodRecord) {
         this.foodRecords.add(foodRecord);
     }
+
+    public void addRunningRecord(RunningRecord runningRecord) {
+        this.runningRecords.add(runningRecord);
+    }
 }
