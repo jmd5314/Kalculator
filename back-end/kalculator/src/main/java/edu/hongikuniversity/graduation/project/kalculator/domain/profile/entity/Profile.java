@@ -28,7 +28,6 @@ public class Profile {
 
     private double weight;
 
-    private double currentWeight;
 
     @Enumerated(EnumType.STRING)
     private ActivityLevel activityLevel;

@@ -1,6 +1,8 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.user.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UserLoginRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UserUpdateWeightRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.response.UserCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.response.UserIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.request.UserSignUpRequest;
 import edu.hongikuniversity.graduation.project.kalculator.domain.user.controller.dto.response.UserLoginResponse;
@@ -15,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static edu.hongikuniversity.graduation.project.kalculator.global.auth.util.SecurityUtil.getCurrentUser;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +62,13 @@ public class UserService {
 
         return UserLoginResponse.from(user);
     }
+
+    @Transactional
+    public UserCurrentWeightResponse updateCurrentWeight(UserUpdateWeightRequest request) {
+        getCurrentUser().updateCurrentWeight(request.currentWeight());
+        return UserCurrentWeightResponse.from(getCurrentUser());
+    }
+
 }
 
 

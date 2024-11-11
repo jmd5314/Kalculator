@@ -22,7 +22,7 @@ public class RunningRecordService {
 
     @Transactional
     public RunningRecordIdResponse save(RunningRecordSaveRequest request) {
-        double currentWeight = getCurrentUser().getProfile().getCurrentWeight();
+        double currentWeight = getCurrentUser().getCurrentWeight();
         RunningRecord runningRecord = RunningRecord.builder()
                 .user(getCurrentUser())
                 .distance(request.distance())

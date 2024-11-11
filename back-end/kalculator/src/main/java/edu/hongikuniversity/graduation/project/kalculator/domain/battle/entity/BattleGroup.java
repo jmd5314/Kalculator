@@ -1,6 +1,7 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,31 +12,47 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BattleGroup {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupId;
-    private String leaderId;
-    private String leaderNickname;
-    private String groupName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
     private String title;
+
     private String content;
-    private Double target;
+
+    private double target;
+
     @Enumerated(EnumType.STRING)
     private BattlePurpose battlePurpose;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     @Enumerated(EnumType.STRING)
     private BattleStatus status;
-    private Integer numberOfMembers;
+
+    private int numberOfMembers;
 
     @OneToMany(mappedBy = "group")
     private List<GroupMembership> memberships = new ArrayList<>();
+
     @Builder
-    public BattleGroup(String leaderId, String leaderNickname, String groupName, String title, String content, Double target, BattlePurpose battlePurpose, LocalDate startDate, LocalDate endDate, BattleStatus status, Integer numberOfMembers){
-        this.leaderId = leaderId;
-        this.leaderNickname = leaderNickname;
-        this.groupName = groupName;
+    private BattleGroup(
+            String name,
+            String title,
+            String content,
+            double target,
+            BattlePurpose battlePurpose,
+            LocalDate startDate,
+            LocalDate endDate,
+            BattleStatus status,
+            int numberOfMembers) {
+        this.name = name;
         this.title = title;
         this.content = content;
         this.target = target;
@@ -46,7 +63,7 @@ public class BattleGroup {
         this.numberOfMembers = numberOfMembers;
     }
 
-    public void setStatus(BattleStatus status) {
-        this.status = status;
+    public void addGroupMemberShip(GroupMembership groupMembership) {
+        this.memberships.add(groupMembership);
     }
 }

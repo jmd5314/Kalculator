@@ -1,45 +1,54 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GroupMembership {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long membershipId;
+    private Long id;
+
     @ManyToOne
-    @JoinColumn(name = "groupId")
+    @JoinColumn(name = "group_id")
     private BattleGroup group;
+
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private GroupRole role;
 
     // 가입시 초기 몸무게
-    private Double startWeight;
-    private Double score;
+    private double startWeight;
+
+    private double score;
+
     @Builder
-    public GroupMembership(Role role,Double startWeight,Double score){
+    private GroupMembership(User user, BattleGroup group, GroupRole role, double startWeight) {
+        this.group = group;
+        this.user = user;
         this.role = role;
         this.startWeight = startWeight;
-        this.score = score;
+        this.score = 0;
+        user.addGroupMemberShip(this);
+        group.addGroupMemberShip(this);
     }
-    //==연관관계 편의 메서드==//
-    public void setUsers(Users users){
-        this.users = users;
-        users.getMemberships().add(this);
-    }
-    public void setGroup(BattleGroup group){
+
+
+    public void setGroup(BattleGroup group) {
         this.group = group;
         group.getMemberships().add(this);
     }
-    public void updateScore(Double score){
+
+    public void updateScore(double score) {
         this.score = score;
     }
 }

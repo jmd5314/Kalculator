@@ -45,13 +45,6 @@ public class ProfileController {
         return ResponseEntity.ok().body(success(profileService.update(request)));
     }
 
-    /**
-     * 프로필 현재 몸무게 업데이트
-     */
-    @PatchMapping
-    public ResponseEntity<ApiResponse<ProfileCurrentWeightResponse>> updateCurrentWeight(@RequestBody ProfileUpdateWeightRequest request) {
-        return ResponseEntity.ok().body(success(profileService.updateCurrentWeight(request)));
-    }
 
 }
 

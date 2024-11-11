@@ -36,6 +36,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private double currentWeight;
+
     @OneToOne(mappedBy = "users")
     private Profile profile;
 
@@ -79,14 +81,6 @@ public class User {
         this.posts.add(post);
     }
 
-    public void passwordEncode(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(this.password);
-    }
-
-    public boolean checkProfileCreated() {
-        return this.profile != null;
-    }
-
     public void addHeart(Heart heart) {
         this.hearts.add(heart);
     }
@@ -97,5 +91,21 @@ public class User {
 
     public void addRunningRecord(RunningRecord runningRecord) {
         this.runningRecords.add(runningRecord);
+    }
+
+    public void addGroupMemberShip(GroupMembership groupMembership) {
+        this.memberships.add(groupMembership);
+    }
+
+    public void passwordEncode(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public boolean checkProfileCreated() {
+        return this.profile != null;
+    }
+
+    public void updateCurrentWeight(double currentWeight){
+        this.currentWeight = currentWeight;
     }
 }
