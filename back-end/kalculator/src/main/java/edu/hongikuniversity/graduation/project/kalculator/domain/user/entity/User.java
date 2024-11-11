@@ -91,4 +91,11 @@ public class User {
         this.hearts.add(heart);
     }
 
+    public void addFoodRecord(FoodRecord foodRecord) {
+        this.foodRecords.add(foodRecord);
+    }
+
+    public void addRunningRecord(RunningRecord runningRecord) {
+        this.runningRecords.add(runningRecord);
+    }
 }

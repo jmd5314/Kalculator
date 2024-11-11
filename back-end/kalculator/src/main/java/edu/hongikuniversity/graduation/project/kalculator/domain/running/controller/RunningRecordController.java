@@ -1,47 +1,29 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.running.controller;
-
-import edu.hongikuniversity.graduation.project.kalculator.domain.running.entity.RunningRecord;
-import edu.hongikuniversity.graduation.project.kalculator.domain.running.service.RunningRecordsService;
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.UsersService;
+import edu.hongikuniversity.graduation.project.kalculator.domain.running.controller.dto.request.RunningRecordSaveRequest;
+import edu.hongikuniversity.graduation.project.kalculator.domain.running.controller.dto.response.RunningRecordIdResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.running.controller.dto.response.RunningRecordResponse;
+import edu.hongikuniversity.graduation.project.kalculator.domain.running.service.RunningRecordService;
+import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
 
 @RestController
-@RequestMapping("/api/runningRecords")
+@RequestMapping("/api/v1/running")
 @RequiredArgsConstructor
 public class RunningRecordController {
-    private final RunningRecordsService runningRecordsService;
-    private final UsersService usersService;
-    @PostMapping("/save")
-    public ResponseEntity<String> save (@RequestBody RunningRecordsRequestDto requestDto, Authentication authentication){
-        String userId = authentication.getName();
-        Users user = usersService.findByUserId(userId);
-        RunningRecord runningRecords = RunningRecord.builder()
-                .date(LocalDate.now())
-                .time(requestDto.getTime())
-                .distance(requestDto.getDistance())
-                .build();
-        runningRecords.setCaloriesBurned(user.getProfiles().getWeight());
-        runningRecords.setUsers(user);
-        runningRecordsService.save(runningRecords);
-        return ResponseEntity.ok("달리기를 기록하였습니다.");
+    private final RunningRecordService runningRecordService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<RunningRecordIdResponse>> save (@RequestBody RunningRecordSaveRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(runningRecordService.save(request)));
     }
-    @GetMapping("list")
-    @ResponseBody
-    public List<RunningRecordsResponseDto> list ( Authentication authentication){
-        String userId = authentication.getName();
-        Users user = usersService.findByUserId(userId);
-        List<RunningRecordsResponseDto> responseDtoList = new ArrayList<>();
-        List<RunningRecord> runningRecordsList = runningRecordsService.findByUsersAndDate(user, LocalDate.now());
-        for(RunningRecord runningRecords:runningRecordsList){
-            responseDtoList.add(new RunningRecordsResponseDto(runningRecords));
-        }
-        return responseDtoList;
+
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<RunningRecordResponse>>> getTodayList (){
+        return ResponseEntity.ok().body(success(runningRecordService.getTodayList()));
     }
 }

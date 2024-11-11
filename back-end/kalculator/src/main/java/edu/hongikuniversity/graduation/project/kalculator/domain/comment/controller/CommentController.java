@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comment")
@@ -19,13 +21,13 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CommentIdResponse>> create(@Valid @RequestBody CommentCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(commentsService.create(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(commentsService.create(request)));
     }
 
 
     @PutMapping
     public ResponseEntity<ApiResponse<CommentIdResponse>> update(@RequestBody CommentUpdateRequest request) {
-        return ResponseEntity.ok().body(ApiResponse.success(commentsService.update(request)));
+        return ResponseEntity.ok().body(success(commentsService.update(request)));
     }
 
     @DeleteMapping("{id}")
