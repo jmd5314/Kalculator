@@ -1,8 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.service.ProfileService;
@@ -45,13 +43,6 @@ public class ProfileController {
         return ResponseEntity.ok().body(success(profileService.update(request)));
     }
 
-    /**
-     * 프로필 현재 몸무게 업데이트
-     */
-    @PatchMapping
-    public ResponseEntity<ApiResponse<ProfileCurrentWeightResponse>> updateCurrentWeight(@RequestBody ProfileUpdateWeightRequest request) {
-        return ResponseEntity.ok().body(success(profileService.updateCurrentWeight(request)));
-    }
 
 }
 

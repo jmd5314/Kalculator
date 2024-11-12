@@ -6,18 +6,12 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.Us
 import edu.hongikuniversity.graduation.project.kalculator.global.auth.jwt.exception.TokenNotValidException;
 import edu.hongikuniversity.graduation.project.kalculator.global.auth.jwt.service.JwtService;
 import edu.hongikuniversity.graduation.project.kalculator.global.auth.jwt.token.RefreshToken;
-import edu.hongikuniversity.graduation.project.kalculator.global.error.AppException;
-import edu.hongikuniversity.graduation.project.kalculator.global.error.ErrorCode;
 import edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static edu.hongikuniversity.graduation.project.kalculator.global.util.ApiResponse.success;
 

@@ -15,8 +15,6 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
-
     private double targetWeight;
 
     private int age;
@@ -28,7 +26,6 @@ public class Profile {
 
     private double weight;
 
-    private double currentWeight;
 
     @Enumerated(EnumType.STRING)
     private ActivityLevel activityLevel;
@@ -52,16 +49,14 @@ public class Profile {
     private User user;
 
     @Builder
-    private Profile(String nickname, double targetWeight, int age, Gender gender, double height,
+    private Profile(double targetWeight, int age, Gender gender, double height,
                     double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
                     DietMode dietMode, User user) {
-        this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;
         this.height = height;
         this.weight = weight;
-        this.currentWeight = weight;
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
@@ -106,21 +101,16 @@ public class Profile {
         this.recommendedFats = (int) (recommendedCalories * macronutrientRatios[2] / 9);
     }
 
-    public double getWeightDifference() {
-        return this.currentWeight - this.targetWeight;
-    }
 
 
-    public void updateProfile(String nickname, double targetWeight, int age, Gender gender, double height,
+    public void updateProfile(double targetWeight, int age, Gender gender, double height,
                               double weight, ActivityLevel activityLevel, PurposeOfUse purposeOfUse,
                               DietMode dietMode) {
-        this.nickname = nickname;
         this.targetWeight = targetWeight;
         this.age = age;
         this.gender = gender;
         this.height = height;
         this.weight = weight;
-        this.currentWeight = weight;
         this.activityLevel = activityLevel;
         this.purposeOfUse = purposeOfUse;
         this.dietMode = dietMode;
@@ -128,7 +118,4 @@ public class Profile {
     }
 
 
-    public void updateCurrentWeight(double weight) {
-        this.currentWeight = weight;
-    }
 }

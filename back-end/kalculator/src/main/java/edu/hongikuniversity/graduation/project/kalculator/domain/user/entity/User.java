@@ -29,6 +29,8 @@ public class User {
 
     private String name;
 
+    private String nickname;
+
     private String password;
 
     private String email;
@@ -36,32 +38,35 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(mappedBy = "users")
+    private double currentWeight;
+
+    @OneToOne(mappedBy = "user")
     private Profile profile;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<FoodRecord> foodRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Heart> hearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<RunningRecord> runningRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<GroupMembership> memberships = new ArrayList<>();
 
 
     @Builder
-    private User(String username, String name, String password, String email, Role role) {
+    private User(String username, String name, String nickname, String password, String email, Role role) {
         this.username = username;
         this.name = name;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.role = role;
@@ -79,14 +84,6 @@ public class User {
         this.posts.add(post);
     }
 
-    public void passwordEncode(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(this.password);
-    }
-
-    public boolean checkProfileCreated() {
-        return this.profile != null;
-    }
-
     public void addHeart(Heart heart) {
         this.hearts.add(heart);
     }
@@ -97,5 +94,21 @@ public class User {
 
     public void addRunningRecord(RunningRecord runningRecord) {
         this.runningRecords.add(runningRecord);
+    }
+
+    public void addGroupMemberShip(GroupMembership groupMembership) {
+        this.memberships.add(groupMembership);
+    }
+
+    public void passwordEncode(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public boolean checkProfileCreated() {
+        return this.profile != null;
+    }
+
+    public void updateCurrentWeight(double currentWeight){
+        this.currentWeight = currentWeight;
     }
 }

@@ -14,7 +14,7 @@ public record PostBriefResponse(
     public static PostBriefResponse from(Post post) {
         return new PostBriefResponse(
                 post.getId(),
-                post.getUser().getProfile().getNickname(),
+                post.getUser().getNickname(),
                 post.getUser().getUsername(),
                 post.getTitle(),
                 post.getLikeCount(),

@@ -1,8 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.profile.service;
 
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.request.ProfileUpdateWeightRequest;
-import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileCurrentWeightResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileDetailsResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.controller.dto.response.ProfileIdResponse;
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.Profile;
@@ -28,7 +26,6 @@ public class ProfileService {
         User user = getCurrentUser();
 
         Profile profile = Profile.builder()
-                .nickname(request.nickname())
                 .targetWeight(request.targetWeight())
                 .age(request.age())
                 .gender(request.gender())
@@ -55,7 +52,6 @@ public class ProfileService {
     public ProfileIdResponse update(ProfileRequest request) {
         Profile profile = findByUser();
         profile.updateProfile(
-                request.nickname(),
                 request.targetWeight(),
                 request.age(),
                 request.gender(),
@@ -66,14 +62,6 @@ public class ProfileService {
                 request.dietMode()
         );
         return ProfileIdResponse.from(profile);
-    }
-
-    @Transactional
-    public ProfileCurrentWeightResponse updateCurrentWeight(ProfileUpdateWeightRequest request) {
-        Profile profile = findByUser();
-        profile.updateCurrentWeight(request.currentWeight());
-
-        return ProfileCurrentWeightResponse.from(profile);
     }
 
 
