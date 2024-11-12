@@ -17,10 +17,10 @@ public record ProfileDetailsResponse(
 
     public static ProfileDetailsResponse from(Profile profile) {
         return new ProfileDetailsResponse(
-                profile.getNickname(),
-                profile.getCurrentWeight(),
+                profile.getUser().getNickname(),
+                profile.getUser().getCurrentWeight(),
                 profile.getTargetWeight(),
-                profile.getWeightDifference(),
+                Math.abs(profile.getUser().getCurrentWeight() - profile.getWeight()),
                 profile.getAge(),
                 profile.getHeight(),
                 profile.getGender(),

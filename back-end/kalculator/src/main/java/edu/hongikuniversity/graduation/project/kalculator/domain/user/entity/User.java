@@ -29,6 +29,8 @@ public class User {
 
     private String name;
 
+    private String nickname;
+
     private String password;
 
     private String email;
@@ -61,9 +63,10 @@ public class User {
 
 
     @Builder
-    private User(String username, String name, String password, String email, Role role) {
+    private User(String username, String name, String nickname, String password, String email, Role role) {
         this.username = username;
         this.name = name;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.role = role;

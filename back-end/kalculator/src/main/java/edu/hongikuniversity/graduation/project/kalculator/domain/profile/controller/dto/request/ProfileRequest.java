@@ -6,7 +6,6 @@ import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.
 import edu.hongikuniversity.graduation.project.kalculator.domain.profile.entity.PurposeOfUse;
 
 public record ProfileRequest(
-        String nickname,
         double targetWeight,
         int age,
         Gender gender,

@@ -26,7 +26,6 @@ public class ProfileService {
         User user = getCurrentUser();
 
         Profile profile = Profile.builder()
-                .nickname(request.nickname())
                 .targetWeight(request.targetWeight())
                 .age(request.age())
                 .gender(request.gender())
@@ -53,7 +52,6 @@ public class ProfileService {
     public ProfileIdResponse update(ProfileRequest request) {
         Profile profile = findByUser();
         profile.updateProfile(
-                request.nickname(),
                 request.targetWeight(),
                 request.age(),
                 request.gender(),
