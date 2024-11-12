@@ -8,8 +8,9 @@ public record BattleGroupCreateRequest(
         String content,
         String battlePurpose,
         LocalDate endDate,
-        int numberOfMembers,
+        int maxMemberCount,
         double target
 
 ) {
+
 }

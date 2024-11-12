@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface BattleGroupRepository extends JpaRepository<BattleGroup, Long> {
+public interface BattleGroupRepository extends JpaRepository<BattleGroup, Long>, CustomBattleGroupRepository {
     List<BattleGroup> findByStatus(BattleStatus status);
 }

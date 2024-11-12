@@ -37,16 +37,11 @@ public class GroupMembership {
         this.user = user;
         this.role = role;
         this.startWeight = startWeight;
-        this.score = 0;
-        user.addGroupMemberShip(this);
+        this.score = 0.0;
         group.addGroupMemberShip(this);
+        user.addGroupMemberShip(this);
     }
 
-
-    public void setGroup(BattleGroup group) {
-        this.group = group;
-        group.getMemberships().add(this);
-    }
 
     public void updateScore(double score) {
         this.score = score;

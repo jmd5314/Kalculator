@@ -1,5 +1,6 @@
 package edu.hongikuniversity.graduation.project.kalculator.domain.battle.entity;
 
+import edu.hongikuniversity.graduation.project.kalculator.domain.battle.exception.BattleGroupFullException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,7 +37,9 @@ public class BattleGroup {
     @Enumerated(EnumType.STRING)
     private BattleStatus status;
 
-    private int numberOfMembers;
+    private int memberCount;
+
+    private int maxMemberCount;
 
     @OneToMany(mappedBy = "group")
     private List<GroupMembership> memberships = new ArrayList<>();
@@ -51,7 +54,7 @@ public class BattleGroup {
             LocalDate startDate,
             LocalDate endDate,
             BattleStatus status,
-            int numberOfMembers) {
+            int maxMemberCount) {
         this.name = name;
         this.title = title;
         this.content = content;
@@ -60,10 +63,20 @@ public class BattleGroup {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.numberOfMembers = numberOfMembers;
+        this.memberCount = 1;
+        this.maxMemberCount = maxMemberCount;
     }
 
     public void addGroupMemberShip(GroupMembership groupMembership) {
+        if(memberCount>=maxMemberCount){
+            throw new BattleGroupFullException();
+        }
         this.memberships.add(groupMembership);
+        increaseMemberCount();
     }
+
+    public void increaseMemberCount(){
+        this.memberCount++;
+    }
+
 }

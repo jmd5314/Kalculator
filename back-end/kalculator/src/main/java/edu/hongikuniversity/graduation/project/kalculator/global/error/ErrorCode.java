@@ -21,7 +21,12 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글 id : %s 가 존재하지 않습니다"),
     COMMENT_NOT_AUTHORIZE(HttpStatus.FORBIDDEN, "댓글 id : %s 에 대한 권한이 존재하지 않습니다"),
 
-    HEART_ALREADY_EXIST(HttpStatus.CONFLICT, "좋아요 id : %s 가 이미 존재합니다"),;
+    HEART_ALREADY_EXIST(HttpStatus.CONFLICT, "좋아요 id : %s 가 이미 존재합니다"),
+
+    GROUP_ALREADY_FULL(HttpStatus.CONFLICT, "그룹에 인원이 다 찼습니다"),
+    GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹 id : %s 가 존재하지 않습니다"),
+
+    MEMBERSHIP_ALREADY_EXIST(HttpStatus.CONFLICT, "이미 그룹에 가입되어 있습니다"),;
     private final HttpStatus httpStatus;
     private final String messageTemplate;
 }

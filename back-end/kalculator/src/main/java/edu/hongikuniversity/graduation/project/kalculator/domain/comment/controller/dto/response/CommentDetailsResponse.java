@@ -14,7 +14,7 @@ public record CommentDetailsResponse(
         return new CommentDetailsResponse(
                 comment.getId(),
                 comment.getUser().getUsername(),
-                comment.getUser().getProfile().getNickname(),
+                comment.getUser().getNickname(),
                 comment.getContent(),
                 comment.getCreatedAt()
         );

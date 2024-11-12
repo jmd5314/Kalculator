@@ -1,6 +1,5 @@
 package edu.hongikuniversity.graduation.project.kalculator.global.config;
 
-import edu.hongikuniversity.graduation.project.kalculator.domain.user.service.UserService;
 import edu.hongikuniversity.graduation.project.kalculator.global.auth.jwt.filter.JwtAuthenticationProcessingFilter;
 import edu.hongikuniversity.graduation.project.kalculator.global.auth.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
